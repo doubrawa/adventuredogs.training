@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adventure Dogs – Hundeschule Julia Doubrawa | Krumbach</title>
+<meta name="description" content="Adventure Dogs – Hundeschule Julia Doubrawa in Krumbach. Welpenkurse, Einzeltraining, Sozialkontakt und besondere Events. Entspannt, individuell und mit Humor.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --earth:    oklch(52% 0.07 55);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r:        6px;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    background: transparent;
+    transition: background 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.08);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo img { width: 42px; height: 42px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: oklch(100% 0 0 / 0.88);
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  nav.scrolled .nav-links a { color: var(--text); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--white);
+    color: var(--blue) !important;
+    padding: 9px 20px;
+    border-radius: 40px;
+    font-weight: 600 !important;
+    transition: background 0.2s, color 0.2s, transform 0.15s !important;
+  }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  .nav-cta:hover { transform: translateY(-1px); opacity: 0.9; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 80px;
+    overflow: hidden;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    background: url('assets/hero.jpg') center 20% / cover no-repeat;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      oklch(0% 0 0 / 0.15) 0%,
+      oklch(0% 0 0 / 0.05) 40%,
+      oklch(0% 0 0 / 0.55) 75%,
+      oklch(0% 0 0 / 0.75) 100%
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 7%;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 6vw, 78px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.05;
+    text-wrap: pretty;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: oklch(90% 0.06 185);
+  }
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: oklch(100% 0 0 / 0.82);
+    max-width: 520px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 30px;
+    border-radius: 40px;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 40px;
+    border: 1.5px solid oklch(100% 0 0 / 0.4);
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .btn-ghost:hover { background: oklch(100% 0 0 / 0.1); border-color: oklch(100% 0 0 / 0.7); }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: oklch(100% 0 0 / 0.5);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounceDown 2s ease-in-out infinite;
+  }
+  @keyframes bounceDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+  .hero-scroll-hint svg { width: 20px; height: 20px; }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--blue);
+    padding: 28px 7%;
+    display: flex;
+    justify-content: center;
+    gap: clamp(24px, 5vw, 80px);
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--white);
+  }
+  .trust-icon {
+    width: 36px;
+    height: 36px;
+    background: oklch(100% 0 0 / 0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .trust-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; }
+  .trust-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .trust-text span {
+    font-size: 12px;
+    color: oklch(100% 0 0 / 0.6);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── SECTION BASICS ── */
+  section { padding: 90px 7%; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 46px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--blue);
+    text-wrap: pretty;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-lt);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  /* ── SERVICES ── */
+  .services { background: var(--cream2); }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 52px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 24px;
+  }
+  .service-card {
+    background: var(--white);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 16px oklch(0% 0 0 / 0.06);
+    transition: transform 0.22s, box-shadow 0.22s;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px oklch(0% 0 0 / 0.14);
+  }
+  .service-card-img {
+    height: 260px;
+    background-color: var(--blue-lt);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .service-card-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .service-card-body {
+    padding: 24px 26px 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .service-card-body p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-lt);
+    flex: 1;
+  }
+  .service-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+  }
+  .service-card-link svg { width: 14px; height: 14px; transition: transform 0.15s; }
+  .service-card:hover .service-card-link svg { transform: translateX(3px); }
+
+  /* ── METHOD ── */
+  .method { background: var(--blue); }
+  .method .section-title { color: var(--white); }
+  .method .section-sub { color: oklch(100% 0 0 / 0.65); }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    margin-top: 56px;
+  }
+  .method-step {
+    position: relative;
+    padding: 32px 28px;
+    background: oklch(100% 0 0 / 0.06);
+    border-radius: var(--r-lg);
+    border: 1px solid oklch(100% 0 0 / 0.1);
+  }
+  .method-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    color: oklch(100% 0 0 / 0.08);
+    line-height: 1;
+    margin-bottom: -8px;
+  }
+  .method-step h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .method-step p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: oklch(100% 0 0 / 0.6);
+  }
+
+  /* ── JULIA SECTION ── */
+  .julia-section {
+    display: flex;
+    gap: 72px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .julia-photo {
+    width: min(320px, 100%);
+    aspect-ratio: 3/4;
+    border-radius: var(--r-lg);
+    background: url('assets/julia-portrait.jpg') center top / cover no-repeat;
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+  }
+  .julia-text { flex: 1; min-width: 280px; }
+  .julia-text .section-label { margin-bottom: 16px; }
+  .julia-text .section-title { margin-bottom: 20px; }
+  .julia-text p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-lt);
+    margin-bottom: 14px;
+  }
+  .julia-quote-box {
+    border-left: 3px solid oklch(35% 0.08 145);
+    padding-left: 22px;
+    margin-bottom: 32px;
+  }
+  .julia-quote-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .julia-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.8vw, 34px);
+    font-style: italic;
+    color: var(--blue);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .julia-lead {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-lt);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--cream2); }
+  .testimonials-header { margin-bottom: 52px; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: var(--r-lg);
+    padding: 32px 30px 28px;
+    box-shadow: 0 2px 16px oklch(0% 0 0 / 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .stars {
+    display: flex;
+    gap: 3px;
+  }
+  .stars svg {
+    width: 16px;
+    height: 16px;
+    fill: oklch(78% 0.13 72);
+  }
+  .testimonial-card blockquote {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    font-style: italic;
+    flex: 1;
+  }
+  .testimonial-card blockquote::before { content: '\201E'; }
+  .testimonial-card blockquote::after  { content: '\201C'; }
+  .testimonial-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    border-top: 1px solid var(--cream2);
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+    padding: 90px 7%;
+    text-align: center;
+  }
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 50px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    text-wrap: pretty;
+  }
+  .cta-banner p {
+    color: oklch(100% 0 0 / 0.7);
+    font-size: 17px;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+  }
+  .cta-banner .btn-primary {
+    font-size: 16px;
+    padding: 16px 38px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    font-weight: 500;
+  }
+  .footer-brand img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    nav { padding: 0 5%; }
+    .nav-links { display: none; }
+    section { padding: 64px 5%; }
+    .julia-photo { width: 100%; aspect-ratio: 16/9; background-position: center 20%; }
+    .trust-bar { gap: 20px; padding: 24px 5%; }
+  }
+
+  /* ── SERVICE CARD IMAGES ── */
+  .img-welpe   { background-image: url('assets/service-welpenkurs.jpg'); }
+  .img-einzel  { background-image: url('assets/service-einzeltraining.jpg'); }
+  .img-quality { background-image: url('assets/service-events.jpg'); }
+  .img-sozial  { background-image: url('assets/service-sozialkontakt.jpg'); }
+
+  /* ── SERVICE CARD TAG GROUP ── */
+  .service-card-tags {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    gap: 6px;
+  }
+  .service-card-tags .service-card-tag { position: static; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <img src="assets/logo.png" alt="Adventure Dogs Logo">
+    <span class="nav-logo-text">Adventure<br>Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="kontakt/">Kontakt</a></li>
+    <li><a href="#julia">Über mich</a></li>
+    <li><a href="alltagstipps/">Alltagstipps</a></li>
+    <li><a href="angebot/" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Hundeschule Krumbach &amp; Umgebung</p>
+    <h1>Dein Hund.<br>Euer Abenteuer.<br><em>Bestes Leben.</em></h1>
+    <p class="hero-sub">Individuelles Hundetraining, Welpenkurse und besondere Events – damit euer Alltag entspannter, leichter und voller Freude wird.</p>
+    <div class="hero-actions">
+      <a href="angebot/" class="btn-primary">
+        Trainings entdecken
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="kontakt/" class="btn-ghost">Erstgespräch vereinbaren</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="trust-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    </div>
+    <div class="trust-text">
+      <strong>5-Sterne Bewertungen</strong>
+      <span>Von glücklichen Hundebesitzern</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div class="trust-text">
+      <strong>Kleine Gruppen</strong>
+      <span>Individuell &amp; persönlich</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div class="trust-text">
+      <strong>Training zuhause &amp; draußen</strong>
+      <span>Da wo der Alltag wirklich stattfindet</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <div class="trust-text">
+      <strong>Entspannt &amp; mit Humor</strong>
+      <span>Training, das sich gut anfühlt</span>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="angebote">
+  <div class="services-header">
+    <div>
+      <p class="section-label">Das Angebot</p>
+      <h2 class="section-title">Was passt zu euch?</h2>
+      <p class="section-sub">Von Welpenkurs bis Einzeltraining – findet das Angebot, das euren Alltag wirklich leichter macht.</p>
+    </div>
+    <a href="angebot/" class="btn-primary" style="white-space:nowrap">
+      Alle Kurse ansehen
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="services-grid">
+
+    <a href="angebot/#welpen" class="service-card">
+      <div class="service-card-img img-welpe">
+        <div class="service-card-tags">
+          <span class="service-card-tag">Welpenkurs</span>
+          <span class="service-card-tag">Basiskurs</span>
+        </div>
+      </div>
+      <div class="service-card-body">
+        <h3>Der perfekte Start für deinen Hund</h3>
+        <p>Spielerisches Lernen, Sozialisierung und alles, was der Alltag mit einem Junghund braucht – für euch und euren Vierbeiner.</p>
+        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </a>
+
+    <a href="angebot/#sozialkontakt" class="service-card">
+      <div class="service-card-img img-sozial">
+        <span class="service-card-tag">Sozialkontakt</span>
+      </div>
+      <div class="service-card-body">
+        <h3>Entspannte Hundebegegnungen</h3>
+        <p>Kommunikation und Sozialverhalten für Jung- und Adulthunde – in der Gruppe, mit Struktur und viel Freude.</p>
+        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </a>
+
+    <a href="angebot/#veranstaltungen" class="service-card">
+      <div class="service-card-img img-quality">
+        <span class="service-card-tag">Events</span>
+      </div>
+      <div class="service-card-body">
+        <h3>Quality Time &amp; besondere Events</h3>
+        <p>Gemeinsame Abenteuer, die euren Alltag bereichern und euch als Team enger zusammenbringen.</p>
+        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </a>
+
+    <a href="angebot/#einzel" class="service-card">
+      <div class="service-card-img img-einzel">
+        <span class="service-card-tag">Einzeltraining</span>
+      </div>
+      <div class="service-card-body">
+        <h3>Individuelle Lösung für euer Problem</h3>
+        <p>Leinenaggression, Alleinbleiben, Rückruf – maßgeschneidertes Training direkt bei euch zuhause oder im Alltag.</p>
+        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="method">
+  <p class="section-label" style="color: var(--accent)">Mein Ansatz</p>
+  <h2 class="section-title">So wird euer Alltag leichter</h2>
+  <p class="section-sub">Training, das wirklich wirkt – weil es dort stattfindet, wo das Leben passiert.</p>
+  <div class="method-grid">
+    <div class="method-step">
+      <div class="method-num">01</div>
+      <h3>Verstehen</h3>
+      <p>Ich zeige dir, wie du deinen Hund wirklich verstehst – seine Motivationen, Stärken und Bedürfnisse.</p>
+    </div>
+    <div class="method-step">
+      <div class="method-num">02</div>
+      <h3>Planen</h3>
+      <p>Gemeinsam erarbeiten wir, wie euer Alltag aussehen soll – entspannt und fair für beide Seiten.</p>
+    </div>
+    <div class="method-step">
+      <div class="method-num">03</div>
+      <h3>Zuhause umsetzen</h3>
+      <p>Alles beginnt im vertrauten Umfeld. So klappt es später auch draußen – nachhaltig und mit echtem Erfolg.</p>
+    </div>
+    <div class="method-step">
+      <div class="method-num">04</div>
+      <h3>Alltag nutzen</h3>
+      <p>Du lernst, den Alltag direkt als Trainingsplatz zu nutzen – mit klaren Schritten, die auch in turbulenten Momenten funktionieren.</p>
+    </div>
+  </div>
+</section>
+
+<!-- JULIA -->
+<section id="julia">
+  <div class="julia-section">
+    <div class="julia-photo"></div>
+    <div class="julia-text">
+      <div class="julia-quote-box">
+        <p class="julia-quote-label">Mein Versprechen</p>
+        <p class="julia-quote">„Dein Leben mit Hund kann schöner werden, als du es dir vorgestellt hast."</p>
+      </div>
+
+      <p class="julia-lead">Bereit für ein Leben mit Hund, das sich <em>leicht</em> anfühlt?</p>
+
+      <a href="kontakt/" class="btn-primary">
+        Meld dich einfach
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="stimmen">
+  <div class="testimonials-header">
+    <p class="section-label">Kundenstimmen</p>
+    <h2 class="section-title">Das sagen meine Kunden</h2>
+  </div>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card">
+      <div class="stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <blockquote>Julia war die Rettung in der Not! Nach dem Hausbesuch war ich erleichtert. Sie hat so eine Ruhe reingebracht. Die Kurse waren super! Julia versteht ihre Arbeit zu 100%!</blockquote>
+      <div class="testimonial-author">Steffi K. · mit Bella</div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <blockquote>Jede Trainingsstunde ist nicht nur lehrreich, sondern auch kurzweilig und macht richtig Spaß – für uns und unsere Hündin! Julia geht individuell auf uns ein. Hier steckt echte Leidenschaft dahinter.</blockquote>
+      <div class="testimonial-author">Sebastian &amp; Jenny H. · mit Missy</div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <blockquote>Sie schafft es immer wieder, einem die Leichtigkeit zurückzugeben. Ihr Umgang mit Hunden ist einfach toll – ganz egal, ob jung, alt, unsicher oder wild. Training auf Augenhöhe – respektvoll, achtsam und mit viel Herz.</blockquote>
+      <div class="testimonial-author">Anna R. · mit Loki</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Das Abenteuer wartet – <em style="font-style:italic">auf euch beide.</em></h2>
+  <p>Startet gemeinsam in ein Leben, das sich leicht, freudig und voller schöner Momente anfühlt.</p>
+  <a href="angebot/" class="btn-primary">
+    Trainings entdecken
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="assets/logo.png" alt="Logo">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="impressum/">Impressum</a>
+    <a href="kontakt/">Kontakt</a>
+    <a href="angebot/">Angebote</a>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
