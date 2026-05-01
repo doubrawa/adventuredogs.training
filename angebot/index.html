@@ -32,7 +32,11 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
-    height: 70px; background: oklch(97% 0.01 80 / 0.96);
+    height: 70px; background: transparent;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.96);
     backdrop-filter: blur(12px);
     box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
   }
@@ -40,16 +44,19 @@
   .nav-logo img { width: 40px; height: 40px; }
   .nav-logo-text {
     font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
-    color: var(--blue); white-space: nowrap;
+    color: var(--white); white-space: nowrap; transition: color 0.3s;
   }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
   .nav-links { display: flex; gap: 28px; list-style: none; }
-  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text); transition: color 0.2s; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  nav.scrolled .nav-links a { color: var(--text); }
   .nav-links a:hover, .nav-links a.active { color: var(--accent); }
   .nav-cta {
-    background: var(--blue); color: var(--white) !important;
+    background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
     transition: opacity 0.2s, transform 0.15s !important;
   }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
   .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
   /* ── PAGE HERO ── */
@@ -59,6 +66,8 @@
     display: flex; align-items: flex-end; padding-bottom: 70px;
     overflow: hidden;
     background: url('../assets/hero-angebot.jpg') center 80% / cover no-repeat;
+    margin-top: -70px;
+    padding-top: 70px;
   }
   .page-hero::before {
     content: '';
@@ -254,7 +263,7 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a class="nav-logo" href="../">
     <img src="../assets/logo.png" alt="Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
@@ -558,5 +567,11 @@
   }
 </script>
 
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
 </body>
 </html>
