@@ -10,3 +10,6 @@ Thumbs.db
 *.log
 
 # Build output (none yet — site is static)
+
+# Stray scratch folders dropped here by tooling — not part of the site
+available_images/

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angebot – Adventure Dogs | Hundeschule Julia Doubrawa Krumbach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+    height: 70px; background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 40px; height: 40px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--blue); white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text); transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+  .nav-cta {
+    background: var(--blue); color: var(--white) !important;
+    padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    position: relative;
+    height: 72vh; min-height: 480px;
+    display: flex; align-items: flex-end; padding-bottom: 70px;
+    overflow: hidden;
+    background: url('assets/hero-gipfel.jpg') center 80% / cover no-repeat;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      oklch(0% 0 0 / 0.2) 0%,
+      oklch(0% 0 0 / 0.05) 35%,
+      oklch(0% 0 0 / 0.6) 75%,
+      oklch(0% 0 0 / 0.75) 100%
+    );
+    z-index: 0;
+  }
+  .page-hero > * { position: relative; z-index: 1; }
+  .page-hero-content { padding: 0 7%; max-width: 860px; }
+  .page-hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: oklch(100% 0 0 / 0.85); margin-bottom: 14px;
+  }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px); font-weight: 900;
+    color: var(--white); line-height: 1.08; margin-bottom: 18px;
+  }
+  .page-hero h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+  .page-hero p {
+    font-size: clamp(15px, 1.8vw, 18px); color: oklch(100% 0 0 / 0.72);
+    max-width: 540px; line-height: 1.65; font-weight: 300;
+  }
+
+  /* ── FILTER NAV ── */
+  .filter-nav {
+    padding: 32px 7% 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 8px 18px; border-radius: 40px; border: 1.5px solid var(--blue-lt);
+    background: var(--white); color: var(--text); font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+  /* ── MAIN CONTENT ── */
+  main { padding: 48px 7% 80px; }
+
+  /* ── CATEGORY HEADERS ── */
+  .category-header {
+    display: flex; align-items: center; gap: 16px;
+    margin: 56px 0 32px;
+  }
+  .category-header:first-child { margin-top: 0; }
+  .category-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    background: oklch(62% 0.12 185 / 0.1); padding: 5px 12px; border-radius: 20px;
+  }
+  .category-line { flex: 1; height: 1px; background: var(--cream2); }
+
+  /* ── OFFER CARDS ── */
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+  }
+  .offer-card {
+    background: var(--white); border-radius: var(--r-lg);
+    overflow: hidden; box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .offer-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px oklch(0% 0 0 / 0.13); }
+
+  .offer-img {
+    height: 220px; position: relative; overflow: hidden;
+    background: var(--blue-lt) center / cover no-repeat;
+  }
+  .offer-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, oklch(0% 0 0 / 0.3) 100%);
+  }
+  .offer-tags {
+    position: absolute; top: 14px; left: 14px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .offer-tag {
+    background: var(--blue); color: var(--white);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+  }
+
+  .offer-body { padding: 26px 28px 30px; flex: 1; display: flex; flex-direction: column; }
+  .offer-body h2 {
+    font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 700;
+    color: var(--blue); margin-bottom: 10px; line-height: 1.25;
+  }
+  .offer-body .offer-lead {
+    font-size: 13px; font-weight: 600; color: var(--accent);
+    margin-bottom: 10px; font-style: italic;
+  }
+  .offer-body p {
+    font-size: 14px; line-height: 1.72; color: var(--text-lt); flex: 1;
+  }
+  .offer-body ul {
+    margin: 12px 0; padding-left: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .offer-body ul li {
+    font-size: 13px; color: var(--text-lt); line-height: 1.55;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .offer-body ul li::before {
+    content: '›'; color: var(--accent); font-weight: 700;
+    font-size: 16px; line-height: 1.2; flex-shrink: 0;
+  }
+
+  .offer-footer {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid var(--cream2);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .btn-book {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--accent); color: var(--white);
+    text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 10px 20px; border-radius: 40px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 3px 14px oklch(62% 0.12 185 / 0.3);
+    white-space: nowrap;
+  }
+  .btn-book:hover { transform: translateY(-1px); box-shadow: 0 6px 20px oklch(62% 0.12 185 / 0.4); }
+  .btn-book svg { width: 13px; height: 13px; }
+
+  /* ── HIGHLIGHT CARD (Einzeltraining) ── */
+  .offer-card.highlight {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+  .offer-card.highlight .offer-img {
+    width: 380px; height: auto; flex-shrink: 0; border-radius: 0;
+  }
+  .offer-card.highlight .offer-body h2 { font-size: 26px; }
+  .offer-card.highlight .offer-body p { font-size: 15px; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+    padding: 80px 7%; text-align: center; margin-top: 80px;
+    border-radius: var(--r-lg);
+  }
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 44px); font-weight: 700;
+    color: var(--white); line-height: 1.15; margin-bottom: 14px;
+  }
+  .cta-banner p {
+    color: oklch(100% 0 0 / 0.7); font-size: 16px; font-weight: 300;
+    max-width: 440px; margin: 0 auto 32px; line-height: 1.65;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--white);
+    text-decoration: none; font-size: 15px; font-weight: 600;
+    padding: 14px 30px; border-radius: 40px;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  .footer-brand img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .offer-card.highlight { flex-direction: column; }
+    .offer-card.highlight .offer-img { width: 100%; height: 220px; }
+    .offers-grid { grid-template-columns: 1fr; }
+    .page-hero { padding: 110px 5% 60px; }
+    main { padding: 36px 5% 60px; }
+    .filter-nav { padding: 28px 5% 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="Landing Page.html">
+    <img src="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" alt="Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://adventuredogs.training/alltagstipps/">Alltagstipps</a></li>
+    <li><a href="https://adventuredogs.training/julia/">Über mich</a></li>
+    <li><a href="https://adventuredogs.training/kontakt/">Kontakt</a></li>
+    <li><a href="#" class="nav-cta active">Trainings entdecken</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Das Angebot</p>
+    <h1>Trainings für<br>jeden <em>Hund.</em></h1>
+    <p>Ob Welpe, Junghund oder erwachsener Vierbeiner – hier findest du das passende Training für euren gemeinsamen Alltag.</p>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="filter-nav">
+  <button class="filter-btn active" onclick="filterCards('all', this)">Alle</button>
+  <button class="filter-btn" onclick="filterCards('kurs', this)">Kurse</button>
+  <button class="filter-btn" onclick="filterCards('gruppe', this)">Gruppen</button>
+  <button class="filter-btn" onclick="filterCards('event', this)">Events</button>
+  <button class="filter-btn" onclick="filterCards('einzel', this)">Einzeltraining</button>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- KURSE -->
+  <div class="category-header">
+    <span class="category-tag">Kurse</span>
+    <div class="category-line"></div>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" data-cat="kurs">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/welpen.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags">
+          <span class="offer-tag">Welpenkurs</span>
+          <span class="offer-tag">Basiskurs</span>
+        </div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Dein Mini-Hund zieht ein?</p>
+        <h2>Der perfekte Start für deinen Hund</h2>
+        <p>Glückwunsch – jetzt startet das Abenteuer! In meinem Kurs lernst du alles für eine entspannte Eingewöhnung, soziale Kontakte und eine starke Bindung. Entdecke die Talente deines Hundes und leg den Grundstein für einen verlässlichen Alltagsbegleiter.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/gruppen/53-welpengruppe" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card" data-cat="kurs">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/basis.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Erziehung</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Erziehung darf sich leicht anfühlen.</p>
+        <h2>Entspannt unterwegs – Basiskurs</h2>
+        <p>Du wünschst dir Spaziergänge, die wieder leicht und angenehm sind – ohne Ziehen, Stress oder Unsicherheit. Dein Hund lernt, sich auch bei Ablenkung an dir zu orientieren, entspannt an der Leine zu bleiben und zuverlässig zu dir zurückzukommen.</p>
+        <ul>
+          <li>Leinenführigkeit & Orientierung</li>
+          <li>Zuverlässiger Rückruf</li>
+          <li>Jagdverhalten frühzeitig erkennen</li>
+          <li>Realitätsnah im Alltag trainieren</li>
+        </ul>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/kurse?tag=Basis" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card" data-cat="kurs">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2026/01/trickdog.jpeg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Trickdog</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Gemeinsam lernen & Spaß haben</p>
+        <h2>Trickdog – Kreativ & verbindend</h2>
+        <p>In diesem Kurs lernt dein Hund spielerisch coole Tricks – mit positiver Verstärkung, Freude und Motivation. Ihr stärkt eure Bindung, fördert die Konzentration und genießt wertvolle gemeinsame Zeit. Für alle, die Training leicht, kreativ und verbindend erleben möchten.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/kurse/132-dein-hund-wird-zum-trickdog" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card" data-cat="kurs">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2026/04/jagd_quadratisch.jpg'); background-position: center 30%;">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Jagdkontrolle</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Jagen – Nein danke!</p>
+        <h2>Jagdkontrolle im Alltag</h2>
+        <p>In diesem Kurs lernst du, Jagdverhalten deines Hundes frühzeitig zu erkennen und sinnvoll zu lenken. Mit alltagstauglichen Übungen stärkt ihr Orientierung, Ansprechbarkeit und eure Verbindung – Schritt für Schritt und ohne Druck.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/kurse/124-jagen-nein-danke" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRUPPEN -->
+  <div class="category-header">
+    <span class="category-tag">Gruppen & Walks</span>
+    <div class="category-line"></div>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" data-cat="gruppe">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2026/01/Sozialwalk.jpeg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Social Walk</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Entspannt an der Leine</p>
+        <h2>Social Walk – Gelassen in der Gruppe</h2>
+        <p>Geführte Spaziergänge in der Gruppe mit Abstand, Struktur und Ruhe. Dein Hund lernt gelassene Begegnungen, du gewinnst Sicherheit – für entspannte Spaziergänge ohne Stress.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/gruppen/95-social-walk" class="btn-book">
+            Nächste Termine
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card" data-cat="gruppe">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/08/sozialkontakt.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Sozialkontakt</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Schwierigkeiten mit anderen Hunden?</p>
+        <h2>Sozialkontakt – sicher & kontrolliert</h2>
+        <p>In der Sozialkontaktstunde kann dein Hund echten Kontakt zu Artgenossen erleben – sicher, kontrolliert und individuell auf sein Verhalten abgestimmt. In kleinen, sorgfältig zusammengestellten Gruppen mit Freilauf, professionell begleitet.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/gruppen/55-sozialkontakt" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card" data-cat="gruppe">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/06/veranstaltungentraining.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Training</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Dranbleiben, damit's im Alltag klappt!</p>
+        <h2>Trainingsveranstaltungen</h2>
+        <p>Im Garten läuft's super – aber draußen wird's schwierig? Für einen alltagstauglichen Hund braucht es Übung in realen Situationen.</p>
+        <ul>
+          <li>Begegnungstraining – entspannt bleiben bei Hundesichtungen</li>
+          <li>Training unter Ablenkung – in der Stadt, im Park oder bei viel Trubel</li>
+          <li>Powerhundegruppe – für Hunde mit individuellem Bedarf</li>
+        </ul>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/veranstaltungen?tag=Erziehung" class="btn-book">
+            Nächster Termin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENTS -->
+  <div class="category-header">
+    <span class="category-tag">Events</span>
+    <div class="category-line"></div>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card" data-cat="event">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/veranstaltungen.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags">
+          <span class="offer-tag">Quality Time</span>
+          <span class="offer-tag">Beschäftigung</span>
+        </div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Einfach gemeinsam unterwegs sein</p>
+        <h2>Quality Time Events</h2>
+        <p>Du möchtest entspannte Zeit mit deinem Hund verbringen? Das Miteinander steht im Vordergrund – Neues entdecken und dabei die Bindung stärken.</p>
+        <ul>
+          <li>Physio-Walk mit Tierphysiotherapeutin</li>
+          <li>Gemeinsamer Biergarten- oder Cafébesuch</li>
+          <li>Agility zum Ausprobieren</li>
+        </ul>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/veranstaltungen?tag=Quality+Time" class="btn-book">
+            Nächste Termine
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EINZELTRAINING -->
+  <div class="category-header">
+    <span class="category-tag">Einzeltraining</span>
+    <div class="category-line"></div>
+  </div>
+  <div class="offers-grid">
+
+    <div class="offer-card highlight" data-cat="einzel">
+      <div class="offer-img" style="background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/einzel.jpg')">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Einzeltraining</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Individuell. Persönlich. Wirkungsvoll.</p>
+        <h2>Einzeltraining – ganz für euch</h2>
+        <p>Hier kann ich individuell auf dich und deinen Hund eingehen – ebenso auf deine Wünsche und die Bedürfnisse deines Hundes.</p>
+        <p style="margin-top: 12px;">Dein Hund sollte dein Leben bereichern – nicht belasten. Aus meiner Erfahrung weiß ich: Es gibt immer einen Weg. Lass uns gemeinsam den richtigen für euch finden – und werde selbst zum besten Trainer für deinen Hund.</p>
+        <p style="margin-top: 12px;">Wir starten damit, dass wir uns ganz genau anschauen, wo die Ursache eures Problems liegt und wo ihr Unterstützung braucht, um als gutes Team entspannt durchs Leben zu gehen.</p>
+        <div class="offer-footer">
+          <a href="https://adventuredogs.123hundeschule.de/einzeltraining" class="btn-book">
+            Jetzt anfragen
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2>Nicht sicher, was zu euch passt?</h2>
+    <p>Schreib mir einfach – gemeinsam finden wir das richtige Training für dich und deinen Hund.</p>
+    <a href="https://adventuredogs.training/kontakt/" class="btn-primary">
+      Meld dich einfach
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" alt="Logo">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="https://adventuredogs.training/impressum/">Impressum</a>
+    <a href="https://adventuredogs.training/kontakt/">Kontakt</a>
+    <a href="Landing Page.html">Startseite</a>
+  </div>
+</footer>
+
+<script>
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.offer-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Show/hide category headers based on visible cards
+    document.querySelectorAll('.category-header').forEach(header => {
+      const nextGrid = header.nextElementSibling;
+      if (!nextGrid) return;
+      const hasVisible = [...nextGrid.querySelectorAll('.offer-card')].some(c => c.style.display !== 'none');
+      header.style.display = hasVisible ? '' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>

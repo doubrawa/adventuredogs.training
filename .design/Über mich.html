@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Über mich – Julia Doubrawa | Adventure Dogs Krumbach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+    background: transparent;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 40px; height: 40px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--white); white-space: nowrap; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  nav.scrolled .nav-links a { color: var(--text); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--white); color: var(--blue) !important;
+    padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; height: 85vh; min-height: 540px;
+    display: flex; align-items: flex-end; padding-bottom: 70px; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('uploads/aboutme.jpg') center 40% / cover no-repeat;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      oklch(0% 0 0 / 0.2) 0%,
+      oklch(0% 0 0 / 0.05) 35%,
+      oklch(0% 0 0 / 0.6) 75%,
+      oklch(0% 0 0 / 0.78) 100%
+    );
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 860px; }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: oklch(100% 0 0 / 0.92); margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 5.5vw, 72px); font-weight: 900;
+    color: var(--white); line-height: 1.06; margin-bottom: 18px;
+  }
+  .hero h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 18px); color: oklch(100% 0 0 / 0.8);
+    max-width: 500px; line-height: 1.65; font-weight: 300; margin-bottom: 32px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--white);
+    text-decoration: none; font-size: 15px; font-weight: 600;
+    padding: 13px 28px; border-radius: 40px;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
+
+  /* ── INTRO SECTION ── */
+  .intro {
+    padding: 80px 7%;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 72px;
+    align-items: start;
+  }
+  .intro-photo {
+    position: sticky; top: 90px;
+    border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .intro-photo img { width: 100%; display: block; }
+  .intro-text {}
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3vw, 40px); font-weight: 700;
+    color: var(--blue); line-height: 1.15; margin-bottom: 24px; text-wrap: pretty;
+  }
+  .intro-text p {
+    font-size: 16px; line-height: 1.8; color: var(--text-lt); margin-bottom: 18px;
+  }
+  .intro-text p strong { color: var(--text); font-weight: 600; }
+
+  /* ── WHY CARDS ── */
+  .why-cards {
+    display: flex; flex-direction: column; gap: 16px; margin: 28px 0;
+  }
+  .why-card {
+    background: var(--cream2); border-radius: var(--r-lg);
+    padding: 20px 22px; display: flex; gap: 16px; align-items: flex-start;
+  }
+  .why-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .why-icon svg { width: 18px; height: 18px; stroke: var(--white); fill: none; }
+  .why-card h4 { font-size: 15px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
+  .why-card p { font-size: 13px; line-height: 1.6; color: var(--text-lt); }
+
+  /* ── STORY SECTION ── */
+  .story {
+    background: var(--blue); padding: 80px 7%; position: relative; overflow: hidden;
+  }
+  .story::before {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0; width: 40%;
+    background: url('uploads/235A1434.JPG') center / cover no-repeat;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .story-inner {
+    max-width: 760px; position: relative; z-index: 1;
+  }
+  .story .section-label { color: var(--accent); }
+  .story .section-title { color: var(--white); margin-bottom: 28px; }
+  .story p { font-size: 16px; line-height: 1.8; color: oklch(100% 0 0 / 0.72); margin-bottom: 18px; font-weight: 300; }
+  .story p strong { color: var(--white); font-weight: 500; }
+  .story-quote {
+    border-left: 3px solid var(--accent); padding-left: 24px; margin: 32px 0;
+  }
+  .story-quote p {
+    font-family: 'Playfair Display', serif; font-size: clamp(18px, 2.2vw, 24px);
+    font-style: italic; color: oklch(100% 0 0 / 0.9); line-height: 1.5; font-weight: 600;
+  }
+
+  /* ── VISION SECTION ── */
+  .vision {
+    padding: 80px 7%; background: var(--cream2);
+  }
+  .vision-inner {
+    max-width: 820px; margin: 0 auto; text-align: center;
+  }
+  .vision .section-title { margin-bottom: 20px; }
+  .vision > .vision-inner > p {
+    font-size: 17px; line-height: 1.75; color: var(--text-lt); margin-bottom: 36px;
+    font-weight: 300;
+  }
+  .vision-img {
+    width: 100%; border-radius: var(--r-lg);
+    height: 380px;
+    background: url('uploads/_DSC2148.jpg') center 30% / cover no-repeat;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── FORTBILDUNGEN ── */
+  .fortbildungen { padding: 80px 7%; }
+  .fortbildungen .section-title { margin-bottom: 36px; }
+  .fort-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .fort-item {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px;
+    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.05);
+  }
+  .fort-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .fort-item a { color: var(--text); text-decoration: none; font-size: 14px; line-height: 1.55; transition: color 0.2s; }
+  .fort-item a:hover { color: var(--accent); }
+  .fort-item span { font-size: 14px; line-height: 1.55; color: var(--text); }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 0 7% 80px;
+  }
+  .cta-banner {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
+    padding: 72px 7%; text-align: center; border-radius: var(--r-lg);
+  }
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.5vw, 42px); font-weight: 700;
+    color: var(--white); line-height: 1.15; margin-bottom: 14px;
+  }
+  .cta-banner p {
+    color: oklch(100% 0 0 / 0.7); font-size: 16px; font-weight: 300;
+    max-width: 420px; margin: 0 auto 30px; line-height: 1.65;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  .footer-brand img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .intro { grid-template-columns: 1fr; }
+    .intro-photo { position: static; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="Landing Page.html">
+    <img src="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" alt="Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://adventuredogs.training/alltagstipps/">Alltagstipps</a></li>
+    <li><a href="#">Über mich</a></li>
+    <li><a href="https://adventuredogs.training/kontakt/">Kontakt</a></li>
+    <li><a href="Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Hundeschule Krumbach & Umgebung</p>
+    <h1>Hi, ich bin<br><em>Julia.</em></h1>
+    <p class="hero-sub">Hundetrainerin aus Krumbach – mit Herz, Humor und dem Ziel, euren Alltag wirklich leichter zu machen.</p>
+    <a href="https://adventuredogs.training/kontakt/" class="btn-primary">
+      Meld dich einfach
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-photo">
+    <img src="assets/julia-portrait-holz.jpg" alt="Julia Doubrawa">
+  </div>
+  <div class="intro-text">
+    <span class="section-label">Über mich</span>
+    <h2 class="section-title">Ich helfe dir, aus deinem Hund einen entspannten Alltagsbegleiter zu machen.</h2>
+
+    <p>Hundetraining bedeutet für mich nicht nur „Sitz, Platz, Fuß" – sondern, dass dein Hund dich überall stressfrei begleiten kann: beim Wandern, im Café, in der Stadt oder auf Reisen.</p>
+
+    <p>Mein Hund <strong>Einstein</strong> begleitet mich überall hin – genau das möchte ich auch für dich und deinen Hund erreichen.</p>
+
+    <div class="why-cards">
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <h4>Alltagstaugliches Training</h4>
+          <p>Direkt an deinen Alltag angepasst, damit es auch wirklich funktioniert – zuhause und draußen.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <h4>Leinenführigkeit & Hundebegegnungen</h4>
+          <p>Kein Chaos mehr beim Spaziergang – sondern entspannte Gassi-Runden ohne Stress.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <h4>Quality Time & Freude</h4>
+          <p>Training bedeutet nicht nur Erziehung, sondern echte gemeinsame Erlebnisse mit deinem Hund.</p>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div>
+          <h4>Beziehung statt Gehorsam</h4>
+          <p>Weil ich überzeugt bin, dass Hund und Mensch als echtes Team zusammenwachsen können.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story">
+  <div class="story-inner">
+    <span class="section-label">Meine Geschichte</span>
+    <h2 class="section-title">Einstein & ich – ein Weg mit Geduld und Humor</h2>
+
+    <p>Mein Hund Einstein bringt von Natur aus eine gute Portion Aufregung mit – neugierig, lebhaft und immer mitten im Geschehen. Als Welpe konnte ich mich beim Spaziergang kaum ein paar Minuten mit jemandem unterhalten, weil er ununterbrochen gefiepst hat.</p>
+
+    <div class="story-quote">
+      <p>„Ich dachte damals wirklich: Das wird nie anders!"</p>
+    </div>
+
+    <p>Mit Geduld, spielerischem Training und viel Alltagserfahrung haben wir es Schritt für Schritt geschafft. Heute kann Einstein entspannt liegen, auch bei Kursen oder wenn Besuch kommt – und begleitet mich überall hin.</p>
+
+    <p>Meine Erfahrung aus Ausbildung, Fortbildungen und der Arbeit mit Einstein fließt direkt in mein Training ein – so dass es in euren Alltag passt, Fortschritte sichtbar werden und ihr gemeinsam <strong>Quality Time</strong> genießen könnt.</p>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vision">
+  <div class="vision-inner">
+    <span class="section-label">Mein Ziel für euch</span>
+    <h2 class="section-title">Stell dir vor…</h2>
+    <p>…ihr spaziert entspannt durch die Stadt, dein Hund läuft locker an der Leine, begrüßt andere Hunde freundlich und ist trotzdem aufmerksam bei dir. Du genießt die gemeinsame Zeit, ohne Stress oder Frust – genau das ist mein Ziel für dich und deinen Hund.</p>
+    <div class="vision-img"></div>
+  </div>
+</section>
+
+<!-- FORTBILDUNGEN -->
+<section class="fortbildungen">
+  <span class="section-label">Qualifikation</span>
+  <h2 class="section-title">Fortbildungen & Ausbildung</h2>
+  <div class="fort-grid">
+
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.ziemer-falke.de/" target="_blank">Hundetrainer Ausbildung Theorie bei Ziemer & Falke</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.hundeschule-meinhund.de/" target="_blank">Hundetrainer Praxis bei Hundeschule Mein Hund</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.martinruetter.com/ulm-neu-ulm/" target="_blank">Hundetrainer Praxis bei Martin Rütter Hundeschule Ulm</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><span>Erste-Hilfe Kurs für den Hund DRK Ulm</span></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://hundeschule-vogt.de/" target="_blank">Pubertät und Akzeptanz bei André Vogt</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.hundeharmony.de/" target="_blank">Gesten der gemeinsamen Kommunikation bei Hundeharmony</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/fortbildungen/" target="_blank">Mehrere Coachings bei Charakterköpfe</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.edogcation.ch/" target="_blank">Mehrere Coachings bei Edogcation</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><span>Beschäftigungskurse: Canicross, Hoopers, Agility, Mantrailing, Crossdogging</span></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.hundeharmony.de/" target="_blank">Bewusst:sein bei Hundeharmony</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.binealff.de/" target="_blank">Die Basis – Theorie und Praxis bei Bine Alff von Halb so wild</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.arzberger-hundetraining.de/" target="_blank">Angsthunde bei Bettina Neuner</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/fortbildungen/" target="_blank">Dabeisein aber nicht dran sein bei Eva Grau von Charakterköpfe</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://teamhundecoach.de/" target="_blank">Sozialverhalten im Fokus mit Alexander Schillack</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/fortbildungen/" target="_blank">Der häusliche Bereich bei Eva Grau von Charakterköpfe</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><span>Mit Abstand am Nächsten bei Charly Arzberger und Nina Jassmann</span></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/fortbildungen/" target="_blank">Sozialkontaktstunden: Aufbau, Zusammenstellung und Moderation bei Eva Grau</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/fortbildungen/" target="_blank">Workshop Mehrhundehaltung bei Eva Grau von Charakterköpfe</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.team-philosophie.de/" target="_blank">Kind und Hund bei Jennifer Wiederstein</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.underdogs-seminare.de/" target="_blank">Angst beim Hund bei Katja Schumacher</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><span>Frustrationstoleranz – starke Nerven weniger Stress von Maren Grote</span></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.charakter-koepfe.com/" target="_blank">Webinar: „Alleine bleiben" von Charakterköpfe</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.raketenhunde.de/" target="_blank">Intensivcoaching Persönlichkeits- und Beziehungsanalyse bei Nina Jassmann & Charly Arzberger</a></div>
+    <div class="fort-item"><div class="fort-dot"></div><a href="https://www.raketenhunde.de/" target="_blank">Seminar Technik trifft Beziehung bei Nina Jassmann & Charly Arzberger</a></div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-banner">
+    <h2>Lust auf entspanntes Leben mit Hund?</h2>
+    <p>Schreib mir einfach – ich freue mich darauf, dich und deinen Hund kennenzulernen.</p>
+    <a href="https://adventuredogs.training/kontakt/" class="btn-primary">
+      Meld dich einfach
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" alt="Logo">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="https://adventuredogs.training/impressum/">Impressum</a>
+    <a href="https://adventuredogs.training/kontakt/">Kontakt</a>
+    <a href="Landing Page.html">Startseite</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum – Adventure Dogs | Julia Doubrawa</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+    background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 40px; height: 40px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--blue); white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--blue); color: var(--white) !important;
+    padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding: 130px 7% 60px;
+    background: var(--blue);
+    position: relative; overflow: hidden;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, oklch(45% 0.09 225 / 0.4) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-header-inner { position: relative; z-index: 1; }
+  .page-header-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px); font-weight: 900;
+    color: var(--white); line-height: 1.08;
+  }
+  .page-header h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+
+  /* ── CONTENT ── */
+  .impressum-content {
+    padding: 72px 7% 80px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .impressum-main { display: flex; flex-direction: column; gap: 40px; }
+
+  .imp-block {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 28px 32px; box-shadow: 0 2px 12px oklch(0% 0 0 / 0.05);
+  }
+  .imp-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; color: var(--blue);
+    margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.07);
+  }
+  .imp-block p {
+    font-size: 15px; line-height: 1.8; color: var(--text-lt);
+    margin-bottom: 10px;
+  }
+  .imp-block p:last-child { margin-bottom: 0; }
+  .imp-block p strong { color: var(--text); font-weight: 600; }
+  .imp-block a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+  .imp-block a:hover { opacity: 0.75; }
+
+  .notice-box {
+    background: oklch(88% 0.04 225 / 0.3); border-radius: 10px;
+    padding: 14px 18px; margin-top: 12px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .notice-box svg { width: 16px; height: 16px; stroke: var(--blue); fill: none; flex-shrink: 0; margin-top: 2px; }
+  .notice-box p { font-size: 13px; color: var(--blue); font-weight: 500; margin: 0; }
+
+  .placeholder-box {
+    background: oklch(93% 0.015 80); border-radius: 10px;
+    padding: 14px 18px; margin-top: 12px; border: 1.5px dashed oklch(0% 0 0 / 0.15);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .placeholder-box svg { width: 16px; height: 16px; stroke: var(--text-lt); fill: none; flex-shrink: 0; margin-top: 2px; }
+  .placeholder-box p { font-size: 13px; color: var(--text-lt); margin: 0; }
+
+  /* sidebar */
+  .impressum-sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 16px; }
+
+  .sidebar-card {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 24px 24px; box-shadow: 0 2px 12px oklch(0% 0 0 / 0.05);
+  }
+  .sidebar-card h3 { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
+  .sidebar-card p { font-size: 13px; line-height: 1.7; color: var(--text-lt); margin-bottom: 8px; }
+  .sidebar-card a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; }
+  .sidebar-card a:hover { opacity: 0.75; }
+
+  .contact-link {
+    display: flex; gap: 12px; align-items: center;
+    text-decoration: none; padding: 10px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06);
+    transition: opacity 0.2s;
+  }
+  .contact-link:last-child { border-bottom: none; padding-bottom: 0; }
+  .contact-link:hover { opacity: 0.75; }
+  .contact-link-icon {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .contact-link-icon svg { width: 15px; height: 15px; stroke: var(--white); fill: none; }
+  .contact-link-label { font-size: 11px; font-weight: 600; color: var(--text-lt); text-transform: uppercase; letter-spacing: 0.1em; }
+  .contact-link-value { font-size: 13px; font-weight: 600; color: var(--blue); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  .footer-brand img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .impressum-content { grid-template-columns: 1fr; }
+    .impressum-sidebar { position: static; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../">
+    <img src="../assets/logo.png" alt="Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../alltagstipps/">Alltagstipps</a></li>
+    <li><a href="../ueber-mich/">Über mich</a></li>
+    <li><a href="../kontakt/">Kontakt</a></li>
+    <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="page-header-eyebrow">Rechtliches</span>
+    <h1>Impressum</h1>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="impressum-content">
+
+  <main class="impressum-main">
+
+    <!-- Angaben -->
+    <div class="imp-block">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p><strong>Hundetraining Julia Doubrawa</strong></p>
+      <p>
+        Ligusterweg 5<br>
+        86381 Krumbach
+      </p>
+      <div class="notice-box">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Achtung – an dieser Adresse finden keine Hundetrainings statt!</p>
+      </div>
+    </div>
+
+    <!-- Kontakt -->
+    <div class="imp-block">
+      <h2>Kontakt</h2>
+      <p>Telefon: <a href="tel:+491632652070">+49 163 265 20 70</a></p>
+      <p>E-Mail: <a href="mailto:julia@adventuredogs.training">julia@adventuredogs.training</a></p>
+    </div>
+
+    <!-- Erlaubnis -->
+    <div class="imp-block">
+      <h2>Behördliche Zulassung</h2>
+      <p>Die für die Ausübung der angebotenen Leistungen erforderliche <strong>Erlaubnis nach §11 Abs. 1 Nr. 8f TierSchG liegt vor.</strong></p>
+    </div>
+
+    <!-- Aufsichtsbehörde -->
+    <div class="imp-block">
+      <h2>Aufsichtsbehörde</h2>
+      <p><strong><a href="https://www.landkreis-guenzburg.de/amt-und-verwaltung/veterinaerwesen-und-verbraucherschutz/" target="_blank">Veterinäramt Günzburg</a></strong></p>
+      <p>
+        An der Kapuzinermauer 1<br>
+        89312 Günzburg
+      </p>
+    </div>
+
+    <!-- Steuer -->
+    <div class="imp-block">
+      <h2>Steuerliche Angaben</h2>
+      <div class="placeholder-box">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Umsatzsteuer-ID oder Hinweis auf Kleinunternehmerregelung (§ 19 UStG) bitte noch ergänzen.</p>
+      </div>
+    </div>
+
+    <!-- Streitschlichtung -->
+    <div class="imp-block">
+      <h2>EU-Streitschlichtung</h2>
+      <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a></p>
+    </div>
+
+    <!-- Verbraucherschlichtung -->
+    <div class="imp-block">
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    </div>
+
+    <!-- Datenschutz-Hinweis -->
+    <div class="imp-block">
+      <h2>Datenschutzerklärung</h2>
+      <div class="placeholder-box">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Eine separate Datenschutzerklärung ist nach DSGVO Pflicht. Bitte Link oder Text hier ergänzen – oder eine eigene Datenschutzseite verlinken.</p>
+      </div>
+    </div>
+
+    <!-- Haftung Inhalte -->
+    <div class="imp-block">
+      <h2>Haftung für Inhalte</h2>
+      <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+      <p>Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+    </div>
+
+    <!-- Haftung Links -->
+    <div class="imp-block">
+      <h2>Haftung für Links</h2>
+      <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+      <p>Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+    </div>
+
+    <!-- Urheberrecht -->
+    <div class="imp-block">
+      <h2>Urheberrecht</h2>
+      <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+      <p>Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Solltest du trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis.</p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="impressum-sidebar">
+
+    <div class="sidebar-card">
+      <h3>Direkter Kontakt</h3>
+      <a class="contact-link" href="mailto:julia@adventuredogs.training">
+        <div class="contact-link-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-link-label">E-Mail</div>
+          <div class="contact-link-value">julia@adventuredogs.training</div>
+        </div>
+      </a>
+      <a class="contact-link" href="tel:+491632652070">
+        <div class="contact-link-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6.29 6.29l1.06-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-link-label">Telefon</div>
+          <div class="contact-link-value">+49 163 265 20 70</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Navigation</h3>
+      <p style="margin-bottom:12px;">Zurück zur Website:</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="../">← Startseite</a>
+        <a href="../angebot/">Trainingsangebote</a>
+        <a href="../ueber-mich/">Über Julia</a>
+        <a href="../kontakt/">Kontakt</a>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="../assets/logo.png" alt="Logo">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="../impressum/">Impressum</a>
+    <a href="../kontakt/">Kontakt</a>
+    <a href="../">Startseite</a>
+  </div>
+</footer>
+
+</body>
+</html>

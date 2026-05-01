@@ -111,7 +111,7 @@
   .hero-img {
     position: absolute;
     inset: 0;
-    background: url('assets/hero.jpg') center 20% / cover no-repeat;
+    background: url('assets/hero-landing.jpg') center 30% / cover no-repeat;
   }
   .hero-overlay {
     position: absolute;
@@ -135,7 +135,7 @@
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: oklch(100% 0 0 / 0.92);
     margin-bottom: 16px;
   }
   .hero h1 {
@@ -178,6 +178,7 @@
     border-radius: 40px;
     transition: transform 0.18s, box-shadow 0.18s;
     box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+    white-space: nowrap;
   }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
   .btn-ghost {
@@ -386,7 +387,7 @@
     font-family: 'Playfair Display', serif;
     font-size: 56px;
     font-weight: 900;
-    color: oklch(100% 0 0 / 0.08);
+    color: oklch(100% 0 0 / 0.38);
     line-height: 1;
     margin-bottom: -8px;
   }
@@ -415,7 +416,7 @@
     width: min(320px, 100%);
     aspect-ratio: 3/4;
     border-radius: var(--r-lg);
-    background: url('assets/julia-portrait.jpg') center top / cover no-repeat;
+    background: url('assets/julia-portrait.jpg') 55% 20% / cover no-repeat;
     flex-shrink: 0;
     box-shadow: var(--shadow);
   }
@@ -429,8 +430,6 @@
     margin-bottom: 14px;
   }
   .julia-quote-box {
-    border-left: 3px solid oklch(35% 0.08 145);
-    padding-left: 22px;
     margin-bottom: 32px;
   }
   .julia-quote-label {
@@ -458,35 +457,58 @@
   }
 
   /* ── TESTIMONIALS ── */
-  .testimonials { background: var(--cream2); }
+  .testimonials {
+    background: var(--blue);
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonials::before {
+    content: '\201E';
+    position: absolute;
+    top: -40px;
+    left: 5%;
+    font-family: 'Playfair Display', serif;
+    font-size: 320px;
+    color: oklch(100% 0 0 / 0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
   .testimonials-header { margin-bottom: 52px; }
+  .testimonials-header .section-title { color: var(--white); }
+  .testimonials-header .section-label { color: var(--accent); }
   .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
+    position: relative;
+    z-index: 1;
   }
   .testimonial-card {
-    background: var(--white);
+    background: oklch(100% 0 0 / 0.07);
+    border: 1px solid oklch(100% 0 0 / 0.12);
     border-radius: var(--r-lg);
     padding: 32px 30px 28px;
-    box-shadow: 0 2px 16px oklch(0% 0 0 / 0.05);
     display: flex;
     flex-direction: column;
     gap: 16px;
+    transition: background 0.2s;
   }
+  .testimonial-card:hover { background: oklch(100% 0 0 / 0.11); }
   .stars {
     display: flex;
-    gap: 3px;
+    gap: 5px;
+    align-items: center;
   }
   .stars svg {
-    width: 16px;
-    height: 16px;
-    fill: oklch(78% 0.13 72);
+    width: 22px;
+    height: 22px;
+    fill: oklch(85% 0.16 72);
+    filter: drop-shadow(0 2px 4px oklch(70% 0.18 72 / 0.5));
   }
   .testimonial-card blockquote {
     font-size: 15px;
-    line-height: 1.75;
-    color: var(--text);
+    line-height: 1.8;
+    color: oklch(100% 0 0 / 0.85);
     font-style: italic;
     flex: 1;
   }
@@ -495,8 +517,8 @@
   .testimonial-author {
     font-size: 13px;
     font-weight: 600;
-    color: var(--blue);
-    border-top: 1px solid var(--cream2);
+    color: var(--accent);
+    border-top: 1px solid oklch(100% 0 0 / 0.12);
     padding-top: 14px;
     margin-top: 4px;
   }
@@ -584,12 +606,12 @@
 <nav id="nav">
   <a class="nav-logo" href="#">
     <img src="assets/logo.png" alt="Adventure Dogs Logo">
-    <span class="nav-logo-text">Adventure<br>Dogs</span>
+    <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
-    <li><a href="kontakt/">Kontakt</a></li>
-    <li><a href="#julia">Über mich</a></li>
     <li><a href="alltagstipps/">Alltagstipps</a></li>
+    <li><a href="ueber-mich/">Über mich</a></li>
+    <li><a href="kontakt/">Kontakt</a></li>
     <li><a href="angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
 </nav>
@@ -697,7 +719,10 @@
 
     <a href="angebot/#veranstaltungen" class="service-card">
       <div class="service-card-img img-quality">
-        <span class="service-card-tag">Events</span>
+        <div class="service-card-tags">
+          <span class="service-card-tag">Events</span>
+          <span class="service-card-tag">Beschäftigung</span>
+        </div>
       </div>
       <div class="service-card-body">
         <h3>Quality Time &amp; besondere Events</h3>
@@ -713,6 +738,17 @@
       <div class="service-card-body">
         <h3>Individuelle Lösung für euer Problem</h3>
         <p>Leinenaggression, Alleinbleiben, Rückruf – maßgeschneidertes Training direkt bei euch zuhause oder im Alltag.</p>
+        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+      </div>
+    </a>
+
+    <a href="angebot/#erziehung" class="service-card">
+      <div class="service-card-img" style="background-color: var(--blue-lt);">
+        <span class="service-card-tag">Erziehung</span>
+      </div>
+      <div class="service-card-body">
+        <h3>Neustart mit Herz</h3>
+        <p>Für Hunde aus dem Tierschutz oder mit Vorgeschichte – behutsame Erziehung, die Vertrauen aufbaut und eurem Hund hilft, in seinem neuen Zuhause anzukommen.</p>
         <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
     </a>
@@ -779,11 +815,11 @@
 
     <div class="testimonial-card">
       <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
       </div>
       <blockquote>Julia war die Rettung in der Not! Nach dem Hausbesuch war ich erleichtert. Sie hat so eine Ruhe reingebracht. Die Kurse waren super! Julia versteht ihre Arbeit zu 100%!</blockquote>
       <div class="testimonial-author">Steffi K. · mit Bella</div>
@@ -791,11 +827,11 @@
 
     <div class="testimonial-card">
       <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
       </div>
       <blockquote>Jede Trainingsstunde ist nicht nur lehrreich, sondern auch kurzweilig und macht richtig Spaß – für uns und unsere Hündin! Julia geht individuell auf uns ein. Hier steckt echte Leidenschaft dahinter.</blockquote>
       <div class="testimonial-author">Sebastian &amp; Jenny H. · mit Missy</div>
@@ -803,11 +839,11 @@
 
     <div class="testimonial-card">
       <div class="stars">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 3c.3 0 .57.17.7.44l2.1 4.25 4.69.68c.3.04.55.25.64.54.1.29.02.61-.19.82l-3.4 3.31.8 4.68c.05.3-.07.6-.32.78a.8.8 0 0 1-.84.06L12 15.4l-4.18 2.2a.8.8 0 0 1-.84-.06.79.79 0 0 1-.32-.78l.8-4.68-3.4-3.31a.79.79 0 0 1-.19-.82c.09-.29.34-.5.64-.54l4.69-.68 2.1-4.25A.79.79 0 0 1 12 3z"/></svg>
       </div>
       <blockquote>Sie schafft es immer wieder, einem die Leichtigkeit zurückzugeben. Ihr Umgang mit Hunden ist einfach toll – ganz egal, ob jung, alt, unsicher oder wild. Training auf Augenhöhe – respektvoll, achtsam und mit viel Herz.</blockquote>
       <div class="testimonial-author">Anna R. · mit Loki</div>
