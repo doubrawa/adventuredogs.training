@@ -201,6 +201,22 @@
     text-align: center;
   }
 
+  /* Datenschutz-Checkbox */
+  .form-group-check { margin-bottom: 20px; }
+  .check-label {
+    display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+  }
+  .check-label input[type="checkbox"] {
+    width: 18px; height: 18px; min-width: 18px; margin-top: 2px;
+    accent-color: var(--accent); cursor: pointer; border-radius: 4px;
+  }
+  .check-label span {
+    font-size: 13px; line-height: 1.6; color: var(--text-lt);
+  }
+  .check-label span a {
+    color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+  }
+
   /* success state */
   .form-success {
     display: none; text-align: center; padding: 32px 0;
@@ -267,8 +283,47 @@
   @media (max-width: 860px) {
     .contact-section { grid-template-columns: 1fr; gap: 48px; }
     .form-row { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
     .form-card { padding: 28px 22px; }
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none; position: fixed; top: 70px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98); backdrop-filter: blur(16px);
+    padding: 20px 7% 28px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10); z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
   }
 </style>
 </head>
@@ -286,7 +341,18 @@
     <li><a href="../kontakt/" style="color: var(--accent)">Kontakt</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="../alltagstipps/">Alltagstipps</a>
+  <a href="../ueber-mich/">Über mich</a>
+  <a href="../kontakt/">Kontakt</a>
+  <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -365,7 +431,13 @@
       <h2 class="form-title">Ich freu mich auf deine Nachricht</h2>
       <p class="form-subtitle">Schreib mir, was dich beschäftigt – ich melde mich so schnell ich kann.</p>
 
-      <form id="contactForm" novalidate>
+      <form id="contactForm" action="https://formspree.io/f/DEINE_FORMSPREE_ID" method="POST" novalidate>
+
+        <!-- Honeypot – für Bots unsichtbar -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <!-- Weiterleitung nach Absenden (optional, kann leer bleiben) -->
+        <input type="hidden" name="_next" value="">
+
         <div class="form-row">
           <div class="form-group">
             <label for="name">Dein Name *</label>
@@ -380,13 +452,22 @@
           <label for="message">Deine Nachricht *</label>
           <textarea id="message" name="message" placeholder="Erzähl mir von dir und deinem Hund…" required></textarea>
         </div>
-        <button type="submit" class="btn-submit">
+
+        <!-- Datenschutz-Checkbox -->
+        <div class="form-group form-group-check">
+          <label class="check-label">
+            <input type="checkbox" id="privacy" name="privacy" required>
+            <span>Ich habe die <a href="../impressum/#datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. *</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
           Nachricht senden
           <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
-        <p class="form-privacy">Datenschutzhinweis: Deine Daten werden ausschließlich zur Bearbeitung deiner Anfrage verwendet und nicht weitergegeben.</p>
+        <p class="form-privacy">* Pflichtfelder. Deine Daten werden ausschließlich zur Bearbeitung deiner Anfrage verwendet und nicht an Dritte weitergegeben.</p>
       </form>
 
       <div class="form-success" id="formSuccess">
@@ -457,6 +538,7 @@
   </div>
   <div style="display:flex;gap:24px;flex-wrap:wrap">
     <a href="../impressum/">Impressum</a>
+    <a href="../impressum/#datenschutz">Datenschutz</a>
     <a href="../kontakt/">Kontakt</a>
     <a href="../">Startseite</a>
   </div>
@@ -479,18 +561,66 @@
     });
   });
 
-  // Form submit (demo – shows success state)
-  document.getElementById('contactForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const message = form.message.value.trim();
-    if (!name || !email || !message) return;
-    form.style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-  });
+  // Form submit via Formspree
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      const privacy = form.privacy.checked;
+
+      if (!name || !email || !message || !privacy) {
+        // Einfache Browser-Validierung greift automatisch durch required-Attribute
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Wird gesendet…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Nachricht senden <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+          alert('Es gab einen Fehler beim Senden. Bitte versuch es erneut oder schreib direkt an julia@adventuredogs.training.');
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Nachricht senden <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+        alert('Keine Verbindung. Bitte versuch es erneut.');
+      }
+    });
+  }
 </script>
 
+<script>
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+</script>
 </body>
 </html>

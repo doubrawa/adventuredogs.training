@@ -248,7 +248,56 @@
   @media (max-width: 860px) {
     .intro { grid-template-columns: 1fr; }
     .intro-photo { position: static; }
-    .nav-links { display: none; }
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer;
+    padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none;
+    position: fixed; top: 70px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98);
+    backdrop-filter: blur(16px);
+    padding: 20px 7% 28px;
+    flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10);
+    z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06);
+    transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px;
+    background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
   }
 </style>
 </head>
@@ -266,7 +315,18 @@
     <li><a href="../kontakt/">Kontakt</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="../alltagstipps/">Alltagstipps</a>
+  <a href="../ueber-mich/">Über mich</a>
+  <a href="../kontakt/">Kontakt</a>
+  <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -419,6 +479,7 @@
   </div>
   <div style="display:flex;gap:24px;flex-wrap:wrap">
     <a href="../impressum/">Impressum</a>
+    <a href="../impressum/#datenschutz">Datenschutz</a>
     <a href="../kontakt/">Kontakt</a>
     <a href="../">Startseite</a>
   </div>
@@ -431,5 +492,22 @@
   }, { passive: true });
 </script>
 
+<script>
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+</script>
 </body>
 </html>

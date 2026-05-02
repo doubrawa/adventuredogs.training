@@ -163,7 +163,45 @@
   @media (max-width: 860px) {
     .impressum-content { grid-template-columns: 1fr; }
     .impressum-sidebar { position: static; }
-    .nav-links { display: none; }
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--blue); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none; position: fixed; top: 70px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98); backdrop-filter: blur(16px);
+    padding: 20px 7% 28px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10); z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
   }
 </style>
 </head>
@@ -181,7 +219,18 @@
     <li><a href="Kontakt.html">Kontakt</a></li>
     <li><a href="Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="Alltagstipps.html">Alltagstipps</a>
+  <a href="Über mich.html">Über mich</a>
+  <a href="Kontakt.html">Kontakt</a>
+  <a href="Angebotsseite.html" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
@@ -236,10 +285,7 @@
     <!-- Steuer -->
     <div class="imp-block">
       <h2>Steuerliche Angaben</h2>
-      <div class="placeholder-box">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Umsatzsteuer-ID oder Hinweis auf Kleinunternehmerregelung (§ 19 UStG) bitte noch ergänzen.</p>
-      </div>
+      <p>Gemäß <strong>§ 19 UStG</strong> wird keine Umsatzsteuer berechnet und daher auch nicht ausgewiesen (Kleinunternehmerregelung).</p>
     </div>
 
     <!-- Streitschlichtung -->
@@ -254,13 +300,41 @@
       <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
     </div>
 
-    <!-- Datenschutz-Hinweis -->
-    <div class="imp-block">
+    <!-- Datenschutzerklärung -->
+    <div class="imp-block" id="datenschutz">
       <h2>Datenschutzerklärung</h2>
-      <div class="placeholder-box">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Eine separate Datenschutzerklärung ist nach DSGVO Pflicht. Bitte Link oder Text hier ergänzen – oder eine eigene Datenschutzseite verlinken.</p>
-      </div>
+
+      <p><strong>1. Verantwortliche Stelle</strong></p>
+      <p>Verantwortlich im Sinne der DSGVO ist die im Impressum genannte Person:<br>
+      Julia Doubrawa · Ligusterweg 5 · 86381 Krumbach<br>
+      E-Mail: <a href="mailto:julia@adventuredogs.training">julia@adventuredogs.training</a></p>
+
+      <p><strong>2. Grundsatz: Minimale Datenerhebung</strong></p>
+      <p>Diese Website erhebt und verarbeitet personenbezogene Daten nur, soweit dies technisch erforderlich ist oder du uns diese freiwillig mitteilst (z. B. über das Kontaktformular oder per E-Mail).</p>
+      <p>Es werden keine Cookies gesetzt, keine Tracking-Tools eingesetzt und keine Nutzungsprofile erstellt.</p>
+
+      <p><strong>3. Hosting</strong></p>
+      <p>Die Website wird über einen Webhoster bereitgestellt. Beim Abrufen der Seite überträgt dein Browser technisch bedingt Daten an den Server (z. B. IP-Adresse, Datum/Uhrzeit, aufgerufene Seite, Browser-Typ). Diese sogenannten Server-Logfiles werden vom Hoster ggf. kurzzeitig gespeichert, um den Betrieb sicherzustellen, und danach automatisch gelöscht. Wir selbst haben auf diese Logfiles keinen Zugriff und werten sie nicht aus. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb der Website).</p>
+
+      <p><strong>4. Google Fonts</strong></p>
+      <p>Diese Website lädt Schriftarten über Google Fonts (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Dabei wird beim ersten Aufruf eine Verbindung zu Google-Servern hergestellt, wobei deine IP-Adresse technisch übertragen wird. Wir nutzen Google Fonts zur einheitlichen Darstellung der Schrift. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Informationen zum Datenschutz bei Google findest du unter <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a>.</p>
+
+      <p><strong>5. Kontaktformular</strong></p>
+      <p>Wenn du uns über das Kontaktformular kontaktierst, werden die von dir eingegebenen Daten (z. B. Name, E-Mail-Adresse, Nachricht) zur Bearbeitung deiner Anfrage verarbeitet.</p>
+      <p>Die Daten werden per E-Mail an uns übermittelt und nicht an Dritte weitergegeben.</p>
+      <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Bearbeitung vorvertraglicher Maßnahmen bzw. Anfrage) oder Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bearbeitung von Anfragen).</p>
+      <p>Die Daten werden gelöscht, sobald deine Anfrage abschließend bearbeitet ist, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+
+      <p><strong>6. Kontakt per E-Mail, Telefon oder Kontaktformular</strong></p>
+      <p>Wenn du uns kontaktierst (z. B. per E-Mail, Telefon oder Kontaktformular), werden die übermittelten Daten ausschließlich zur Bearbeitung deiner Anfrage verwendet.</p>
+      <p>Eine Weitergabe an Dritte findet nicht statt.</p>
+      <p>Die Daten werden gelöscht, sobald dein Anliegen abschließend bearbeitet ist, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+      <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO bzw. Art. 6 Abs. 1 lit. f DSGVO.</p>
+
+      <p><strong>7. Deine Rechte</strong></p>
+      <p>Du hast gegenüber uns folgende Rechte hinsichtlich der dich betreffenden personenbezogenen Daten: Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerspruch (Art. 21 DSGVO). Du hast zudem das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Die zuständige Aufsichtsbehörde in Bayern ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), <a href="https://www.lda.bayern.de" target="_blank">www.lda.bayern.de</a>.</p>
+
+      <p style="font-size:13px;color:var(--text-lt);margin-top:8px;">Stand: Mai 2026</p>
     </div>
 
     <!-- Haftung Inhalte -->
@@ -339,10 +413,28 @@
   </div>
   <div style="display:flex;gap:24px;flex-wrap:wrap">
     <a href="Impressum.html">Impressum</a>
+    <a href="Impressum.html#datenschutz">Datenschutz</a>
     <a href="Kontakt.html">Kontakt</a>
     <a href="Landing Page.html">Startseite</a>
   </div>
 </footer>
 
+<script>
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+</script>
 </body>
 </html>

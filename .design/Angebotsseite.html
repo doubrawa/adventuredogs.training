@@ -248,13 +248,68 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 720px) {
-    .nav-links { display: none; }
+    
     .offer-card.highlight { flex-direction: column; }
     .offer-card.highlight .offer-img { width: 100%; height: 220px; }
     .offers-grid { grid-template-columns: 1fr; }
     .page-hero { padding: 110px 5% 60px; }
     main { padding: 36px 5% 60px; }
     .filter-nav { padding: 28px 5% 0; }
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer;
+    padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* mobile menu overlay */
+  .nav-mobile {
+    display: none;
+    position: fixed; top: 70px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98);
+    backdrop-filter: blur(16px);
+    padding: 20px 7% 28px;
+    flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10);
+    z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06);
+    transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px;
+    background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-mobile .nav-cta-mobile:hover { opacity: 0.85; }
+
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
   }
 </style>
 </head>
@@ -267,18 +322,28 @@
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
-    <li><a href="https://adventuredogs.training/alltagstipps/">Alltagstipps</a></li>
-    <li><a href="https://adventuredogs.training/julia/">Über mich</a></li>
-    <li><a href="https://adventuredogs.training/kontakt/">Kontakt</a></li>
+    <li><a href="Alltagstipps.html">Alltagstipps</a></li>
+    <li><a href="Über mich.html">Über mich</a></li>
+    <li><a href="Kontakt.html">Kontakt</a></li>
     <li><a href="#" class="nav-cta active">Trainings entdecken</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="Alltagstipps.html">Alltagstipps</a>
+  <a href="Über mich.html">Über mich</a>
+  <a href="Kontakt.html">Kontakt</a>
+  <a href="Angebotsseite.html" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
 
 <!-- PAGE HERO -->
 <div class="page-hero">
   <div class="page-hero-content">
     <p class="page-hero-eyebrow">Das Angebot</p>
-    <h1>Trainings für<br>jeden <em>Hund.</em></h1>
+    <h1>Trainings für<br><em>jeden</em> Hund.</h1>
     <p>Ob Welpe, Junghund oder erwachsener Vierbeiner – hier findest du das passende Training für euren gemeinsamen Alltag.</p>
   </div>
 </div>
@@ -521,7 +586,7 @@
   <div class="cta-banner">
     <h2>Nicht sicher, was zu euch passt?</h2>
     <p>Schreib mir einfach – gemeinsam finden wir das richtige Training für dich und deinen Hund.</p>
-    <a href="https://adventuredogs.training/kontakt/" class="btn-primary">
+    <a href="Kontakt.html" class="btn-primary">
       Meld dich einfach
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -536,8 +601,9 @@
     <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
   </div>
   <div style="display:flex;gap:24px;flex-wrap:wrap">
-    <a href="https://adventuredogs.training/impressum/">Impressum</a>
-    <a href="https://adventuredogs.training/kontakt/">Kontakt</a>
+    <a href="Impressum.html">Impressum</a>
+    <a href="Impressum.html#datenschutz">Datenschutz</a>
+    <a href="Kontakt.html">Kontakt</a>
     <a href="Landing Page.html">Startseite</a>
   </div>
 </footer>
@@ -570,6 +636,25 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
+</script>
+<script>
+  // Mobile nav
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    // close on link click
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
 </script>
 </body>
 </html>
