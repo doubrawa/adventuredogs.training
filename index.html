@@ -119,10 +119,10 @@
     inset: 0;
     background: linear-gradient(
       to bottom,
-      oklch(0% 0 0 / 0.15) 0%,
-      oklch(0% 0 0 / 0.05) 40%,
-      oklch(0% 0 0 / 0.55) 75%,
-      oklch(0% 0 0 / 0.75) 100%
+      oklch(0% 0 0 / 0.20) 0%,
+      oklch(0% 0 0 / 0.15) 35%,
+      oklch(0% 0 0 / 0.65) 75%,
+      oklch(0% 0 0 / 0.82) 100%
     );
   }
   .hero-content {
@@ -138,6 +138,7 @@
     text-transform: uppercase;
     color: oklch(100% 0 0 / 0.92);
     margin-bottom: 16px;
+    text-shadow: 0 1px 12px oklch(0% 0 0 / 0.5);
   }
   .hero h1 {
     font-family: 'Playfair Display', serif;
@@ -147,6 +148,7 @@
     line-height: 1.05;
     text-wrap: pretty;
     margin-bottom: 20px;
+    text-shadow: 0 2px 24px oklch(0% 0 0 / 0.45);
   }
   .hero h1 em {
     font-style: italic;
@@ -159,6 +161,7 @@
     line-height: 1.65;
     margin-bottom: 36px;
     font-weight: 300;
+    text-shadow: 0 1px 16px oklch(0% 0 0 / 0.5);
   }
   .hero-actions {
     display: flex;
@@ -553,8 +556,25 @@
     nav { padding: 0 5%; }
     .nav-links { display: none !important; }
     section { padding: 64px 5%; }
-    .julia-photo { width: 100%; aspect-ratio: 16/9; background-position: center 20%; }
-    .trust-bar { gap: 20px; padding: 24px 5%; }
+    .julia-photo { width: 100%; aspect-ratio: 4/5; background-position: center top; background-size: cover; }
+    .trust-bar {
+      gap: 14px;
+      padding: 24px 8%;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .trust-item { width: 100%; }
+    /* Auf Mobile: Overlay deutlich verstärken, weil Text über weiße Weste läuft */
+    .hero-overlay {
+      background: linear-gradient(
+        to bottom,
+        oklch(0% 0 0 / 0.40) 0%,
+        oklch(0% 0 0 / 0.45) 50%,
+        oklch(0% 0 0 / 0.85) 100%
+      );
+    }
+    .hero h1 { text-shadow: 0 2px 18px oklch(0% 0 0 / 0.7); }
+    .hero-eyebrow, .hero-sub { text-shadow: 0 1px 12px oklch(0% 0 0 / 0.7); }
   }
 
   /* ── HAMBURGER ── */
@@ -699,10 +719,6 @@
       <h2 class="section-title">Was passt zu euch?</h2>
       <p class="section-sub">Von Welpenkurs bis Einzeltraining – findet das Angebot, das euren Alltag wirklich leichter macht.</p>
     </div>
-    <a href="angebot/" class="btn-primary" style="white-space:nowrap">
-      Alle Kurse ansehen
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
   </div>
   <div class="services-grid">
 
