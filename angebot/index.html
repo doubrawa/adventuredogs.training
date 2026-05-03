@@ -97,19 +97,53 @@
     max-width: 540px; line-height: 1.65; font-weight: 300;
   }
 
-  /* ── FILTER NAV ── */
-  .filter-nav {
+  /* ── FILTER NAV (Karten mit Icons) ── */
+  .filter-section {
     padding: 32px 7% 0;
-    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .filter-question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 700; color: var(--blue);
+    margin-bottom: 6px; line-height: 1.2;
+  }
+  .filter-sub {
+    font-size: 14px; color: var(--text-lt); margin-bottom: 22px;
+  }
+  .filter-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
   }
   .filter-btn {
-    padding: 8px 18px; border-radius: 40px; border: 1.5px solid var(--blue-lt);
-    background: var(--white); color: var(--text); font-size: 13px; font-weight: 500;
-    cursor: pointer; font-family: 'DM Sans', sans-serif;
-    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    background: var(--cream); border: 2px solid transparent;
+    border-radius: 14px; padding: 20px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
   }
-  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .filter-btn.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+  .filter-btn:hover { border-color: oklch(88% 0.06 185); transform: translateY(-2px); }
+  .filter-btn.active {
+    background: var(--blue); border-color: var(--blue); color: var(--white);
+  }
+  .filter-btn.active .filter-icon { background: oklch(100% 0 0 / 0.15); }
+  .filter-btn.active .filter-icon svg { stroke: var(--white); }
+  .filter-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .filter-icon svg {
+    width: 22px; height: 22px; stroke: var(--accent); fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    transition: stroke 0.2s;
+  }
+  .filter-label {
+    font-size: 13px; font-weight: 600; line-height: 1.3;
+  }
 
   /* ── MAIN CONTENT ── */
   main { padding: 48px 7% 80px; }
@@ -142,21 +176,26 @@
   .offer-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px oklch(0% 0 0 / 0.13); }
 
   .offer-img {
-    height: 220px; position: relative; overflow: hidden;
-    background: var(--blue-lt) center / cover no-repeat;
+    width: 100%; position: relative; overflow: hidden;
+    background-color: var(--blue-lt);
+    line-height: 0;
+  }
+  .offer-img img {
+    width: 100%; height: auto; display: block;
   }
   .offer-img-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to bottom, transparent 50%, oklch(0% 0 0 / 0.3) 100%);
   }
   .offer-tags {
-    position: absolute; top: 14px; left: 14px;
+    position: absolute; top: 14px; left: 14px; right: 14px;
     display: flex; gap: 6px; flex-wrap: wrap;
   }
   .offer-tag {
     background: var(--blue); color: var(--white);
-    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 7px 14px; border-radius: 20px;
+    white-space: nowrap; line-height: 1;
   }
 
   .offer-body { padding: 26px 28px 30px; flex: 1; display: flex; flex-direction: column; }
@@ -166,7 +205,8 @@
   }
   .offer-body .offer-lead {
     font-size: 13px; font-weight: 600; color: var(--accent);
-    margin-bottom: 10px; font-style: italic;
+    margin-bottom: 6px; font-style: italic;
+    flex: 0 0 auto;
   }
   .offer-body p {
     font-size: 14px; line-height: 1.72; color: var(--text-lt); flex: 1;
@@ -208,6 +248,10 @@
   }
   .offer-card.highlight .offer-img {
     width: 380px; height: auto; flex-shrink: 0; border-radius: 0;
+    align-self: stretch;
+  }
+  .offer-card.highlight .offer-img img {
+    width: 100%; height: 100%; object-fit: cover;
   }
   .offer-card.highlight .offer-body h2 { font-size: 26px; }
   .offer-card.highlight .offer-body p { font-size: 15px; }
@@ -256,7 +300,7 @@
     .offers-grid { grid-template-columns: 1fr; }
     .page-hero { padding: 110px 5% 60px; }
     main { padding: 36px 5% 60px; }
-    .filter-nav { padding: 28px 5% 0; }
+    .filter-section { padding: 28px 5% 0; }
   }
 
   /* ── HAMBURGER ── */
@@ -351,30 +395,47 @@
 </div>
 
 <!-- FILTER -->
-<div class="filter-nav">
-  <button class="filter-btn active" onclick="filterCards('all', this)">Alle</button>
-  <button class="filter-btn" onclick="filterCards('kurs', this)">Kurse</button>
-  <button class="filter-btn" onclick="filterCards('gruppe', this)">Gruppen</button>
-  <button class="filter-btn" onclick="filterCards('event', this)">Events</button>
-  <button class="filter-btn" onclick="filterCards('einzel', this)">Einzeltraining</button>
+<div class="filter-section">
+  <h2 class="filter-question">Wobei brauchst du Unterstützung?</h2>
+  <p class="filter-sub">Wähl aus, was am besten zu dir und deinem Hund passt.</p>
+  <div class="filter-nav">
+    <button class="filter-btn active" onclick="filterCards('all', this)">
+      <span class="filter-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg></span>
+      <span class="filter-label">Überall</span>
+    </button>
+    <button class="filter-btn" onclick="filterCards('welpe', this)">
+      <span class="filter-icon"><svg viewBox="0 0 32 32" fill="currentColor" stroke="none"><path d="M9 6c-.6-.6-1-1.4-1-2.3 0-.4.4-.7.8-.5 1 .4 1.8 1.2 2.2 2.2.4-.1.8-.2 1.2-.2.4 0 .8.1 1.2.2.4-1 1.2-1.8 2.2-2.2.4-.2.8.1.8.5 0 .9-.4 1.7-1 2.3 1.5.6 2.6 2 2.8 3.7l.5 4.5c.1 1-.6 1.8-1.5 1.8h-1V22c0 1-.7 1.7-1.7 1.7H14V20c0-.4-.4-.8-.8-.8h-2.4c-.4 0-.8.4-.8.8v3.7H8c-1 0-1.7-.7-1.7-1.7v-6c-1.5-.4-2.7-1.7-2.7-3.3 0-1.9 1.5-3.4 3.4-3.4.7 0 1.4.2 1.9.6L9 6z"/><circle cx="11" cy="12" r="0.9" fill="#fff"/><circle cx="15" cy="12" r="0.9" fill="#fff"/></svg></span>
+      <span class="filter-label">Erziehung</span>
+    </button>
+    <button class="filter-btn" onclick="filterCards('alltag', this)">
+      <span class="filter-icon"><svg viewBox="0 0 24 24"><path d="M4 9h12v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9z"/><path d="M16 11h2a3 3 0 0 1 0 6h-2"/><path d="M7 5c0-1 1-1.5 1-2.5M11 5c0-1 1-1.5 1-2.5"/></svg></span>
+      <span class="filter-label">Alltagstraining</span>
+    </button>
+    <button class="filter-btn" onclick="filterCards('begegnung', this)">
+      <span class="filter-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 13c-2.5 0-5 1.8-5 4.2 0 1.5 1.2 2.8 2.7 2.8.9 0 1.5-.4 2.3-.4s1.4.4 2.3.4c1.5 0 2.7-1.3 2.7-2.8 0-2.4-2.5-4.2-5-4.2z"/><ellipse cx="7" cy="9" rx="2" ry="2.6"/><ellipse cx="17" cy="9" rx="2" ry="2.6"/><ellipse cx="9.5" cy="5" rx="1.7" ry="2.2"/><ellipse cx="14.5" cy="5" rx="1.7" ry="2.2"/></svg></span>
+      <span class="filter-label">Hundebegegnungen</span>
+    </button>
+    <button class="filter-btn" onclick="filterCards('problem', this)">
+      <span class="filter-icon"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+      <span class="filter-label">Problemverhalten</span>
+    </button>
+    <button class="filter-btn" onclick="filterCards('events', this)">
+      <span class="filter-icon"><svg viewBox="0 0 32 32" fill="currentColor" stroke="none"><path d="M9.5 4C7.6 4 6 5.6 6 7.5c0 .5.1 1 .3 1.4-1 .5-1.8 1.6-1.8 2.8 0 1.6 1.2 2.9 2.7 3.1.4.5 1.1.9 1.8.9.7 0 1.3-.3 1.7-.7l5.5-5.5c-.4-.4-.7-1-.7-1.7 0-.7.4-1.4.9-1.8C16.2 5.5 14.9 4.3 13.3 4.3c-1.2 0-2.3.8-2.8 1.8C10.1 5.9 10 5.2 10 5.2 9.7 4.5 9 4 9.5 4zm17 24c1.9 0 3.5-1.6 3.5-3.5 0-.5-.1-1-.3-1.4 1-.5 1.8-1.6 1.8-2.8 0-1.6-1.2-2.9-2.7-3.1-.4-.5-1.1-.9-1.8-.9-.7 0-1.3.3-1.7.7l-5.5 5.5c.4.4.7 1 .7 1.7 0 .7-.4 1.4-.9 1.8 1.5.5 2.8 1.7 4.4 1.7 1.2 0 2.3-.8 2.8-1.8 0 .4.1 1.1.1 1.1.3.7 1 1.2-.4 1zM13 14l5 5 1.5-1.5L14.5 12.5z"/></svg></span>
+      <span class="filter-label">Beschäftigung &amp; Events</span>
+    </button>
+  </div>
 </div>
 
 <!-- MAIN -->
 <main>
 
-  <!-- KURSE -->
-  <div class="category-header">
-    <span class="category-tag">Kurse</span>
-    <div class="category-line"></div>
-  </div>
   <div class="offers-grid">
 
-    <div class="offer-card" data-cat="kurs">
-      <div class="offer-img" style="background-image: url('../assets/offer-welpenkurs.jpg')">
+    <div class="offer-card" data-cat="welpe">
+      <div class="offer-img"><img src="../assets/offer-welpenkurs.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Welpenkurs</span>
-          <span class="offer-tag">Basiskurs</span>
         </div>
       </div>
       <div class="offer-body">
@@ -390,10 +451,10 @@
       </div>
     </div>
 
-    <div class="offer-card" data-cat="kurs">
-      <div class="offer-img" style="background-image: url('../assets/offer-basis.jpg')">
+    <div class="offer-card" data-cat="alltag">
+      <div class="offer-img"><img src="../assets/offer-basis.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
-        <div class="offer-tags"><span class="offer-tag">Erziehung</span></div>
+        <div class="offer-tags"><span class="offer-tag">Erziehung</span><span class="offer-tag">Junghundekurs</span></div>
       </div>
       <div class="offer-body">
         <p class="offer-lead">Erziehung darf sich leicht anfühlen.</p>
@@ -414,8 +475,8 @@
       </div>
     </div>
 
-    <div class="offer-card" data-cat="kurs">
-      <div class="offer-img" style="background-image: url('../assets/offer-trickdog.jpg')">
+    <div class="offer-card" data-cat="events">
+      <div class="offer-img"><img src="../assets/offer-trickdog.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Trickdog</span></div>
       </div>
@@ -432,8 +493,8 @@
       </div>
     </div>
 
-    <div class="offer-card" data-cat="kurs">
-      <div class="offer-img" style="background-image: url('../assets/offer-jagdkontrolle.jpg'); background-position: center 30%;">
+    <div class="offer-card" data-cat="problem alltag">
+      <div class="offer-img"><img src="../assets/offer-jagdkontrolle.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Jagdkontrolle</span></div>
       </div>
@@ -450,17 +511,8 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- GRUPPEN -->
-  <div class="category-header">
-    <span class="category-tag">Gruppen & Walks</span>
-    <div class="category-line"></div>
-  </div>
-  <div class="offers-grid">
-
-    <div class="offer-card" data-cat="gruppe">
-      <div class="offer-img" style="background-image: url('../assets/offer-social-walk.jpg')">
+    <div class="offer-card" data-cat="begegnung">
+      <div class="offer-img"><img src="../assets/offer-social-walk.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Social Walk</span></div>
       </div>
@@ -477,8 +529,8 @@
       </div>
     </div>
 
-    <div class="offer-card" data-cat="gruppe">
-      <div class="offer-img" style="background-image: url('../assets/service-sozialkontakt.jpg')">
+    <div class="offer-card" data-cat="begegnung problem">
+      <div class="offer-img"><img src="../assets/service-sozialkontakt.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Sozialkontakt</span></div>
       </div>
@@ -495,8 +547,8 @@
       </div>
     </div>
 
-    <div class="offer-card" data-cat="gruppe">
-      <div class="offer-img" style="background-image: url('../assets/offer-training-events.jpg')">
+    <div class="offer-card" data-cat="alltag begegnung">
+      <div class="offer-img"><img src="../assets/offer-training-events.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Training</span></div>
       </div>
@@ -518,17 +570,8 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- EVENTS -->
-  <div class="category-header">
-    <span class="category-tag">Events</span>
-    <div class="category-line"></div>
-  </div>
-  <div class="offers-grid">
-
-    <div class="offer-card" data-cat="event">
-      <div class="offer-img" style="background-image: url('../assets/offer-quality-time.jpg')">
+    <div class="offer-card" data-cat="events">
+      <div class="offer-img"><img src="../assets/offer-quality-time.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Quality Time</span>
@@ -553,17 +596,8 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- EINZELTRAINING -->
-  <div class="category-header">
-    <span class="category-tag">Einzeltraining</span>
-    <div class="category-line"></div>
-  </div>
-  <div class="offers-grid">
-
-    <div class="offer-card highlight" data-cat="einzel">
-      <div class="offer-img" style="background-image: url('../assets/service-einzeltraining.jpg')">
+    <div class="offer-card highlight" data-cat="alltag problem welpe begegnung events">
+      <div class="offer-img"><img src="../assets/service-einzeltraining.jpg" alt="" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Einzeltraining</span></div>
       </div>
@@ -599,7 +633,6 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
-    <img src="../assets/logo.png" alt="Logo">
     <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
   </div>
   <div style="display:flex;gap:24px;flex-wrap:wrap">
@@ -616,19 +649,12 @@
     btn.classList.add('active');
 
     document.querySelectorAll('.offer-card').forEach(card => {
-      if (cat === 'all' || card.dataset.cat === cat) {
+      const cats = (card.dataset.cat || '').split(/\s+/);
+      if (cat === 'all' || cats.includes(cat)) {
         card.style.display = '';
       } else {
         card.style.display = 'none';
       }
-    });
-
-    // Show/hide category headers based on visible cards
-    document.querySelectorAll('.category-header').forEach(header => {
-      const nextGrid = header.nextElementSibling;
-      if (!nextGrid) return;
-      const hasVisible = [...nextGrid.querySelectorAll('.offer-card')].some(c => c.style.display !== 'none');
-      header.style.display = hasVisible ? '' : 'none';
     });
   }
 </script>
