@@ -26,37 +26,43 @@ if grep -q '<li><a href="#julia">Über mich</a></li>' "$F"; then
     echo "  fixed: Landing nav Über mich (#julia → ueber-mich/)"
 fi
 
-# ─── Bug 2: Add deep-link IDs to Angebot offer-cards ───
-# Landing service cards link to angebot/#welpen, #sozialkontakt,
-# #veranstaltungen, #einzel, #erziehung. The design tool dropped the
-# old category headers (which carried these IDs) when the filter UX
-# was reorganised, so the anchors land on the page top instead of the
-# right card. Re-add IDs to the matching offer-cards via image-filename
-# matching (each card has a unique image src).
+# ─── Bug 2: Landing service-cards filter the Angebot page on click ───
+#
+# The design emits hrefs like "angebot/#welpen", "angebot/#sozialkontakt",
+# etc. on the 5 Landing service cards. Those anchors don't exist on the
+# Angebot page (they got removed when the filter UX was reorganised in
+# v5), so the click just lands at the top of the page.
+#
+# Better UX than restoring anchors: rewrite each href to ?cat=<filter>
+# so the Angebot page lands with the matching filter pre-applied. Pair
+# this with a small <script> on Angebot that reads ?cat= and clicks the
+# matching filter button.
+#
+# Mapping (Landing card  →  Angebot filter category):
+#   #welpen           Welpenkurs / "Der perfekte Start"      → erziehung
+#   #sozialkontakt    "Entspannte Hundebegegnungen"          → begegnung
+#   #veranstaltungen  Quality Time & Events                  → events
+#   #erziehung        Basiskurs / "Gemeinsam starten"        → erziehung
+#   #einzel           Einzeltraining / "Individuelle Lösung" → problem
+F="$DST/index.html"
+sed -i 's|href="angebot/#welpen"|href="angebot/?cat=erziehung"|g'        "$F"
+sed -i 's|href="angebot/#sozialkontakt"|href="angebot/?cat=begegnung"|g' "$F"
+sed -i 's|href="angebot/#veranstaltungen"|href="angebot/?cat=events"|g'  "$F"
+sed -i 's|href="angebot/#erziehung"|href="angebot/?cat=erziehung"|g'     "$F"
+sed -i 's|href="angebot/#einzel"|href="angebot/?cat=problem"|g'          "$F"
+
+# Counterpart: inject filter-from-URL script on Angebot. Sentinel: the
+# unique comment "// Auto-apply filter when arriving via ?cat=..." used
+# for idempotency.
 F="$DST/angebot/index.html"
-declare -A card_ids=(
-    [offer-welpenkurs.jpg]=welpen
-    [offer-basis.jpg]=erziehung
-    [service-sozialkontakt.jpg]=sozialkontakt
-    [offer-quality-time.jpg]=veranstaltungen
-    [service-einzeltraining.jpg]=einzel
-)
-for img in "${!card_ids[@]}"; do
-    id="${card_ids[$img]}"
-    # Skip if already patched
-    if grep -q "id=\"$id\"" "$F"; then
-        continue
-    fi
-    # The offer-card opening div is on the line ABOVE the offer-img/img-src line.
-    # Match that pair, insert id="..." into the offer-card div.
-    # Use perl for reliable multi-line substitution.
-    perl -i -0pe "s|<div class=\"offer-card([^\"]*)\" data-cat=\"([^\"]*)\">(\\s*<div class=\"offer-img\"><img src=\"\\.\\./assets/${img//./\\.}\")|<div class=\"offer-card\$1\" id=\"$id\" data-cat=\"\$2\">\$3|s" "$F"
-    if grep -q "id=\"$id\"" "$F"; then
-        echo "  fixed: Angebot offer-card id=$id (matched on $img)"
+if ! grep -q '// Auto-apply filter when arriving via ?cat=' "$F"; then
+    perl -i -0pe 's|<script>\s*//\s*Mobile nav|<script>\n  // Auto-apply filter when arriving via ?cat=... (deep-links from Landing service cards)\n  window.addEventListener('"'"'DOMContentLoaded'"'"', () => {\n    const cat = new URLSearchParams(window.location.search).get('"'"'cat'"'"');\n    if (!cat) return;\n    const btn = [...document.querySelectorAll('"'"'.filter-btn'"'"')].find(b =>\n      (b.getAttribute('"'"'onclick'"'"') || '"'"''"'"').includes("filterCards('"'"'" + cat + "'"'"',")\n    );\n    if (btn) {\n      btn.click();\n      btn.closest('"'"'.filter-section'"'"')?.scrollIntoView({ behavior: '"'"'smooth'"'"', block: '"'"'start'"'"' });\n    }\n  });\n</script>\n<script>\n  // Mobile nav|s' "$F"
+    if grep -q '// Auto-apply filter when arriving via ?cat=' "$F"; then
+        echo "  fixed: Angebot filter-from-URL script injected"
     else
-        echo "  WARN: could not patch id=$id (image $img not found?)"
+        echo "  WARN: could not inject filter-from-URL script (Mobile nav anchor not found?)"
     fi
-done
+fi
 
 # ─── Cleanup: dead .placeholder-box CSS in Impressum ───
 # That class was only used by the two boxes the design tool replaced

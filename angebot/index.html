@@ -702,6 +702,21 @@
   }, { passive: true });
 </script>
 <script>
+  // Auto-apply filter when arriving via ?cat=... (deep-links from Landing service cards)
+  window.addEventListener('DOMContentLoaded', () => {
+    const cat = new URLSearchParams(window.location.search).get('cat');
+    if (!cat) return;
+    const btn = [...document.querySelectorAll('.filter-btn')].find(b =>
+      (b.getAttribute('onclick') || '').includes("filterCards('" + cat + "',")
+    );
+    if (btn) {
+      btn.click();
+      // Scroll the filter section into view so the user sees what's filtered
+      btn.closest('.filter-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+</script>
+<script>
   // Mobile nav
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
