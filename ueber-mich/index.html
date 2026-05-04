@@ -51,7 +51,7 @@
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
   nav.scrolled .nav-links a { color: var(--text); }
-  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
   .nav-cta {
     background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -299,6 +299,14 @@
   @media (max-width: 860px) {
     .nav-hamburger { display: flex; }
     .nav-links { display: none !important; }
+    .hero { display: block; height: auto; min-height: 0; padding-top: 0; padding-bottom: 40px; overflow: visible; }
+    .hero-bg { position: relative; inset: auto; height: 60vw; max-height: 360px; background-position: center center; margin-bottom: 28px; }
+    .hero-overlay { display: none; }
+    .hero-content { position: static; }
+    .hero-eyebrow { color: var(--blue); }
+    .hero h1 { color: var(--blue); }
+    .hero h1 em { color: var(--accent); }
+    .hero-sub { color: var(--text); max-width: 100%; }
   }
 </style>
 </head>
@@ -311,9 +319,9 @@
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
-    <li><a href="../alltagstipps/">Alltagstipps</a></li>
-    <li><a href="#">Über mich</a></li>
+    <li><a href="#" style="font-weight: 700; color: var(--white)">Über mich</a></li>
     <li><a href="../kontakt/">Kontakt</a></li>
+    <li><a href="../alltagstipps/">Alltagstipps</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
@@ -323,9 +331,9 @@
 
 <!-- MOBILE NAV -->
 <div class="nav-mobile" id="navMobile">
-  <a href="../alltagstipps/">Alltagstipps</a>
   <a href="../ueber-mich/">Über mich</a>
   <a href="../kontakt/">Kontakt</a>
+  <a href="../alltagstipps/">Alltagstipps</a>
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 

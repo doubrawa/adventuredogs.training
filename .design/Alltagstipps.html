@@ -48,7 +48,7 @@
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
   nav.scrolled .nav-links a { color: var(--text); }
-  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
   .nav-cta {
     background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -137,7 +137,7 @@
     gap: 60px;
     align-items: start;
   }
-  .section-inner.single { grid-template-columns: 1fr; max-width: 760px; }
+  .section-inner.single { grid-template-columns: 1fr; max-width: 760px; margin-left: auto; margin-right: auto; }
 
   .section-text p {
     font-size: 16px; line-height: 1.8; color: var(--text-lt); margin-bottom: 16px;
@@ -336,9 +336,9 @@
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
-    <li><a href="Alltagstipps.html" style="color: var(--accent)">Alltagstipps</a></li>
     <li><a href="Über mich.html">Über mich</a></li>
     <li><a href="Kontakt.html">Kontakt</a></li>
+    <li><a href="Alltagstipps.html" style="font-weight: 700; color: var(--white)">Alltagstipps</a></li>
     <li><a href="Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
@@ -348,9 +348,9 @@
 
 <!-- MOBILE NAV -->
 <div class="nav-mobile" id="navMobile">
-  <a href="Alltagstipps.html">Alltagstipps</a>
   <a href="Über mich.html">Über mich</a>
   <a href="Kontakt.html">Kontakt</a>
+  <a href="Alltagstipps.html">Alltagstipps</a>
   <a href="Angebotsseite.html" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
@@ -380,7 +380,7 @@
 
 <!-- WELPE -->
 <section class="tips-section" id="welpen">
-  <div class="section-inner">
+  <div class="section-inner single">
     <div class="section-text">
       <span class="section-label">Neuer Lebensabschnitt</span>
       <h2 class="section-title">Welpe zieht ein – Tipps für die Eingewöhnung</h2>
@@ -410,18 +410,12 @@
         </a>
       </div>
     </div>
-    <div class="section-img">
-      <div class="section-img-placeholder">Foto Welpe / Einzug</div>
-    </div>
   </div>
 </section>
 
 <!-- SILVESTER -->
 <section class="tips-section" id="silvester">
-  <div class="section-inner">
-    <div class="section-img">
-      <div class="section-img-placeholder">Foto Hund Silvester / ruhig zuhause</div>
-    </div>
+  <div class="section-inner single">
     <div class="section-text">
       <span class="section-label">Jahreswechsel</span>
       <h2 class="section-title">Entspannt durch Silvester</h2>
@@ -447,7 +441,7 @@
 
 <!-- URLAUB -->
 <section class="tips-section" id="urlaub">
-  <div class="section-inner">
+  <div class="section-inner single">
     <div class="section-text">
       <span class="section-label">Gemeinsam unterwegs</span>
       <h2 class="section-title">Urlaub mit Hund – Abenteuer für euch beide</h2>
@@ -468,18 +462,12 @@
 
       <p>Ob Wandern in den Bergen, Strandtage oder einfach Kuscheln und ausruhen – die Mischung aus Erleben und Entspannen macht den Urlaub mit Hund zu etwas ganz Besonderem.</p>
     </div>
-    <div class="section-img">
-      <div class="section-img-placeholder">Foto Urlaub / Wandern mit Hund</div>
-    </div>
   </div>
 </section>
 
 <!-- WINTER -->
 <section class="tips-section" id="winter">
-  <div class="section-inner">
-    <div class="section-img">
-      <div class="section-img-placeholder">Foto Hund im Schnee / Winter</div>
-    </div>
+  <div class="section-inner single">
     <div class="section-text">
       <span class="section-label">Kalte Jahreszeit</span>
       <h2 class="section-title">Hund im Winter – Tipps für kalte Tage</h2>
@@ -555,7 +543,7 @@
 
 <!-- PHYSIO -->
 <section class="tips-section" id="physio">
-  <div class="section-inner">
+  <div class="section-inner single">
     <div class="section-text">
       <span class="section-label">Gesundheit & Wohlbefinden</span>
       <h2 class="section-title">Warum Tierphysiotherapie so wichtig ist</h2>
@@ -622,8 +610,8 @@
 <!-- ERNAEHRUNG -->
 <section class="tips-section" id="ernaehrung">
   <div class="section-inner">
-    <div class="section-img">
-      <img src="https://adventuredogs.training/wp-content/uploads/2025/10/Webbanner_1200x1200_hundeschule_02_1-1024x1024.jpg" alt="Platinum Hundefutter" style="object-fit: cover;">
+    <div class="section-img" style="aspect-ratio: 1 / 1;">
+      <img src="https://adventuredogs.training/wp-content/uploads/2025/10/Webbanner_1200x1200_hundeschule_02_1-1024x1024.jpg" alt="Platinum Hundefutter" style="object-fit: contain;">
     </div>
     <div class="section-text">
       <span class="section-label">Ernährung</span>
