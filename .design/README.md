@@ -27,3 +27,5 @@ Diese Datei spiegelt **nur** den Output von claude.ai/design wider. Direkte Edit
 1. In claude.ai/design Anpassungen machen.
 2. Bundle/Standalone-HTML herunterladen.
 3. Claude den Pfad zum neuen Export geben → er kümmert sich um den Rest.
+
+Beim Re-Import läuft am Ende automatisch `tools/resize-assets.ps1` (siehe Repo-Root), damit neue Bilder aus claude.ai/design nicht in voller DSLR-Auflösung im Repo landen. Heroes werden auf max. 2400 px Breite, andere Bilder auf 1600 px gekappt, JPEG-Qualität 82, Metadaten gestrippt. Idempotent — bereits passende Bilder bleiben unangetastet.
