@@ -28,4 +28,13 @@ Diese Datei spiegelt **nur** den Output von claude.ai/design wider. Direkte Edit
 2. Bundle/Standalone-HTML herunterladen.
 3. Claude den Pfad zum neuen Export geben → er kümmert sich um den Rest.
 
-Beim Re-Import läuft am Ende automatisch `tools/resize-assets.ps1` (siehe Repo-Root), damit neue Bilder aus claude.ai/design nicht in voller DSLR-Auflösung im Repo landen. Heroes werden auf max. 2400 px Breite, andere Bilder auf 1600 px gekappt, JPEG-Qualität 82, Metadaten gestrippt. Idempotent — bereits passende Bilder bleiben unangetastet.
+Am Ende eines Re-Imports laufen zwei Helper-Skripte automatisch (idempotent, also unbedenklich auch mehrmals):
+
+- **`tools/resize-assets.ps1`** — schrumpft neu importierte Bilder auf web-vernünftige Maße (Heroes max 2400 px, sonst 1600 px Breite, JPEG q82, EXIF gestrippt). Verhindert dass volle DSLR-Auflösung ins Repo gerät.
+- **`tools/post-import-fixes.sh`** — re-applied persistente Fixes, die **nicht** in claude.ai/design gemacht werden können bzw. dort nicht stabil sind:
+  - Landing-Nav „Über mich" auf `ueber-mich/` statt auf den `#julia`-Anker setzen
+  - Den 5 Angebot-Offer-Cards (Welpen / Erziehung / Sozialkontakt / Veranstaltungen / Einzeltraining) IDs zuweisen, damit die Service-Card-Anchor-Links von der Landing korrekt scrollen
+  - Tote `.placeholder-box`-CSS-Regel im Impressum entfernen
+  - SEO+OpenGraph+Twitter-Card-Block in den `<head>` jeder Seite injizieren (per-page description, canonical URL, og:image etc.)
+
+Wenn die Domain mal von `doubrawa.github.io` auf `adventuredogs.training` umgezogen wird: in `tools/post-import-fixes.sh` einmal die `SITE_BASE`-Variable updaten und das Skript laufen lassen — alle absoluten URLs (canonical, og:url, og:image) flippen in einem Rutsch. `robots.txt` und `sitemap.xml` müssen separat angepasst werden.
