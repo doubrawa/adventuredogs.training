@@ -549,9 +549,11 @@
   footer a:hover { color: var(--accent); }
 
   /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .nav-links { display: none !important; }
+  }
   @media (max-width: 720px) {
     nav { padding: 0 5%; }
-    .nav-links { display: none !important; }
     section { padding: 64px 5%; }
     .julia-photo { width: 100%; aspect-ratio: 4/5; background-position: center top; background-size: cover; }
     .trust-bar {
@@ -609,18 +611,19 @@
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
     text-align: center; border-bottom: none !important;
   }
-  @media (max-width: 860px) {
+  @media (max-width: 960px) {
     .nav-hamburger { display: flex; }
   }
 
   /* ── SERVICE CARD IMAGES (placeholder gradients) ── */
-  .img-welpe     { background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/hunde.jpg'); }
+  .img-welpe     { background-image: url('assets/offer-welpenkurs.jpg'); }
+  .img-basis     { background-image: url('assets/offer-basis.jpg'); }
   .img-einzel    { background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/einzel.jpg'); }
   .img-quality   { background-image: url('https://adventuredogs.training/wp-content/uploads/2025/05/quality.jpg'); }
   .img-sozial    { background-image: url('https://adventuredogs.training/wp-content/uploads/2025/08/sozialkontakt.jpg'); }
 </style>
 <meta name="ext-resource-dependency" content="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" data-resource-id="logoImg" />
-<meta name="ext-resource-dependency" content="https://adventuredogs.training/wp-content/uploads/2025/05/hunde.jpg" data-resource-id="hundeImg" />
+<meta name="ext-resource-dependency" content="assets/offer-welpenkurs.jpg" data-resource-id="hundeImg" />
 <meta name="ext-resource-dependency" content="https://adventuredogs.training/wp-content/uploads/2025/05/einzel.jpg" data-resource-id="einzelImg" />
 <meta name="ext-resource-dependency" content="https://adventuredogs.training/wp-content/uploads/2025/05/quality.jpg" data-resource-id="qualityImg" />
 <meta name="ext-resource-dependency" content="https://adventuredogs.training/wp-content/uploads/2025/08/sozialkontakt.jpg" data-resource-id="sozialImg" />
@@ -775,12 +778,12 @@
     </a>
 
     <a href="Angebotsseite.html#erziehung" class="service-card">
-      <div class="service-card-img" style="background-color: var(--blue-lt);">
+      <div class="service-card-img img-basis">
         <span class="service-card-tag">Basiskurs</span>
       </div>
       <div class="service-card-body">
         <h3>Neustart mit Herz</h3>
-        <p>Für Hunde aus dem Tierschutz oder mit Vorgeschichte – behutsame Erziehung, die Vertrauen aufbaut und eurem Hund hilft, in seinem neuen Zuhause anzukommen.</p>
+        <p>Gemeinsam alles lernen, was euren Alltag mit eurem erwachsenen Hund leichter macht – egal ob Neustart oder Tierschutzhund.</p>
         <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
     </a>
@@ -803,7 +806,7 @@
 <section class="method">
   <p class="section-label" style="color: var(--accent)">Mein Ansatz</p>
   <h2 class="section-title">So wird euer Alltag leichter</h2>
-  <p class="section-sub">Training, das wirklich wirkt – weil es dort stattfindet, wo das Leben passiert.</p>
+  <p class="section-sub">Training, das wirklich wirkt – weil es dort stattfindet, wo euer Leben passiert.</p>
   <div class="method-grid">
     <div class="method-step">
       <div class="method-num">01</div>
