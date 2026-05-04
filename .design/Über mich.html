@@ -104,10 +104,8 @@
   /* ── INTRO SECTION ── */
   .intro {
     padding: 80px 7%;
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 72px;
-    align-items: start;
+    max-width: 880px;
+    margin: 0 auto;
   }
   .intro-photo {
     position: sticky; top: 90px;
@@ -299,6 +297,13 @@
     .nav-links { display: none !important; }
     .hero { height: 60vh; min-height: 420px; max-height: 520px; align-items: flex-start; padding-top: 100px; padding-bottom: 40px; }
     .hero-bg { background-position: center center; }
+    .hero-overlay {
+      background: linear-gradient(to bottom,
+        oklch(0% 0 0 / 0.45) 0%,
+        oklch(0% 0 0 / 0.35) 50%,
+        oklch(0% 0 0 / 0.55) 100%
+      );
+    }
   }
 </style>
 </head>
@@ -346,9 +351,6 @@
 
 <!-- INTRO -->
 <section class="intro">
-  <div class="intro-photo">
-    <img src="assets/einstein-wasser.jpg" alt="Einstein am Wasser">
-  </div>
   <div class="intro-text">
     <span class="section-label">Über mich</span>
     <h2 class="section-title">Ich helfe dir, deinem Hund zu einem entspannten Alltagsbegleiter zu machen.</h2>
