@@ -51,16 +51,35 @@ sed -i 's|href="angebot/#veranstaltungen"|href="angebot/?cat=events"|g'  "$F"
 sed -i 's|href="angebot/#erziehung"|href="angebot/?cat=erziehung"|g'     "$F"
 sed -i 's|href="angebot/#einzel"|href="angebot/?cat=problem"|g'          "$F"
 
-# Counterpart: inject filter-from-URL script on Angebot. Sentinel: the
-# unique comment "// Auto-apply filter when arriving via ?cat=..." used
-# for idempotency.
+# Counterpart: inject filter-from-URL <script> on Angebot.
+# Snippet lives in tools/angebot-filter-from-url.html (versioned in the
+# repo so the JS itself is reviewable as JS, not as escaped string).
+# Sentinel: the unique comment "Auto-apply filter when arriving via ?cat="
+# used for idempotency.
 F="$DST/angebot/index.html"
-if ! grep -q '// Auto-apply filter when arriving via ?cat=' "$F"; then
-    perl -i -0pe 's|<script>\s*//\s*Mobile nav|<script>\n  // Auto-apply filter when arriving via ?cat=... (deep-links from Landing service cards)\n  window.addEventListener('"'"'DOMContentLoaded'"'"', () => {\n    const cat = new URLSearchParams(window.location.search).get('"'"'cat'"'"');\n    if (!cat) return;\n    const btn = [...document.querySelectorAll('"'"'.filter-btn'"'"')].find(b =>\n      (b.getAttribute('"'"'onclick'"'"') || '"'"''"'"').includes("filterCards('"'"'" + cat + "'"'"',")\n    );\n    if (btn) {\n      btn.click();\n      btn.closest('"'"'.filter-section'"'"')?.scrollIntoView({ behavior: '"'"'smooth'"'"', block: '"'"'start'"'"' });\n    }\n  });\n</script>\n<script>\n  // Mobile nav|s' "$F"
-    if grep -q '// Auto-apply filter when arriving via ?cat=' "$F"; then
-        echo "  fixed: Angebot filter-from-URL script injected"
+SNIPPET="$DST/tools/angebot-filter-from-url.html"
+if ! grep -q 'Auto-apply filter when arriving via ?cat=' "$F"; then
+    # Locate the existing "<script> / // Mobile nav" block and splice our
+    # snippet in just before it. Done in two cuts (head + snippet + tail)
+    # rather than wrestling with sed quoting for the JS body.
+    mobile_line=$(grep -n '^  // Mobile nav$' "$F" | head -1 | cut -d: -f1)
+    if [ -n "$mobile_line" ]; then
+        # find <script> on a line before mobile_line
+        script_line=$(awk -v ln="$mobile_line" 'NR<ln && /^<script>$/{last=NR} END{print last}' "$F")
+        if [ -n "$script_line" ]; then
+            # Insert snippet content before that <script> line.
+            # Strategy: split file at script_line - 1, splice in snippet.
+            tmp=$(mktemp)
+            head -n $((script_line - 1)) "$F" > "$tmp"
+            cat "$SNIPPET"                 >> "$tmp"
+            tail -n +$script_line "$F"     >> "$tmp"
+            mv "$tmp" "$F"
+            echo "  fixed: Angebot filter-from-URL script injected"
+        else
+            echo "  WARN: could not find <script> anchor before Mobile nav"
+        fi
     else
-        echo "  WARN: could not inject filter-from-URL script (Mobile nav anchor not found?)"
+        echo "  WARN: could not find Mobile nav anchor in Angebot"
     fi
 fi
 
