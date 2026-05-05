@@ -198,4 +198,50 @@ inject_seo "$DST/ueber-mich/index.html" "ueber-mich/" \
   "Julia Doubrawa, Hundetrainerin aus Krumbach – mein Trainingsansatz, mein Weg mit Einstein und meine Fortbildungen rund um faires Hundetraining." \
   "hero-ueber-mich.jpg"
 
+# ─── Alt-texts on Angebot offer-card images ───
+# The design emits empty alt="" on every offer-card <img>. For SEO and
+# accessibility we want descriptive alt-texts. Keyed by image filename.
+F="$DST/angebot/index.html"
+declare -A alt_texts=(
+    [offer-welpenkurs.jpg]="Welpe im Welpenkurs der Hundeschule Adventure Dogs Krumbach"
+    [offer-basis.jpg]="Hund im Basiskurs lernt entspanntes Laufen an der Leine"
+    [offer-jagdkontrolle.jpg]="Hund beim Jagdkontroll-Training im Wald"
+    [service-sozialkontakt.jpg]="Hunde-Sozialkontakt-Training in kleiner Gruppe"
+    [offer-social-walk.jpg]="Geführter Social Walk – Spaziergang mit mehreren Hunden"
+    [offer-training-events.jpg]="Trainingsveranstaltung im Alltag der Hundeschule Adventure Dogs"
+    [offer-quality-time.jpg]="Quality-Time-Event mit Hund"
+    [offer-trickdog.jpg]="Hund beim Trickdog-Training"
+    [service-einzeltraining.jpg]="Einzeltraining mit Julia Doubrawa und Hund"
+    [offer-intensivcoaching.jpg]="Intensivcoaching für Hunde mit Problemverhalten"
+)
+patched_alts=0
+for img in "${!alt_texts[@]}"; do
+    txt="${alt_texts[$img]}"
+    # Idempotency: only patch if the alt is currently empty for this img
+    if grep -q "src=\"\\.\\./assets/${img//./\\.}\" alt=\"\"" "$F"; then
+        sed -i "s|src=\"\\.\\./assets/${img//./\\.}\" alt=\"\"|src=\"../assets/${img}\" alt=\"${txt}\"|" "$F"
+        patched_alts=$((patched_alts+1))
+    fi
+done
+[ "$patched_alts" -gt 0 ] && echo "  alt-texts patched on Angebot ($patched_alts)"
+
+# ─── LocalBusiness JSON-LD on Landing ───
+# Helps Google understand this is a Hundeschule in Krumbach with phone,
+# address, service area. Supports Local-Search and Knowledge-Panel.
+# Snippet lives in tools/localbusiness-schema.json.html as reviewable JSON.
+F="$DST/index.html"
+SCHEMA="$DST/tools/localbusiness-schema.json.html"
+if ! grep -q '"@type": "LocalBusiness"' "$F"; then
+    # Insert just after the meta name="description" line on Landing.
+    desc_line=$(grep -n '<meta name="description"' "$F" | head -1 | cut -d: -f1)
+    if [ -n "$desc_line" ]; then
+        tmp=$(mktemp)
+        head -n "$desc_line" "$F"          > "$tmp"
+        cat "$SCHEMA"                      >> "$tmp"
+        tail -n +$((desc_line + 1)) "$F"   >> "$tmp"
+        mv "$tmp" "$F"
+        echo "  injected LocalBusiness JSON-LD on Landing"
+    fi
+fi
+
 echo "post-import fixes done."
