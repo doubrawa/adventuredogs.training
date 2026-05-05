@@ -274,6 +274,28 @@
   .offer-card.highlight .offer-body h2 { font-size: 26px; }
   .offer-card.highlight .offer-body p { font-size: 15px; }
 
+  /* placeholder for image not yet provided */
+  .offer-img-placeholder {
+    min-height: 360px;
+    background-color: var(--cream2);
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 14px,
+      oklch(0% 0 0 / 0.04) 14px 28px
+    );
+    display: flex; align-items: center; justify-content: center;
+  }
+  .offer-img-placeholder::after {
+    content: 'Bild folgt';
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px; letter-spacing: 0.12em;
+    color: var(--text-lt);
+    text-transform: uppercase;
+    background: var(--white);
+    padding: 6px 12px; border-radius: 4px;
+    box-shadow: 0 1px 4px oklch(0% 0 0 / 0.08);
+  }
+
   /* ── CTA BANNER ── */
   .cta-banner {
     background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
@@ -645,6 +667,29 @@
         <p style="margin-top: 12px;">Wir starten damit, dass wir uns ganz genau anschauen, wo die Ursache eures Problems liegt und wo ihr Unterstützung braucht, um als gutes Team entspannt durchs Leben zu gehen.</p>
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/einzeltraining" class="btn-book">
+            Jetzt anfragen
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-card highlight" data-cat="problem">
+      <div class="offer-img"><img src="../assets/offer-intensivcoaching.jpg" alt="" loading="lazy">
+        <div class="offer-img-overlay"></div>
+        <div class="offer-tags"><span class="offer-tag">Intensivcoaching</span></div>
+      </div>
+      <div class="offer-body">
+        <p class="offer-lead">Konzentriert. Klar. Wirkungsvoll.</p>
+        <h2>Intensivcoaching – wenn es gerade viel ist</h2>
+        <p>Manche Themen brauchen einfach mehr Raum – und vor allem schnell Unterstützung.</p>
+        <p style="margin-top: 12px;">Im Intensivcoaching arbeiten wir über einen kurzen, klar definierten Zeitraum sehr eng zusammen. Mehrere Einheiten finden gebündelt innerhalb von zwei bis drei Tagen oder an einem Wochenende statt.</p>
+        <p style="margin-top: 12px;">Dieses Format ist besonders geeignet für Hunde mit ausgeprägtem Problemverhalten oder für Situationen, in denen sich im Alltag gerade viel zuspitzt und zeitnah Lösungen gebraucht werden.</p>
+        <p style="margin-top: 12px;">Durch die intensive Begleitung entsteht schnell Klarheit: Du verstehst die Hintergründe des Verhaltens, bekommst konkrete Strategien an die Hand und wirst Schritt für Schritt sicherer im Umgang mit deinem Hund.</p>
+        <p style="margin-top: 12px;">Neben dem praktischen Training spielt auch das Verständnis für den Alltag zu Hause eine große Rolle. So kannst du das Gelernte direkt umsetzen – ohne viel Druck, aber mit einer klaren Richtung.</p>
+        <p style="margin-top: 12px;"><strong>Das Ziel:</strong> dich schnell handlungsfähig machen und deinem Hund einen verlässlichen Rahmen geben.</p>
+        <div class="offer-footer">
+          <a href="../kontakt/" class="btn-book">
             Jetzt anfragen
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
