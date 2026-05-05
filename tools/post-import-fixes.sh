@@ -83,6 +83,22 @@ if ! grep -q 'Auto-apply filter when arriving via ?cat=' "$F"; then
     fi
 fi
 
+# ─── Bug 3: Highlight offer-cards crop their image on mobile ───
+# The design's mobile media query forces the image container to a fixed
+# 220px height while the inner <img> inherits the desktop rule
+# `height: 100%; object-fit: cover` — so the image gets brutally
+# cropped on phones. Regular (non-highlight) offer-cards don't do this:
+# their .offer-img has no fixed height and the image flows at natural
+# aspect ratio. We want the highlight cards to behave the same on mobile.
+F="$DST/angebot/index.html"
+if grep -q '\.offer-card\.highlight \.offer-img { width: 100%; height: 220px; }' "$F"; then
+    # Replace the broken rule with two rules: height auto on container,
+    # height auto + object-fit contain on the inner img to override the
+    # cover crop from the desktop styles.
+    perl -i -pe 's|^(    )\.offer-card\.highlight \.offer-img \{ width: 100%; height: 220px; \}$|$1.offer-card.highlight .offer-img { width: 100%; height: auto; }\n$1.offer-card.highlight .offer-img img { height: auto; object-fit: contain; }|' "$F"
+    echo "  fixed: Angebot highlight-card mobile image (no more 220px crop)"
+fi
+
 # ─── Cleanup: dead .placeholder-box CSS in Impressum ───
 # That class was only used by the two boxes the design tool replaced
 # with real content. The CSS rules are still emitted but never applied.
