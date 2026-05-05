@@ -488,7 +488,7 @@
   <div class="offers-grid">
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/welpen.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/welpen.jpg" alt="Welpe im Welpenkurs der Hundeschule Adventure Dogs Krumbach" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Welpenkurs</span>
@@ -508,7 +508,7 @@
     </div>
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/basis.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/basis.jpg" alt="Hund im Basiskurs lernt entspanntes Laufen an der Leine" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Erziehung</span><span class="offer-tag">Junghundekurs</span></div>
       </div>
@@ -532,7 +532,7 @@
     </div>
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/04/jagd_quadratisch.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/04/jagd_quadratisch.jpg" alt="Hund beim Jagdkontroll-Training im Wald" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Jagdkontrolle</span></div>
       </div>
@@ -550,7 +550,7 @@
     </div>
 
     <div class="offer-card" data-cat="begegnung">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/08/sozialkontakt.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/08/sozialkontakt.jpg" alt="Hunde-Sozialkontakt-Training in kleiner Gruppe" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Sozialkontakt</span></div>
       </div>
@@ -568,7 +568,7 @@
     </div>
 
     <div class="offer-card" data-cat="begegnung">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/01/Sozialwalk.jpeg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/01/Sozialwalk.jpeg" alt="Geführter Social Walk – Spaziergang mit mehreren Hunden" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Social Walk</span></div>
       </div>
@@ -586,7 +586,7 @@
     </div>
 
     <div class="offer-card" data-cat="alltag">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/06/veranstaltungentraining.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/06/veranstaltungentraining.jpg" alt="Trainingsveranstaltung im Alltag der Hundeschule Adventure Dogs" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Training</span></div>
       </div>
@@ -609,7 +609,7 @@
     </div>
 
     <div class="offer-card" data-cat="events alltag">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/veranstaltungen.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/veranstaltungen.jpg" alt="Quality-Time-Event mit Hund" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Quality Time</span>
@@ -635,7 +635,7 @@
     </div>
 
     <div class="offer-card" data-cat="events">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/01/trickdog.jpeg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2026/01/trickdog.jpeg" alt="Hund beim Trickdog-Training" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Trickdog</span></div>
       </div>
@@ -653,7 +653,7 @@
     </div>
 
     <div class="offer-card highlight" data-cat="problem">
-      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/einzel.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="https://adventuredogs.training/wp-content/uploads/2025/05/einzel.jpg" alt="Einzeltraining mit Julia Doubrawa und Hund" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Einzeltraining</span></div>
       </div>
@@ -673,7 +673,7 @@
     </div>
 
     <div class="offer-card highlight" data-cat="problem">
-      <div class="offer-img"><img src="assets/intensivcoaching.jpg" alt="" loading="lazy">
+      <div class="offer-img"><img src="assets/intensivcoaching.jpg" alt="Intensivcoaching für Hunde mit Problemverhalten" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Intensivcoaching</span></div>
       </div>
@@ -761,6 +761,16 @@
       });
     });
   }
+</script>
+<script>
+  // Apply ?cat= URL param: click matching filter button on load
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    if (!cat) return;
+    const btn = document.querySelector('.filter-btn[onclick*="\'' + cat + '\'"]');
+    if (btn) btn.click();
+  })();
 </script>
 </body>
 </html>

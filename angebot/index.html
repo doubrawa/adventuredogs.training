@@ -755,20 +755,6 @@
   }, { passive: true });
 </script>
 <script>
-  // Auto-apply filter when arriving via ?cat=... (deep-links from Landing service cards)
-  window.addEventListener('DOMContentLoaded', () => {
-    const cat = new URLSearchParams(window.location.search).get('cat');
-    if (!cat) return;
-    const btn = [...document.querySelectorAll('.filter-btn')].find(b =>
-      (b.getAttribute('onclick') || '').includes("filterCards('" + cat + "',")
-    );
-    if (btn) {
-      btn.click();
-      btn.closest('.filter-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-</script>
-<script>
   // Mobile nav
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
@@ -786,6 +772,16 @@
       });
     });
   }
+</script>
+<script>
+  // Apply ?cat= URL param: click matching filter button on load
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    if (!cat) return;
+    const btn = document.querySelector('.filter-btn[onclick*="\'' + cat + '\'"]');
+    if (btn) btn.click();
+  })();
 </script>
 </body>
 </html>
