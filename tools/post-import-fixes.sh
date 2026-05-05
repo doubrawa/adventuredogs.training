@@ -99,6 +99,18 @@ if grep -q '\.offer-card\.highlight \.offer-img { width: 100%; height: 220px; }'
     echo "  fixed: Angebot highlight-card mobile image (no more 220px crop)"
 fi
 
+# ─── Bug 4: Über mich mobile hero anchors text at top ───
+# Design's mobile @media block on Über mich sets align-items: flex-start
+# with padding-top: 100px — that pins the headline to the top of the
+# hero. Every other page (and Über mich's own desktop hero) anchors
+# the text at the BOTTOM of the photo with align-items: flex-end and
+# only a padding-bottom. We want consistency across pages.
+F="$DST/ueber-mich/index.html"
+if grep -q '\.hero { height: 60vh; min-height: 420px; max-height: 520px; align-items: flex-start; padding-top: 100px; padding-bottom: 40px; }' "$F"; then
+    sed -i 's|\.hero { height: 60vh; min-height: 420px; max-height: 520px; align-items: flex-start; padding-top: 100px; padding-bottom: 40px; }|\.hero { height: 60vh; min-height: 420px; max-height: 520px; padding-bottom: 40px; }|' "$F"
+    echo "  fixed: Über mich mobile hero anchors text at bottom"
+fi
+
 # ─── Cleanup: dead .placeholder-box CSS in Impressum ───
 # That class was only used by the two boxes the design tool replaced
 # with real content. The CSS rules are still emitted but never applied.
