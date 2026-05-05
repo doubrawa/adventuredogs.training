@@ -16,6 +16,17 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
+# ─── Bug 0: Mein-Versprechen photo on Landing ───
+# Design tool emits assets/julia-portrait.jpg for the .julia-photo slot
+# (the original portrait we used early on). We replaced that asset with
+# julia-einstein-kuss.jpg locally; the design tool isn't aware of the swap.
+# So every fresh re-import would restore the broken reference.
+F="$DST/index.html"
+if grep -q "url('assets/julia-portrait\.jpg')" "$F"; then
+    sed -i "s|url('assets/julia-portrait\.jpg')|url('assets/julia-einstein-kuss.jpg')|g" "$F"
+    echo "  fixed: Landing Mein-Versprechen photo (julia-portrait.jpg → julia-einstein-kuss.jpg)"
+fi
+
 # ─── Bug 1: Landing nav 'Über mich' must point to subpage, not anchor ───
 # Design tool emits href="#julia" because the Mein-Versprechen section
 # on Landing has id="julia" (legacy from before there was a Über-mich
