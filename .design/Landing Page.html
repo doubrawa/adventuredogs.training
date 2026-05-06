@@ -220,21 +220,24 @@
   /* ── TRUST BAR ── */
   .trust-bar {
     background: var(--blue);
-    padding: 28px 7%;
-    display: flex;
-    justify-content: center;
-    gap: clamp(24px, 5vw, 80px);
-    flex-wrap: wrap;
+    padding: 22px 4%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: clamp(12px, 2vw, 32px);
   }
   .trust-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     color: var(--white);
+    min-width: 0;
+    max-width: 100%;
   }
   .trust-icon {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     background: oklch(100% 0 0 / 0.12);
     border-radius: 50%;
     display: flex;
@@ -242,16 +245,24 @@
     justify-content: center;
     flex-shrink: 0;
   }
-  .trust-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; }
+  .trust-icon svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; }
+  .trust-text { min-width: 0; }
   .trust-text strong {
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .trust-text span {
-    font-size: 12px;
+    display: block;
+    font-size: 11px;
     color: oklch(100% 0 0 / 0.6);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* ── SECTION BASICS ── */
@@ -556,10 +567,10 @@
     section { padding: 64px 5%; }
     .julia-photo { width: 100%; aspect-ratio: 4/5; background-position: center top; background-size: cover; }
     .trust-bar {
+      grid-template-columns: 1fr;
       gap: 14px;
       padding: 24px 8%;
-      flex-direction: column;
-      align-items: flex-start;
+      justify-items: start;
     }
     .trust-item { width: 100%; }
     /* Auf Mobile: Overlay deutlich verstärken, weil Text über weiße Weste läuft */
@@ -712,7 +723,7 @@
     </div>
     <div class="trust-text">
       <strong>Training zuhause & draußen</strong>
-      <span>Da wo der Alltag wirklich stattfindet</span>
+      <span>Krumbach · Ichenhausen · Thannhausen · Kirchheim</span>
     </div>
   </div>
   <div class="trust-item">
