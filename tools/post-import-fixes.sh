@@ -19,6 +19,29 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
+# ─── Self-host Google Fonts (GDPR / LG München 2022) ───
+# Embedding fonts via fonts.googleapis.com transmits the visitor's IP
+# to Google in the US — GDPR violation in the EU, ground for Abmahnung.
+# We ship the woff2s in assets/fonts/ and the @font-face declarations
+# in assets/fonts.css (run tools/download-fonts.sh to refresh both).
+# Here we rewrite each design-emitted <link> chain to point at it.
+swap_google_fonts() {
+    local f="$1"
+    local prefix="$2"   # "" for root, "../" for subpages
+    perl -i -0pe "s|<link rel=\"preconnect\" href=\"https://fonts\\.googleapis\\.com\">\\r?\\n<link rel=\"preconnect\" href=\"https://fonts\\.gstatic\\.com\" crossorigin>\\r?\\n<link href=\"https://fonts\\.googleapis\\.com/css2[^\"]+\" rel=\"stylesheet\">|<link rel=\"stylesheet\" href=\"${prefix}assets/fonts.css\">|s" "$f"
+}
+swap_google_fonts "$DST/index.html"               ""
+swap_google_fonts "$DST/kontakt/index.html"       "../"
+swap_google_fonts "$DST/angebot/index.html"       "../"
+swap_google_fonts "$DST/alltagstipps/index.html"  "../"
+swap_google_fonts "$DST/impressum/index.html"     "../"
+swap_google_fonts "$DST/ueber-mich/index.html"    "../"
+if grep -lE 'fonts\.googleapis\.com|fonts\.gstatic\.com' "$DST"/index.html "$DST"/*/index.html 2>/dev/null > /dev/null; then
+    echo "  WARN: some pages still reference Google Fonts CDN — pattern mismatch?"
+else
+    echo "  ok: all pages reference local assets/fonts.css"
+fi
+
 # ─── SEO + OpenGraph + Twitter Card per page ───
 # The design tool emits a bare head with just title/favicon/preconnect.
 # We inject:
