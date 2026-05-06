@@ -31,7 +31,7 @@ echo "post-import fixes against: $DST"
 # When the live site moves from doubrawa.github.io to adventuredogs.training,
 # update SITE_BASE here, run the script, and all canonical+og:url+og:image
 # absolute URLs flip in one go.
-SITE_BASE="https://doubrawa.github.io/adventuredogs.training"
+SITE_BASE="https://adventuredogs.training"
 
 inject_seo() {
     local f="$1"

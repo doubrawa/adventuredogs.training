@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://doubrawa.github.io/adventuredogs.training/sitemap.xml
+Sitemap: https://adventuredogs.training/sitemap.xml
