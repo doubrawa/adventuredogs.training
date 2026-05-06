@@ -49,7 +49,8 @@
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
   nav.scrolled .nav-links a { color: var(--text); }
-  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); font-weight: 700; }
+  nav.scrolled .nav-links a:hover, nav.scrolled .nav-links a.active { color: var(--text); font-weight: 700; }
   .nav-cta {
     background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -147,7 +148,10 @@
 
   /* ── STORY SECTION ── */
   .story {
-    background: var(--blue); padding: 80px 7%; position: relative; overflow: hidden;
+    background: var(--blue);
+    padding: 80px 7%;
+    padding-right: max(7%, 44%);
+    position: relative; overflow: hidden;
   }
   .story::before {
     content: '';
@@ -244,6 +248,7 @@
   @media (max-width: 860px) {
     .intro { grid-template-columns: 1fr; }
     .intro-photo { position: static; }
+    .story { padding-right: 7%; }
     .story::before { display: none; }
   }
 
@@ -316,7 +321,7 @@
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#" style="font-weight: 700; color: var(--white)">Über mich</a></li>
+    <li><a href="#" class="active">Über mich</a></li>
     <li><a href="Kontakt.html">Kontakt</a></li>
     <li><a href="Alltagstipps.html">Alltagstipps</a></li>
     <li><a href="Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>

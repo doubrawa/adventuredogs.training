@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alltagstipps – Adventure Dogs | Julia Doubrawa</title>
+<meta name="description" content="Praktische Alltagstipps rund um Welpe, Silvester, Urlaub, Winter, Alleinbleiben, Tierphysiotherapie und Ernährung – aus der Hundeschule Adventure Dogs.">
 <link rel="canonical" href="https://adventuredogs.training/alltagstipps/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Adventure Dogs">
@@ -12,7 +13,6 @@
 <meta property="og:url" content="https://adventuredogs.training/alltagstipps/">
 <meta property="og:image" content="https://adventuredogs.training/assets/hero-alltagstipps.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="Praktische Alltagstipps rund um Welpe, Silvester, Urlaub, Winter, Alleinbleiben, Tierphysiotherapie und Ernährung – aus der Hundeschule Adventure Dogs.">
 <link rel="icon" type="image/png" href="../assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,8 @@
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
   nav.scrolled .nav-links a { color: var(--text); }
-  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); font-weight: 700; }
+  nav.scrolled .nav-links a:hover, nav.scrolled .nav-links a.active { color: var(--text); font-weight: 700; }
   .nav-cta {
     background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -349,7 +350,7 @@
   <ul class="nav-links">
     <li><a href="../ueber-mich/">Über mich</a></li>
     <li><a href="../kontakt/">Kontakt</a></li>
-    <li><a href="../alltagstipps/" style="font-weight: 700; color: var(--white)">Alltagstipps</a></li>
+    <li><a href="../alltagstipps/" class="active">Alltagstipps</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
