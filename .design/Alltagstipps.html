@@ -91,27 +91,49 @@
     max-width: 520px; line-height: 1.65; font-weight: 300;
   }
 
-  /* ── TOPIC NAV ── */
-  .topic-nav {
-    background: var(--white);
+  /* ── TOPIC NAV (Dotted Inline) ── */
+  nav.topic-nav {
+    position: static;
+    height: auto;
+    background: var(--cream);
+    padding: 28px 7%;
     border-bottom: 1px solid oklch(0% 0 0 / 0.06);
-    position: sticky; top: 70px; z-index: 50;
-    padding: 0 7%;
-    overflow-x: auto;
+    display: block;
+  }
+  .topic-nav-eyebrow {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
   }
   .topic-nav-inner {
-    display: flex; gap: 0; white-space: nowrap;
+    display: flex; flex-wrap: wrap;
+    gap: 8px 20px; align-items: center;
+    font-size: 15px;
   }
   .topic-nav a {
-    display: inline-block;
-    padding: 16px 20px;
     text-decoration: none;
-    font-size: 13px; font-weight: 500;
-    color: var(--text-lt);
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
+    color: var(--blue);
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.2s;
   }
-  .topic-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .topic-nav a::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .topic-nav a:hover { color: var(--accent); }
+  .topic-nav a:hover::after { transform: scaleX(1); }
+  .topic-nav-sep {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--text-lt);
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
 
   /* ── SECTIONS ── */
   .tips-section {
@@ -323,7 +345,8 @@
     .nav-links { display: none !important; }
     .section-inner { grid-template-columns: 1fr; }
     .section-img { position: static; }
-    .topic-nav a { padding: 14px 14px; font-size: 12px; }
+    .topic-nav { padding: 22px 5%; }
+    .topic-nav-inner { font-size: 14px; gap: 6px 14px; }
   }
 </style>
 </head>
@@ -367,14 +390,21 @@
 
 <!-- TOPIC NAV -->
 <nav class="topic-nav">
+  <p class="topic-nav-eyebrow">Springe zu</p>
   <div class="topic-nav-inner">
-    <a href="#welpen">🐾 Welpe einziehen</a>
-    <a href="#silvester">🎆 Silvester</a>
-    <a href="#urlaub">✈️ Urlaub</a>
-    <a href="#winter">❄️ Winter</a>
-    <a href="#alleinbleiben">🏠 Alleine bleiben</a>
-    <a href="#physio">🌿 Physiotherapie</a>
-    <a href="#ernaehrung">🥩 Ernährung</a>
+    <a href="#welpen">Welpe einziehen</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#silvester">Silvester</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#urlaub">Urlaub</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#winter">Winter</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#alleinbleiben">Alleine bleiben</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#physio">Physiotherapie</a>
+    <span class="topic-nav-sep"></span>
+    <a href="#ernaehrung">Ernährung</a>
   </div>
 </nav>
 
