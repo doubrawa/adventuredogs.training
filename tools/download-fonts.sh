@@ -1,28 +1,22 @@
 #!/bin/bash
-# Download Google Fonts to local assets/fonts/ directory and generate
-# a self-hostable assets/fonts.css.
+# Download Google Fonts as woff2 files for self-hosting (GDPR-safe).
 #
-# Why: embedding Google Fonts via fonts.googleapis.com transmits the
-# visitor's IP to Google in the US, which is a GDPR violation in the
-# EU (LG München, Az. 3 O 17493/20, Jan 2022). Self-hosting eliminates
-# the third-party request → no IP transfer → no Abmahn-grounds.
+# Naming convention matches what claude.ai/design's emitted fonts.css
+# expects (cleaner than the original Google hash-based filenames):
+#   dm-sans-300.woff2  dm-sans-400.woff2  dm-sans-500.woff2  dm-sans-600.woff2
+#   playfair-600.woff2 playfair-700.woff2 playfair-900.woff2
+#   playfair-600-italic.woff2  playfair-700-italic.woff2
 #
-# What this fetches:
-#   Playfair Display 600 / 700 / 900 / 600italic / 700italic
-#   DM Sans          300 / 400 / 500 / 600
-#   Subsets: latin + latin-ext only (covers German + most Western
-#   European scripts; cyrillic + vietnamese dropped to save bytes)
+# Subset: only `latin` (covers German + most Western European). The
+# `latin-ext` subset would add Czech/Polish/Turkish glyphs we don't
+# need. The single-file-per-weight approach matches what the design
+# tool emits — no unicode-range splitting.
 #
-# Output:
-#   assets/fonts/*.woff2  — actual font files
-#   assets/fonts.css      — @font-face declarations referencing them
-#
-# Re-run safely if Google bumps font versions — overwrites cleanly.
+# Re-run anytime to refresh after Google version bumps.
 
 set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FONTS_DIR="$DST/assets/fonts"
-CSS_FILE="$DST/assets/fonts.css"
 mkdir -p "$FONTS_DIR"
 
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -31,37 +25,43 @@ URL='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0
 echo "Fetching Google Fonts CSS..."
 RAW=$(curl -sL --max-time 15 -A "$UA" "$URL")
 
-# Parse CSS: keep only the latin and latin-ext blocks (a "block" is
-# a /* subset */ comment + the @font-face that follows). Drop cyrillic
-# and vietnamese.
-echo "Filtering to latin / latin-ext subsets..."
-FILTERED=$(echo "$RAW" | awk '
-    BEGIN { keep=0; buf="" }
-    /^\/\* (latin|latin-ext) \*\// { keep=1; print; next }
-    /^\/\* / { keep=0; next }
+# Parse the CSS. Each @font-face block is preceded by a /* subset */
+# comment. We want only the "latin" blocks, then per-block extract the
+# font-family, font-weight, font-style, and woff2 URL.
+echo "Parsing latin-subset @font-face blocks..."
+
+# Split by /* ... */ comment markers, keep only blocks where comment == "latin"
+parsed=$(echo "$RAW" | awk '
+    BEGIN { keep = 0 }
+    /^\/\* latin \*\/$/   { keep = 1; next }
+    /^\/\* / { keep = 0; next }
     keep { print }
-')
+' )
 
-# Extract unique woff2 URLs from the filtered CSS
-URLS=$(echo "$FILTERED" | grep -oE 'https://fonts\.gstatic\.com/[^)]+\.woff2' | sort -u)
-COUNT=$(echo "$URLS" | wc -l)
-echo "Downloading $COUNT woff2 files..."
+# For each @font-face block, derive the canonical filename and download.
+echo "$parsed" | awk '
+    /font-family:/ { gsub(/[^A-Za-z]/, "", $0); fam = tolower(substr($0, length("fontfamily")+1)) }
+    /font-style:/  { sub(/.*: */, ""); sub(/;$/, ""); style = $0 }
+    /font-weight:/ { sub(/.*: */, ""); sub(/;$/, ""); weight = $0 }
+    /url\(/ {
+        match($0, /url\([^)]+\)/)
+        url = substr($0, RSTART+4, RLENGTH-5)
+        # canonical name
+        short = (fam == "playfairdisplay") ? "playfair" : "dm-sans"
+        suffix = (style == "italic") ? "-italic" : ""
+        printf "%s-%s%s.woff2\t%s\n", short, weight, suffix, url
+    }
+' > /tmp/fonts-mapping.txt
 
-# Download each woff2, naming by its basename
-for url in $URLS; do
-    name=$(basename "$url")
+cat /tmp/fonts-mapping.txt
+
+echo
+echo "Downloading..."
+while IFS=$'\t' read -r name url; do
+    [ -z "$name" ] && continue
     dst="$FONTS_DIR/$name"
-    if [ -f "$dst" ]; then
-        echo "  skip (exists): $name"
-    else
-        curl -sL --max-time 30 "$url" -o "$dst"
-        echo "  fetched: $name ($(stat -c%s "$dst") bytes)"
-    fi
-done
-
-# Rewrite URLs in the CSS to point at our local copies
-echo "Generating $CSS_FILE..."
-echo "$FILTERED" | sed 's|https://fonts\.gstatic\.com/[^)]*/\([^)]*\.woff2\)|fonts/\1|g' > "$CSS_FILE"
-wc -l "$CSS_FILE"
+    curl -sL --max-time 30 "$url" -o "$dst"
+    echo "  $name ($(stat -c%s "$dst") bytes)"
+done < /tmp/fonts-mapping.txt
 
 echo "done."

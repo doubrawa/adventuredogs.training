@@ -19,27 +19,25 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
-# ─── Self-host Google Fonts (GDPR / LG München 2022) ───
-# Embedding fonts via fonts.googleapis.com transmits the visitor's IP
-# to Google in the US — GDPR violation in the EU, ground for Abmahnung.
-# We ship the woff2s in assets/fonts/ and the @font-face declarations
-# in assets/fonts.css (run tools/download-fonts.sh to refresh both).
-# Here we rewrite each design-emitted <link> chain to point at it.
-swap_google_fonts() {
-    local f="$1"
-    local prefix="$2"   # "" for root, "../" for subpages
-    perl -i -0pe "s|<link rel=\"preconnect\" href=\"https://fonts\\.googleapis\\.com\">\\r?\\n<link rel=\"preconnect\" href=\"https://fonts\\.gstatic\\.com\" crossorigin>\\r?\\n<link href=\"https://fonts\\.googleapis\\.com/css2[^\"]+\" rel=\"stylesheet\">|<link rel=\"stylesheet\" href=\"${prefix}assets/fonts.css\">|s" "$f"
-}
-swap_google_fonts "$DST/index.html"               ""
-swap_google_fonts "$DST/kontakt/index.html"       "../"
-swap_google_fonts "$DST/angebot/index.html"       "../"
-swap_google_fonts "$DST/alltagstipps/index.html"  "../"
-swap_google_fonts "$DST/impressum/index.html"     "../"
-swap_google_fonts "$DST/ueber-mich/index.html"    "../"
+# ─── Subpage path fix for fonts.css ───
+# claude.ai/design now emits <link href="assets/fonts.css"> on every
+# page (good — uses our self-hosted fonts, no Google CDN call). But on
+# subpages the path needs to be "../assets/fonts.css" instead, because
+# the Pages structure is /kontakt/index.html etc. and "assets/..." would
+# resolve to /kontakt/assets/... which doesn't exist.
+# (The Landing index.html at root is fine — assets/fonts.css resolves
+#  relative to / and hits the real file.)
+for p in kontakt angebot alltagstipps impressum ueber-mich; do
+    F="$DST/$p/index.html"
+    if grep -q '<link href="assets/fonts.css" rel="stylesheet">' "$F"; then
+        sed -i 's|<link href="assets/fonts.css" rel="stylesheet">|<link href="../assets/fonts.css" rel="stylesheet">|' "$F"
+        echo "  fixed fonts.css path: $p"
+    fi
+done
+
+# Belt-and-braces: bail loud if any page still pulls fonts from Google CDN.
 if grep -lE 'fonts\.googleapis\.com|fonts\.gstatic\.com' "$DST"/index.html "$DST"/*/index.html 2>/dev/null > /dev/null; then
-    echo "  WARN: some pages still reference Google Fonts CDN — pattern mismatch?"
-else
-    echo "  ok: all pages reference local assets/fonts.css"
+    echo "  WARN: some pages still reference Google Fonts CDN — design tool regressed?"
 fi
 
 # ─── SEO + OpenGraph + Twitter Card per page ───
