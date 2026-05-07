@@ -19,6 +19,26 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
+# ─── Favicon links (browser tab icon) ───
+# claude.ai/design doesn't emit favicon links. We inject them so the
+# logo shows up in browser tabs / bookmarks. Path is "assets/logo.png"
+# on Landing, "../assets/logo.png" on subpages.
+inject_favicon() {
+    local f="$1"
+    local prefix="$2"   # "" for root, "../" for subpages
+    if grep -q 'rel="icon"' "$f"; then return; fi   # already has one
+    local link="<link rel=\"icon\" type=\"image/png\" href=\"${prefix}assets/logo.png\">"
+    local D=$(printf '\035')
+    sed -i "s${D}</title>${D}</title>\n${link}${D}" "$f"
+    echo "  injected favicon: $f"
+}
+inject_favicon "$DST/index.html"               ""
+inject_favicon "$DST/kontakt/index.html"       "../"
+inject_favicon "$DST/angebot/index.html"       "../"
+inject_favicon "$DST/alltagstipps/index.html"  "../"
+inject_favicon "$DST/impressum/index.html"     "../"
+inject_favicon "$DST/ueber-mich/index.html"    "../"
+
 # ─── Subpage path fix for fonts.css ───
 # claude.ai/design now emits <link href="assets/fonts.css"> on every
 # page (good — uses our self-hosted fonts, no Google CDN call). But on
