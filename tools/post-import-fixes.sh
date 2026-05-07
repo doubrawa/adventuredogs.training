@@ -19,18 +19,20 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
-# ─── Favicon links (browser tab icon) ───
-# claude.ai/design doesn't emit favicon links. We inject them so the
-# logo shows up in browser tabs / bookmarks. Path is "assets/logo.png"
-# on Landing, "../assets/logo.png" on subpages.
+# ─── Favicon links (browser tab icon + iOS home-screen icon) ───
+# claude.ai/design doesn't emit favicon links. We inject three variants:
+#   - SVG icon for modern browsers (sharp at every size, vector)
+#   - PNG icon as fallback for older browsers
+#   - apple-touch-icon for iOS home-screen / Safari pinned tabs
+# Path is "assets/" on Landing, "../assets/" on subpages.
 inject_favicon() {
     local f="$1"
     local prefix="$2"   # "" for root, "../" for subpages
     if grep -q 'rel="icon"' "$f"; then return; fi   # already has one
-    local link="<link rel=\"icon\" type=\"image/png\" href=\"${prefix}assets/logo.png\">"
+    local block="<link rel=\"icon\" type=\"image/svg+xml\" href=\"${prefix}assets/logo.svg\">\n<link rel=\"icon\" type=\"image/png\" href=\"${prefix}assets/logo.png\">\n<link rel=\"apple-touch-icon\" href=\"${prefix}assets/logo.png\">"
     local D=$(printf '\035')
-    sed -i "s${D}</title>${D}</title>\n${link}${D}" "$f"
-    echo "  injected favicon: $f"
+    sed -i "s${D}</title>${D}</title>\n${block}${D}" "$f"
+    echo "  injected favicons: $f"
 }
 inject_favicon "$DST/index.html"               ""
 inject_favicon "$DST/kontakt/index.html"       "../"
