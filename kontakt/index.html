@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kontakt – Adventure Dogs | Julia Doubrawa</title>
-<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
-<link rel="icon" type="image/png" href="../assets/logo.png">
-<link rel="apple-touch-icon" href="../assets/logo.png">
 <meta name="description" content="Kontakt zur Hundeschule Adventure Dogs in Krumbach – Telefon, E-Mail, WhatsApp, Kontaktformular und FAQ. Schreib Julia Doubrawa direkt.">
 <link rel="canonical" href="https://adventuredogs.training/kontakt/">
 <meta property="og:type" content="website">
@@ -16,6 +13,9 @@
 <meta property="og:url" content="https://adventuredogs.training/kontakt/">
 <meta property="og:image" content="https://adventuredogs.training/assets/hero-kontakt.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="apple-touch-icon" href="../assets/logo.png">
 <link href="../assets/fonts.css" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -240,6 +240,66 @@
   .form-success-icon svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; }
   .form-success h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--blue); margin-bottom: 8px; }
   .form-success p { font-size: 15px; color: var(--text-lt); line-height: 1.6; }
+
+  /* ── ANFAHRT ── */
+  .anfahrt-section {
+    padding: 80px 7% 100px;
+    background: var(--cream2);
+    border-top: 1px solid oklch(0% 0 0 / 0.05);
+  }
+  .anfahrt-head { max-width: 760px; margin-bottom: 36px; }
+  .anfahrt-head .section-label { color: var(--accent); }
+  .anfahrt-head .section-title { color: var(--blue); margin-bottom: 12px; }
+  .anfahrt-head p {
+    font-size: 16px; line-height: 1.75; color: var(--text-lt);
+    max-width: 620px; font-weight: 300;
+  }
+  .anfahrt-block {
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px;
+    align-items: start;
+  }
+  .anfahrt-map {
+    background: var(--white); border-radius: var(--r-lg);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .anfahrt-map svg,
+  .anfahrt-map img { display: block; width: 100%; height: auto; }
+  .anfahrt-info {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 32px 28px; box-shadow: 0 2px 12px oklch(0% 0 0 / 0.06);
+  }
+  .anfahrt-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--blue); margin-bottom: 6px;
+  }
+  .anfahrt-info .place {
+    font-size: 14px; color: var(--text-lt); margin-bottom: 24px; line-height: 1.6;
+  }
+  .step-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+  .step-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 14px; line-height: 1.55;
+  }
+  .step-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: -1px;
+  }
+  .step-text strong { display: block; color: var(--blue); margin-bottom: 2px; font-weight: 600; }
+  .step-text span { color: var(--text-lt); }
+  .btn-map {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 40px;
+    text-decoration: none; font-size: 13px; font-weight: 600;
+    background: var(--blue); color: var(--white);
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-map:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-map svg { width: 14px; height: 14px; stroke: var(--white); fill: none; }
+  @media (max-width: 920px) {
+    .anfahrt-block { grid-template-columns: 1fr; }
+  }
 
   /* ── FAQ ── */
   .faq-section {
@@ -496,6 +556,46 @@
     </div>
   </div>
 
+</section>
+
+<!-- ANFAHRT -->
+<section class="anfahrt-section">
+  <div class="anfahrt-head">
+    <span class="section-label">Anfahrt &amp; Parken</span>
+    <h2 class="section-title">Wo wir trainieren</h2>
+    <p>Unser Hundeplatz liegt in Krumbach direkt am <strong>Kreislehrgarten</strong>, unterhalb der Kreiskliniken. Parken kannst du bequem am <strong>Parkplatz des Kreislehrgartens</strong> (Mindelheimer Straße) — von dort sind es nur etwa 2 Minuten zu Fuß durch den Garten zum Platz.</p>
+  </div>
+
+  <div class="anfahrt-block">
+    <div class="anfahrt-map">
+      <img src="assets/anfahrt.png" alt="Anfahrtsskizze zum Adventure Dogs Hundeplatz Krumbach – Parkplatz am Kreislehrgarten, Fußweg zum Trainingsplatz" loading="lazy">
+    </div>
+
+    <div class="anfahrt-info">
+      <h3>So findest du uns</h3>
+      <p class="place">Hundeplatz Adventure Dogs<br>Am Kreislehrgarten, 86381 Krumbach</p>
+
+      <ol class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          <span class="step-text"><strong>Parken am Kreislehrgarten</strong><span>Parkplatz an der Mindelheimer Straße, direkt am Kreislehrgarten Krumbach.</span></span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span class="step-text"><strong>Zu Fuß übers Krankenhaus</strong><span>Ca. 2 Minuten Fußweg ostwärts durch die Krankenhausanlage.</span></span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span class="step-text"><strong>Hundeplatz</strong><span>Eingezäunter Trainingsplatz unterhalb der Kreiskliniken.</span></span>
+        </li>
+      </ol>
+
+      <a class="btn-map" href="https://maps.app.goo.gl/KYsDzHMtnkKnz9ZF7" target="_blank" rel="noopener">
+        Parkplatz in Google Maps
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- FAQ -->

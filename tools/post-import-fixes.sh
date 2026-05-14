@@ -19,6 +19,19 @@ set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "post-import fixes against: $DST"
 
+# ─── Asset-name mapping: welpe-blau.png → offer-welpenkurs.jpg ───
+# claude.ai/design started emitting "assets/welpe-blau.png" for the
+# Welpenkurs card on Landing + Angebot (their internal upload of the
+# blue-wood-wall puppy photo). We already have that same photo as
+# the optimised assets/offer-welpenkurs.jpg (180 KB JPG vs 2.4 MB PNG).
+# Rewrite the design's reference to our existing asset.
+for f in "$DST/index.html" "$DST/angebot/index.html"; do
+    if grep -q 'welpe-blau\.png' "$f"; then
+        sed -i 's|welpe-blau\.png|offer-welpenkurs.jpg|g' "$f"
+        echo "  rewrote welpe-blau.png → offer-welpenkurs.jpg: $(basename "$(dirname "$f")")/index.html"
+    fi
+done
+
 # ─── Favicon links (browser tab icon + iOS home-screen icon) ───
 # claude.ai/design doesn't emit favicon links. We inject three variants:
 #   - SVG icon for modern browsers (sharp at every size, vector)
