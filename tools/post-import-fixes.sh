@@ -54,19 +54,24 @@ inject_favicon "$DST/alltagstipps/index.html"  "../"
 inject_favicon "$DST/impressum/index.html"     "../"
 inject_favicon "$DST/ueber-mich/index.html"    "../"
 
-# ─── Subpage path fix for fonts.css ───
-# claude.ai/design now emits <link href="assets/fonts.css"> on every
-# page (good — uses our self-hosted fonts, no Google CDN call). But on
-# subpages the path needs to be "../assets/fonts.css" instead, because
-# the Pages structure is /kontakt/index.html etc. and "assets/..." would
-# resolve to /kontakt/assets/... which doesn't exist.
-# (The Landing index.html at root is fine — assets/fonts.css resolves
-#  relative to / and hits the real file.)
+# ─── Subpage path fix: any "assets/..." → "../assets/..." ───
+# Subpages live at /<slug>/index.html, so a bare "assets/foo" resolves
+# to /<slug>/assets/foo which 404s. They need "../assets/foo" instead.
+# claude.ai/design occasionally emits the bare form (fonts.css link,
+# new image refs in fresh sections, etc.). Generic fix: rewrite every
+# src="assets/..." / href="assets/..." / url('assets/...') / url("assets/...")
+# on the 5 subpages.
+# Landing index.html at root is NOT touched — its assets/ refs are correct.
+PATTERN='(src|href)="assets/|url\(['"'"'"]?assets/|url\(assets/'
 for p in kontakt angebot alltagstipps impressum ueber-mich; do
     F="$DST/$p/index.html"
-    if grep -q '<link href="assets/fonts.css" rel="stylesheet">' "$F"; then
-        sed -i 's|<link href="assets/fonts.css" rel="stylesheet">|<link href="../assets/fonts.css" rel="stylesheet">|' "$F"
-        echo "  fixed fonts.css path: $p"
+    if grep -qE "$PATTERN" "$F" 2>/dev/null; then
+        sed -i 's|src="assets/|src="../assets/|g'   "$F"
+        sed -i 's|href="assets/|href="../assets/|g' "$F"
+        sed -i "s|url('assets/|url('../assets/|g"   "$F"
+        sed -i 's|url("assets/|url("../assets/|g'   "$F"
+        sed -i 's|url(assets/|url(../assets/|g'     "$F"
+        echo "  fixed subpage asset paths: $p"
     fi
 done
 
