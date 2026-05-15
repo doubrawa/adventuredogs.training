@@ -35,7 +35,10 @@ $qualityParam  = New-Object System.Drawing.Imaging.EncoderParameter(
 $encoderParams.Param[0] = $qualityParam
 
 function Get-MaxWidth($name) {
-    if ($name -match '^(hero-|kontakt-hero)') { return $HeroMaxWidth }
+    # Heroes are full-bleed photos at the top of pages — they want
+    # ~2400px to look crisp on retina monitors. Everything else
+    # (portraits, offer cards, etc.) gets the 1600px default.
+    if ($name -match '^(hero-|kontakt-hero|strand)') { return $HeroMaxWidth }
     return $DefaultMaxWidth
 }
 

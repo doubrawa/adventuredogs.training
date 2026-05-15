@@ -53,6 +53,7 @@ inject_favicon "$DST/angebot/index.html"       "../"
 inject_favicon "$DST/alltagstipps/index.html"  "../"
 inject_favicon "$DST/impressum/index.html"     "../"
 inject_favicon "$DST/ueber-mich/index.html"    "../"
+[ -f "$DST/gebucht/index.html" ] && inject_favicon "$DST/gebucht/index.html" "../"
 
 # ─── Subpage path fix: any "assets/..." → "../assets/..." ───
 # Subpages live at /<slug>/index.html, so a bare "assets/foo" resolves
@@ -63,7 +64,8 @@ inject_favicon "$DST/ueber-mich/index.html"    "../"
 # on the 5 subpages.
 # Landing index.html at root is NOT touched — its assets/ refs are correct.
 PATTERN='(src|href)="assets/|url\(['"'"'"]?assets/|url\(assets/'
-for p in kontakt angebot alltagstipps impressum ueber-mich; do
+for p in kontakt angebot alltagstipps impressum ueber-mich gebucht; do
+    [ -f "$DST/$p/index.html" ] || continue
     F="$DST/$p/index.html"
     if grep -qE "$PATTERN" "$F" 2>/dev/null; then
         sed -i 's|src="assets/|src="../assets/|g'   "$F"
@@ -156,6 +158,21 @@ inject_seo "$DST/ueber-mich/index.html" "ueber-mich/" \
   "Über mich – Julia Doubrawa | Adventure Dogs Krumbach" \
   "Julia Doubrawa, Hundetrainerin aus Krumbach – mein Trainingsansatz, mein Weg mit Einstein und meine Fortbildungen rund um faires Hundetraining." \
   "hero-ueber-mich.jpg"
+
+# Gebucht (booking-confirmation page): inject SEO + noindex so Google
+# doesn't index this post-conversion landing in search results.
+if [ -f "$DST/gebucht/index.html" ]; then
+    inject_seo "$DST/gebucht/index.html" "gebucht/" \
+      "Buchung bestätigt – Adventure Dogs | Julia Doubrawa" \
+      "Buchungsbestätigung der Hundeschule Adventure Dogs in Krumbach." \
+      "strand.jpg"
+    # Add robots: noindex,nofollow (idempotent)
+    if ! grep -q '<meta name="robots"' "$DST/gebucht/index.html"; then
+        D=$(printf '\035')
+        sed -i "s${D}<link rel=\"canonical\"${D}<meta name=\"robots\" content=\"noindex,nofollow\">\n<link rel=\"canonical\"${D}" "$DST/gebucht/index.html"
+        echo "  injected robots noindex: gebucht/index.html"
+    fi
+fi
 
 # ─── LocalBusiness JSON-LD on Landing ───
 # Helps Google understand this is a Hundeschule in Krumbach with phone,

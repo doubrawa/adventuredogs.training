@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buchung bestätigt – Adventure Dogs | Julia Doubrawa</title>
+<meta name="description" content="Buchungsbestätigung der Hundeschule Adventure Dogs in Krumbach.">
+<link rel="canonical" href="https://adventuredogs.training/gebucht/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adventure Dogs">
+<meta property="og:title" content="Buchung bestätigt – Adventure Dogs | Julia Doubrawa">
+<meta property="og:description" content="Buchungsbestätigung der Hundeschule Adventure Dogs in Krumbach.">
+<meta property="og:url" content="https://adventuredogs.training/gebucht/">
+<meta property="og:image" content="https://adventuredogs.training/assets/strand.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="apple-touch-icon" href="../assets/logo.png">
+<meta name="robots" content="noindex, nofollow">
+<link href="../assets/fonts.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV (identisch zu anderen Seiten) ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
+    height: 70px; background: transparent;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 40px; height: 40px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--white); white-space: nowrap; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  nav.scrolled .nav-links a { color: var(--text); }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  nav.scrolled .nav-links a:hover { color: var(--text); font-weight: 700; }
+  .nav-cta {
+    background: var(--white); color: var(--blue) !important;
+    padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; height: 78vh; min-height: 540px;
+    display: flex; align-items: flex-end; padding-bottom: 80px; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('../assets/strand.jpg') center 40% / cover no-repeat,
+                linear-gradient(135deg, oklch(45% 0.09 225) 0%, oklch(32% 0.07 240) 60%, oklch(28% 0.06 240) 100%);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      oklch(0% 0 0 / 0.25) 0%,
+      oklch(0% 0 0 / 0.10) 30%,
+      oklch(0% 0 0 / 0.55) 70%,
+      oklch(0% 0 0 / 0.78) 100%
+    );
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 900px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: oklch(100% 0 0 / 0.92); margin-bottom: 18px;
+  }
+  .hero-eyebrow .check-badge {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 4px oklch(62% 0.12 185 / 0.2);
+  }
+  .hero-eyebrow .check-badge svg { width: 11px; height: 11px; stroke: var(--white); fill: none; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 6vw, 76px); font-weight: 900;
+    color: var(--white); line-height: 1.04; margin-bottom: 20px; text-wrap: balance;
+  }
+  .hero h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+  .hero-sub {
+    font-size: clamp(16px, 1.9vw, 19px); color: oklch(100% 0 0 / 0.85);
+    max-width: 580px; line-height: 1.6; font-weight: 300;
+  }
+
+  /* ── MESSAGE / CONFIRMATION ── */
+  .confirm-section {
+    padding: 96px 7% 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .confirm-message {}
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+  }
+  .confirm-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 3.6vw, 46px); font-weight: 700;
+    color: var(--blue); line-height: 1.14; margin-bottom: 24px; text-wrap: pretty;
+  }
+  .confirm-title em { font-style: italic; color: var(--accent); }
+  .confirm-message > p {
+    font-size: 17px; line-height: 1.75; color: var(--text-lt); font-weight: 300;
+    margin-bottom: 32px; max-width: 520px;
+  }
+  .confirm-message > p strong { color: var(--text); font-weight: 600; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary, .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px; border-radius: 40px;
+    text-decoration: none; font-size: 14px; font-weight: 600;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--white);
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.4); }
+  .btn-ghost { background: transparent; color: var(--blue); border: 1.5px solid oklch(32% 0.07 240 / 0.25); }
+  .btn-ghost:hover { background: var(--white); border-color: var(--blue); transform: translateY(-1px); }
+  .btn-primary svg, .btn-ghost svg { width: 15px; height: 15px; stroke: currentColor; fill: none; }
+
+  /* ── CARD: NEXT STEPS ── */
+  .next-card {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 36px 32px; box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .next-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--blue-mid) 100%);
+  }
+  .next-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--blue); margin-bottom: 6px;
+  }
+  .next-card > p.intro {
+    font-size: 14px; color: var(--text-lt); margin-bottom: 24px; line-height: 1.6;
+  }
+
+  .step-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .step-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 14px; line-height: 1.55;
+  }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(62% 0.12 185 / 0.12); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: -1px;
+  }
+  .step-text strong { display: block; color: var(--blue); margin-bottom: 3px; font-weight: 600; font-size: 14.5px; }
+  .step-text span { color: var(--text-lt); }
+  .step-text a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ── DECORATIVE FLOURISH ── */
+  .flourish-section {
+    padding: 60px 7% 100px;
+    text-align: center;
+    background: var(--cream2);
+    border-top: 1px solid oklch(0% 0 0 / 0.04);
+  }
+  .flourish-quote {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(20px, 2.4vw, 28px); font-weight: 600;
+    color: var(--blue); line-height: 1.5; max-width: 680px; margin: 0 auto;
+    text-wrap: balance;
+  }
+  .flourish-attr {
+    margin-top: 18px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── CONFETTI / CELEBRATION DOTS (decorative only) ── */
+  .confetti {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1;
+  }
+  .confetti span {
+    position: absolute; display: block; border-radius: 2px;
+    opacity: 0; animation: drop 4.5s ease-in forwards;
+  }
+  @keyframes drop {
+    0%   { transform: translateY(-20vh) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none; position: fixed; top: 70px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98); backdrop-filter: blur(16px);
+    padding: 20px 7% 28px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10); z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 920px) {
+    .confirm-section { grid-template-columns: 1fr; gap: 48px; padding: 72px 7%; }
+    .next-card { padding: 28px 22px; }
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+  @media (max-width: 720px) {
+    .hero { height: 72vh; min-height: 480px; padding-bottom: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="../Landing Page.html">
+    <img src="../assets/logo.png" alt="Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../Über mich.html">Über mich</a></li>
+    <li><a href="../Kontakt.html">Kontakt</a></li>
+    <li><a href="../Alltagstipps.html">Alltagstipps</a></li>
+    <li><a href="../Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="../Über mich.html">Über mich</a>
+  <a href="../Kontakt.html">Kontakt</a>
+  <a href="../Alltagstipps.html">Alltagstipps</a>
+  <a href="../Angebotsseite.html" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <!-- subtle confetti, generated in JS -->
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">
+      <span class="check-badge">
+        <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      Buchung bestätigt
+    </p>
+    <h1>Herzlichen Glückwunsch,<br><em>das war die beste Entscheidung!</em></h1>
+    <p class="hero-sub">Freu dich auf ein Hundetraining, das nicht nur deinem Hund, sondern auch dir Freude machen wird.</p>
+  </div>
+</div>
+
+<!-- CONFIRMATION + NEXT STEPS -->
+<section class="confirm-section">
+
+  <!-- LEFT: Message -->
+  <div class="confirm-message">
+    <span class="section-label">Und jetzt?</span>
+    <h2 class="confirm-title">Wir sehen uns <em>bald</em> im Training</h2>
+    <p>Du bekommst gleich eine <strong>Bestätigungs-E-Mail</strong> mit allen Details zu deinem Termin. Falls die Mail nicht innerhalb der nächsten Minuten ankommt, schau bitte auch im Spam-Ordner nach — oder melde dich kurz bei mir.</p>
+  </div>
+
+  <!-- RIGHT: Next-steps card -->
+  <aside class="next-card">
+    <h2>Deine nächsten Schritte</h2>
+    <p class="intro">Drei kleine Dinge, damit der Start für dich und deinen Hund entspannt wird.</p>
+
+    <ol class="step-list">
+      <li>
+        <span class="step-num">1</span>
+        <span class="step-text">
+          <strong>E-Mail prüfen</strong>
+          <span>Die Bestätigung mit Termin, Ort und allen Infos kommt automatisch — meist innerhalb weniger Minuten.</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span class="step-text">
+          <strong>Terminerinnerung</strong>
+          <span>Einen Tag vor unserem Termin erhältst du per E-Mail eine Terminerinnerung, die auch unseren Treffpunkt enthält.</span>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span class="step-text">
+          <strong>Mitbringen</strong>
+          <span>Leine, Geschirr oder Halsband, ein paar Lieblings-Leckerlis und Wasser für deinen Hund.</span>
+        </span>
+      </li>
+    </ol>
+  </aside>
+</section>
+
+<!-- DECORATIVE QUOTE -->
+<section class="flourish-section">
+  <p class="flourish-quote">„Das Beste am Training? Wenn du merkst, wie sehr es eurem Team gut tut — Schritt für Schritt, gemeinsam."</p>
+  <p class="flourish-attr">Julia · Adventure Dogs</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="../Impressum.html">Impressum</a>
+    <a href="../Impressum.html#datenschutz">Datenschutz</a>
+    <a href="../Kontakt.html">Kontakt</a>
+    <a href="../Landing Page.html">Startseite</a>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hamburger
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+
+  // Confetti im Hero – einmalig beim Laden
+  (function makeConfetti() {
+    const root = document.getElementById('confetti');
+    if (!root) return;
+    const colors = ['#ffffff', 'oklch(62% 0.12 185)', 'oklch(88% 0.04 225)', 'oklch(90% 0.06 185)'];
+    const count = 32;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span');
+      const size = 6 + Math.random() * 8;
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.width = size + 'px';
+      s.style.height = (size * 0.4) + 'px';
+      s.style.background = colors[Math.floor(Math.random() * colors.length)];
+      s.style.animationDelay = (Math.random() * 1.5) + 's';
+      s.style.animationDuration = (3.8 + Math.random() * 2.2) + 's';
+      s.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+      root.appendChild(s);
+    }
+  })();
+</script>
+
+</body>
+</html>
