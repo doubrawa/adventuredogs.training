@@ -212,7 +212,7 @@ inject_seo "$DST/alltagstipps/tierphysiotherapie/index.html" "alltagstipps/tierp
 inject_seo "$DST/alltagstipps/ernaehrung/index.html" "alltagstipps/ernaehrung/" \
   "Hundeernährung Grundlagen – Trocken, Nass, BARF | Adventure Dogs" \
   "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF und mehr. Ein Überblick über die Möglichkeiten und worauf es ankommt." \
-  "service-sozialkontakt.jpg"
+  "partner-platinum.jpg"
 
 # Gebucht (booking-confirmation page): inject SEO + noindex so Google
 # doesn't index this post-conversion landing in search results.
