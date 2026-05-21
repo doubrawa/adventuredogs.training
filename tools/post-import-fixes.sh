@@ -187,12 +187,12 @@ inject_seo "$DST/alltagstipps/welpenzeit/index.html" "alltagstipps/welpenzeit/" 
 inject_seo "$DST/alltagstipps/silvester/index.html" "alltagstipps/silvester/" \
   "Silvester mit Hund – ohne Stress | Adventure Dogs" \
   "Silvester mit Hund entspannt überstehen: Vorbereitung, Rituale und Notfallstrategien gegen Stress durch Böller und Lichter." \
-  "hero-alltagstipps.jpg"
+  "hero-silvester.jpg"
 
 inject_seo "$DST/alltagstipps/urlaub/index.html" "alltagstipps/urlaub/" \
   "Mit Hund in den Urlaub – Reisetipps | Adventure Dogs" \
   "Mit Hund verreisen: Was du für Auto, Bahn, Flugzeug oder Ferienwohnung planen musst, damit alle entspannt ankommen." \
-  "hero-angebot.jpg"
+  "hero-urlaub.jpg"
 
 inject_seo "$DST/alltagstipps/winter/index.html" "alltagstipps/winter/" \
   "Winter mit Hund – Pflege und Spaziergänge | Adventure Dogs" \
