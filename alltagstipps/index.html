@@ -165,7 +165,7 @@
   }
   .card-img {
     width: 100%; height: 100%;
-    display: block;
+    display: block; object-fit: cover;
     transition: transform 0.5s ease;
   }
   .card-num {
@@ -332,62 +332,7 @@
     <a class="card" href="welpenzeit/">
       <div class="card-img-wrap">
         <span class="card-num">01</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-welpe-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(92% 0.04 60)"/>
-              <stop offset="100%" stop-color="oklch(82% 0.07 50)"/>
-            </linearGradient>
-            <pattern id="dots-welpe-2" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="oklch(40% 0.06 60 / 0.10)"/>
-            </pattern>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-welpe-2)"/>
-          <rect width="400" height="300" fill="url(#dots-welpe-2)"/>
-          <!-- soft moon -->
-          <circle cx="335" cy="70" r="38" fill="oklch(97% 0.02 80)" opacity="0.85"/>
-          <circle cx="320" cy="64" r="34" fill="url(#bg-welpe-2)" opacity="0.95"/>
-          <!-- stars -->
-          <g fill="oklch(45% 0.06 60 / 0.4)">
-            <circle cx="80" cy="60" r="1.8"/>
-            <circle cx="140" cy="40" r="1.2"/>
-            <circle cx="260" cy="50" r="1.2"/>
-            <circle cx="380" cy="120" r="1.5"/>
-          </g>
-          <!-- bed shadow -->
-          <ellipse cx="200" cy="260" rx="135" ry="10" fill="oklch(38% 0.05 60 / 0.18)"/>
-          <!-- cushion -->
-          <path d="M 70 240 Q 60 200 110 195 L 290 195 Q 340 200 330 240 L 320 255 Q 200 270 80 255 Z"
-                fill="oklch(58% 0.10 30)"/>
-          <path d="M 80 235 Q 75 210 115 205 L 285 205 Q 325 210 320 235"
-                fill="none" stroke="oklch(42% 0.10 30)" stroke-width="1.4" stroke-linecap="round"/>
-          <!-- inner cushion -->
-          <path d="M 95 230 Q 90 215 120 213 L 280 213 Q 310 215 305 230 Z"
-                fill="oklch(72% 0.08 30)"/>
-          <!-- puppy body (curled) -->
-          <ellipse cx="200" cy="200" rx="90" ry="32" fill="oklch(52% 0.05 60)"/>
-          <ellipse cx="200" cy="195" rx="80" ry="22" fill="oklch(62% 0.05 60)"/>
-          <!-- belly highlight -->
-          <ellipse cx="200" cy="205" rx="70" ry="15" fill="oklch(70% 0.05 60)" opacity="0.55"/>
-          <!-- tail curled -->
-          <path d="M 120 195 Q 95 175 115 165 Q 130 162 130 180" fill="oklch(48% 0.05 60)" stroke="oklch(38% 0.05 60)" stroke-width="0.8"/>
-          <!-- head resting -->
-          <ellipse cx="270" cy="190" rx="32" ry="26" fill="oklch(58% 0.05 60)"/>
-          <!-- snout -->
-          <ellipse cx="290" cy="200" rx="14" ry="10" fill="oklch(68% 0.05 60)"/>
-          <!-- ear flop -->
-          <path d="M 248 168 Q 235 150 252 152 Q 265 156 262 178 Z" fill="oklch(42% 0.06 60)"/>
-          <!-- closed eye -->
-          <path d="M 274 188 Q 280 184 286 188" stroke="oklch(22% 0.02 60)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- nose -->
-          <ellipse cx="300" cy="200" rx="3.2" ry="2.4" fill="oklch(22% 0.02 60)"/>
-          <!-- subtle smile -->
-          <path d="M 296 207 Q 300 211 304 207" stroke="oklch(22% 0.02 60)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <!-- Zzz floating -->
-          <text x="155" y="155" font-family="'Playfair Display', serif" font-style="italic" font-size="28" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.85">z</text>
-          <text x="135" y="135" font-family="'Playfair Display', serif" font-style="italic" font-size="20" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.6">z</text>
-          <text x="120" y="115" font-family="'Playfair Display', serif" font-style="italic" font-size="14" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.4">z</text>
-        </svg>
+        <img class="card-img" src="../assets/offer-welpenkurs.jpg" alt="Welpe schl&auml;ft in einem Kissen" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Die ersten Wochen</p>
@@ -403,113 +348,7 @@
     <a class="card" href="silvester/">
       <div class="card-img-wrap">
         <span class="card-num">02</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-silv-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(22% 0.07 270)"/>
-              <stop offset="100%" stop-color="oklch(32% 0.07 240)"/>
-            </linearGradient>
-            <radialGradient id="silv-burst-1" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stop-color="oklch(85% 0.18 80)"/>
-              <stop offset="100%" stop-color="oklch(85% 0.18 80 / 0)"/>
-            </radialGradient>
-            <radialGradient id="silv-burst-2" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stop-color="oklch(62% 0.18 25)"/>
-              <stop offset="100%" stop-color="oklch(62% 0.18 25 / 0)"/>
-            </radialGradient>
-            <radialGradient id="silv-burst-3" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stop-color="oklch(70% 0.16 185)"/>
-              <stop offset="100%" stop-color="oklch(70% 0.16 185 / 0)"/>
-            </radialGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-silv-2)"/>
-          <!-- stars -->
-          <g fill="oklch(100% 0 0 / 0.55)">
-            <circle cx="40" cy="50" r="1.4"/>
-            <circle cx="110" cy="30" r="1"/>
-            <circle cx="190" cy="55" r="1.2"/>
-            <circle cx="280" cy="35" r="1"/>
-            <circle cx="360" cy="65" r="1.3"/>
-            <circle cx="70" cy="110" r="1"/>
-            <circle cx="330" cy="135" r="1.2"/>
-          </g>
-          <!-- fireworks (large central + 2 smaller) -->
-          <g transform="translate(140 100)">
-            <circle r="42" fill="url(#silv-burst-1)"/>
-            <g stroke="oklch(95% 0.13 80)" stroke-width="2.2" stroke-linecap="round" fill="none">
-              <line x1="0" y1="-32" x2="0" y2="-14"/>
-              <line x1="0" y1="32" x2="0" y2="14"/>
-              <line x1="-32" y1="0" x2="-14" y2="0"/>
-              <line x1="32" y1="0" x2="14" y2="0"/>
-              <line x1="-23" y1="-23" x2="-10" y2="-10"/>
-              <line x1="23" y1="-23" x2="10" y2="-10"/>
-              <line x1="-23" y1="23" x2="-10" y2="10"/>
-              <line x1="23" y1="23" x2="10" y2="10"/>
-            </g>
-            <circle r="5" fill="oklch(98% 0.05 80)"/>
-            <!-- spark dots at tips -->
-            <g fill="oklch(95% 0.13 80)">
-              <circle cx="0" cy="-34" r="2"/>
-              <circle cx="0" cy="34" r="2"/>
-              <circle cx="-34" cy="0" r="2"/>
-              <circle cx="34" cy="0" r="2"/>
-              <circle cx="-25" cy="-25" r="2"/>
-              <circle cx="25" cy="-25" r="2"/>
-              <circle cx="-25" cy="25" r="2"/>
-              <circle cx="25" cy="25" r="2"/>
-            </g>
-          </g>
-          <g transform="translate(295 65)">
-            <circle r="28" fill="url(#silv-burst-2)"/>
-            <g stroke="oklch(72% 0.18 25)" stroke-width="1.6" stroke-linecap="round" fill="none">
-              <line x1="0" y1="-22" x2="0" y2="-9"/>
-              <line x1="0" y1="22" x2="0" y2="9"/>
-              <line x1="-22" y1="0" x2="-9" y2="0"/>
-              <line x1="22" y1="0" x2="9" y2="0"/>
-              <line x1="-16" y1="-16" x2="-7" y2="-7"/>
-              <line x1="16" y1="-16" x2="7" y2="-7"/>
-              <line x1="-16" y1="16" x2="-7" y2="7"/>
-              <line x1="16" y1="16" x2="7" y2="7"/>
-            </g>
-            <circle r="3" fill="oklch(82% 0.18 25)"/>
-          </g>
-          <g transform="translate(340 165)">
-            <circle r="22" fill="url(#silv-burst-3)"/>
-            <g stroke="oklch(80% 0.16 185)" stroke-width="1.4" stroke-linecap="round" fill="none">
-              <line x1="0" y1="-18" x2="0" y2="-7"/>
-              <line x1="0" y1="18" x2="0" y2="7"/>
-              <line x1="-18" y1="0" x2="-7" y2="0"/>
-              <line x1="18" y1="0" x2="7" y2="0"/>
-              <line x1="-13" y1="-13" x2="-5" y2="-5"/>
-              <line x1="13" y1="-13" x2="-5" y2="-5"/>
-              <line x1="-13" y1="13" x2="-5" y2="5"/>
-              <line x1="13" y1="13" x2="5" y2="5"/>
-            </g>
-            <circle r="2.5" fill="oklch(85% 0.16 185)"/>
-          </g>
-          <!-- soft ground -->
-          <path d="M 0 240 Q 200 220 400 240 L 400 300 L 0 300 Z" fill="oklch(15% 0.06 270)"/>
-          <!-- dog peeking from corner (lower-left, ears down, calm) -->
-          <g transform="translate(50 200)">
-            <!-- body curled, looking out -->
-            <ellipse cx="50" cy="80" rx="80" ry="14" fill="oklch(0% 0 0 / 0.35)"/>
-            <path d="M -10 70 Q -10 35 20 25 Q 50 18 75 30 Q 90 45 88 70 Z" fill="oklch(45% 0.05 60)"/>
-            <!-- head -->
-            <ellipse cx="50" cy="32" rx="26" ry="22" fill="oklch(52% 0.05 60)"/>
-            <!-- droopy ears (worried/calm) -->
-            <path d="M 28 22 Q 18 50 30 55 Q 38 45 36 28 Z" fill="oklch(35% 0.06 60)"/>
-            <path d="M 72 22 Q 82 50 70 55 Q 62 45 64 28 Z" fill="oklch(35% 0.06 60)"/>
-            <!-- snout -->
-            <ellipse cx="50" cy="42" rx="14" ry="10" fill="oklch(62% 0.05 60)"/>
-            <!-- eyes (gentle, not scared) -->
-            <circle cx="42" cy="32" r="2.5" fill="oklch(22% 0.02 60)"/>
-            <circle cx="58" cy="32" r="2.5" fill="oklch(22% 0.02 60)"/>
-            <circle cx="42.8" cy="31.2" r="0.8" fill="oklch(95% 0 0)"/>
-            <circle cx="58.8" cy="31.2" r="0.8" fill="oklch(95% 0 0)"/>
-            <!-- nose -->
-            <ellipse cx="50" cy="44" rx="3.5" ry="2.5" fill="oklch(22% 0.02 60)"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-silvester.jpg" alt="Ruhige Stimmung am Silvesterabend" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Stress-Management</p>
@@ -525,78 +364,7 @@
     <a class="card" href="urlaub/">
       <div class="card-img-wrap">
         <span class="card-num">03</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-url-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(82% 0.08 230)"/>
-              <stop offset="55%" stop-color="oklch(90% 0.07 220)"/>
-              <stop offset="100%" stop-color="oklch(86% 0.08 80)"/>
-            </linearGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-url-2)"/>
-          <!-- sun -->
-          <circle cx="330" cy="80" r="34" fill="oklch(88% 0.16 80)" opacity="0.95"/>
-          <circle cx="330" cy="80" r="24" fill="oklch(94% 0.14 80)"/>
-          <!-- clouds -->
-          <g fill="oklch(99% 0.01 80 / 0.85)">
-            <ellipse cx="80" cy="65" rx="32" ry="10"/>
-            <ellipse cx="95" cy="60" rx="22" ry="8"/>
-            <ellipse cx="200" cy="40" rx="26" ry="8"/>
-          </g>
-          <!-- distant mountains -->
-          <path d="M 0 170 L 60 115 L 110 150 L 180 95 L 250 150 L 320 120 L 400 160 L 400 200 L 0 200 Z"
-                fill="oklch(58% 0.07 240 / 0.55)"/>
-          <path d="M 0 190 L 80 150 L 160 180 L 250 145 L 340 175 L 400 165 L 400 220 L 0 220 Z"
-                fill="oklch(48% 0.07 240 / 0.45)"/>
-          <!-- road -->
-          <path d="M 0 260 Q 200 230 400 260 L 400 300 L 0 300 Z" fill="oklch(38% 0.04 60)"/>
-          <g stroke="oklch(97% 0.03 80)" stroke-width="3" stroke-linecap="round">
-            <line x1="40" y1="275" x2="90" y2="270"/>
-            <line x1="140" y1="266" x2="190" y2="263"/>
-            <line x1="240" y1="263" x2="290" y2="267"/>
-            <line x1="340" y1="270" x2="385" y2="278"/>
-          </g>
-          <!-- camper van -->
-          <g transform="translate(115 175)">
-            <!-- shadow -->
-            <ellipse cx="85" cy="78" rx="100" ry="8" fill="oklch(0% 0 0 / 0.25)"/>
-            <!-- van body -->
-            <path d="M 0 60 L 0 30 Q 0 22 10 22 L 130 22 Q 145 22 152 32 L 168 50 Q 172 56 172 62 L 172 68 L 0 68 Z"
-                  fill="oklch(70% 0.16 30)"/>
-            <!-- top stripe -->
-            <rect x="0" y="36" width="172" height="10" fill="oklch(98% 0.02 80)"/>
-            <rect x="0" y="46" width="172" height="3" fill="oklch(45% 0.10 30)"/>
-            <!-- front window (slanted) -->
-            <path d="M 130 26 L 165 50 L 172 50 L 172 60 L 130 60 Z" fill="oklch(78% 0.10 225)"/>
-            <!-- side window with dog -->
-            <rect x="20" y="28" width="40" height="22" rx="2" fill="oklch(82% 0.10 225)"/>
-            <!-- dog peeking out -->
-            <g transform="translate(40 36)">
-              <ellipse cx="0" cy="6" rx="14" ry="9" fill="oklch(48% 0.06 60)"/>
-              <ellipse cx="0" cy="9" rx="9" ry="5" fill="oklch(58% 0.06 60)"/>
-              <!-- ear flopping out window -->
-              <path d="M -10 0 Q -16 16 -6 14 Z" fill="oklch(35% 0.06 60)"/>
-              <!-- eye -->
-              <circle cx="3" cy="4" r="1.5" fill="oklch(22% 0.02 60)"/>
-              <!-- nose -->
-              <ellipse cx="8" cy="9" rx="1.8" ry="1.3" fill="oklch(22% 0.02 60)"/>
-              <!-- tongue out -->
-              <ellipse cx="10" cy="14" rx="2" ry="3" fill="oklch(65% 0.15 25)"/>
-            </g>
-            <!-- door split line -->
-            <line x1="86" y1="22" x2="86" y2="68" stroke="oklch(45% 0.10 30)" stroke-width="1.2"/>
-            <!-- handle -->
-            <rect x="78" y="50" width="6" height="2" fill="oklch(45% 0.10 30)"/>
-            <!-- wheels -->
-            <circle cx="34" cy="68" r="12" fill="oklch(22% 0.02 60)"/>
-            <circle cx="34" cy="68" r="5" fill="oklch(60% 0.04 60)"/>
-            <circle cx="138" cy="68" r="12" fill="oklch(22% 0.02 60)"/>
-            <circle cx="138" cy="68" r="5" fill="oklch(60% 0.04 60)"/>
-            <!-- surfboard on top -->
-            <rect x="20" y="11" width="120" height="6" rx="3" fill="oklch(85% 0.12 145)"/>
-            <line x1="80" y1="11" x2="80" y2="17" stroke="oklch(58% 0.10 145)" stroke-width="1"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-urlaub.jpg" alt="Mit Hund auf Reisen" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Reisen mit Hund</p>
@@ -612,106 +380,7 @@
     <a class="card" href="winter/">
       <div class="card-img-wrap">
         <span class="card-num">04</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-win-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(88% 0.04 220)"/>
-              <stop offset="100%" stop-color="oklch(96% 0.02 220)"/>
-            </linearGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-win-2)"/>
-          <!-- snowflakes -->
-          <g fill="oklch(100% 0 0 / 0.95)">
-            <circle cx="40" cy="40" r="2"/>
-            <circle cx="100" cy="70" r="1.5"/>
-            <circle cx="170" cy="35" r="2.5"/>
-            <circle cx="240" cy="60" r="2"/>
-            <circle cx="310" cy="30" r="1.8"/>
-            <circle cx="370" cy="90" r="2.2"/>
-            <circle cx="60" cy="130" r="1.5"/>
-            <circle cx="200" cy="110" r="2"/>
-            <circle cx="340" cy="170" r="1.8"/>
-            <circle cx="120" cy="200" r="1.5"/>
-            <circle cx="280" cy="230" r="1.5"/>
-          </g>
-          <!-- pine trees -->
-          <g transform="translate(70 100)">
-            <path d="M 0 110 L -28 60 L -14 60 L -34 25 L -16 25 L -36 -15 L 0 -28 L 36 -15 L 16 25 L 34 25 L 14 60 L 28 60 Z"
-                  fill="oklch(38% 0.07 145)"/>
-            <!-- snow caps -->
-            <path d="M -28 60 L -22 56 L -16 60 L -8 56 L 0 60 L 8 56 L 16 60 L 22 56 L 28 60" stroke="oklch(98% 0 0)" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M 0 -28 L 8 -22 L 16 -28" stroke="oklch(98% 0 0)" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <rect x="-7" y="110" width="14" height="22" fill="oklch(32% 0.05 60)"/>
-          </g>
-          <g transform="translate(350 130)">
-            <path d="M 0 90 L -22 48 L -10 48 L -26 18 L -12 18 L -28 -10 L 0 -22 L 28 -10 L 12 18 L 26 18 L 10 48 L 22 48 Z"
-                  fill="oklch(40% 0.07 145)"/>
-            <path d="M -22 48 L -17 44 L -10 48 L 0 44 L 10 48 L 17 44 L 22 48" stroke="oklch(98% 0 0)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <rect x="-5" y="90" width="10" height="16" fill="oklch(32% 0.05 60)"/>
-          </g>
-          <!-- snowy ground -->
-          <path d="M 0 230 Q 100 215 200 225 Q 300 235 400 218 L 400 300 L 0 300 Z" fill="oklch(98% 0.005 220)"/>
-          <!-- paw prints -->
-          <g fill="oklch(75% 0.05 220 / 0.8)">
-            <g transform="translate(80 252)">
-              <ellipse cx="0" cy="2" rx="4" ry="3"/>
-              <circle cx="-4" cy="-2" r="1.6"/>
-              <circle cx="-1.5" cy="-4.5" r="1.6"/>
-              <circle cx="1.5" cy="-4.5" r="1.6"/>
-              <circle cx="4" cy="-2" r="1.6"/>
-            </g>
-            <g transform="translate(115 268)">
-              <ellipse cx="0" cy="2" rx="4" ry="3"/>
-              <circle cx="-4" cy="-2" r="1.6"/>
-              <circle cx="-1.5" cy="-4.5" r="1.6"/>
-              <circle cx="1.5" cy="-4.5" r="1.6"/>
-              <circle cx="4" cy="-2" r="1.6"/>
-            </g>
-            <g transform="translate(160 258)">
-              <ellipse cx="0" cy="2" rx="4" ry="3"/>
-              <circle cx="-4" cy="-2" r="1.6"/>
-              <circle cx="-1.5" cy="-4.5" r="1.6"/>
-              <circle cx="1.5" cy="-4.5" r="1.6"/>
-              <circle cx="4" cy="-2" r="1.6"/>
-            </g>
-          </g>
-          <!-- dog with hat and scarf -->
-          <g transform="translate(195 180)">
-            <ellipse cx="40" cy="68" rx="65" ry="7" fill="oklch(0% 0 0 / 0.15)"/>
-            <!-- body -->
-            <ellipse cx="40" cy="50" rx="45" ry="20" fill="oklch(45% 0.06 60)"/>
-            <ellipse cx="40" cy="54" rx="38" ry="14" fill="oklch(55% 0.06 60)" opacity="0.65"/>
-            <!-- legs -->
-            <rect x="10" y="58" width="7" height="14" rx="2.5" fill="oklch(38% 0.06 60)"/>
-            <rect x="25" y="60" width="7" height="13" rx="2.5" fill="oklch(38% 0.06 60)"/>
-            <rect x="50" y="60" width="7" height="13" rx="2.5" fill="oklch(38% 0.06 60)"/>
-            <rect x="64" y="58" width="7" height="14" rx="2.5" fill="oklch(38% 0.06 60)"/>
-            <!-- head -->
-            <circle cx="82" cy="34" r="20" fill="oklch(50% 0.06 60)"/>
-            <!-- ear -->
-            <path d="M 68 22 Q 60 8 76 18 Z" fill="oklch(35% 0.06 60)"/>
-            <path d="M 96 22 Q 104 8 88 18 Z" fill="oklch(35% 0.06 60)"/>
-            <!-- knit hat -->
-            <path d="M 64 22 Q 80 8 100 22 L 102 18 Q 104 12 96 8 Q 80 -4 64 12 Q 60 16 64 22 Z" fill="oklch(58% 0.16 25)"/>
-            <g stroke="oklch(45% 0.13 25)" stroke-width="0.8" fill="none">
-              <line x1="68" y1="16" x2="98" y2="16"/>
-              <line x1="68" y1="12" x2="98" y2="12"/>
-            </g>
-            <!-- pom -->
-            <circle cx="82" cy="0" r="5" fill="oklch(98% 0.01 80)"/>
-            <!-- eye -->
-            <circle cx="86" cy="34" r="2.5" fill="oklch(22% 0.02 60)"/>
-            <circle cx="86.8" cy="33.2" r="0.8" fill="oklch(95% 0 0)"/>
-            <!-- nose -->
-            <ellipse cx="98" cy="38" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
-            <!-- mouth small smile -->
-            <path d="M 95 44 Q 98 47 101 44" stroke="oklch(22% 0.02 60)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-            <!-- scarf -->
-            <path d="M 64 42 Q 82 52 100 42 L 102 52 Q 82 60 62 52 Z" fill="oklch(58% 0.16 25)"/>
-            <path d="M 58 52 Q 46 60 50 72 L 60 72 Q 60 60 64 52 Z" fill="oklch(58% 0.16 25)"/>
-            <line x1="50" y1="60" x2="60" y2="68" stroke="oklch(45% 0.13 25)" stroke-width="0.8"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-winter.jpg" alt="Hund im verschneiten Wald" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Kalte Jahreszeit</p>
@@ -727,77 +396,7 @@
     <a class="card" href="alleinbleiben/">
       <div class="card-img-wrap">
         <span class="card-num">05</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-alln-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(94% 0.025 70)"/>
-              <stop offset="100%" stop-color="oklch(84% 0.05 60)"/>
-            </linearGradient>
-            <linearGradient id="alln-light" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="oklch(95% 0.10 80 / 0.6)"/>
-              <stop offset="100%" stop-color="oklch(95% 0.10 80 / 0)"/>
-            </linearGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-alln-2)"/>
-          <!-- floor -->
-          <path d="M 0 220 L 400 220 L 400 300 L 0 300 Z" fill="oklch(62% 0.07 60)"/>
-          <g stroke="oklch(45% 0.07 60 / 0.4)" stroke-width="1">
-            <line x1="60" y1="220" x2="35" y2="300"/>
-            <line x1="140" y1="220" x2="115" y2="300"/>
-            <line x1="220" y1="220" x2="195" y2="300"/>
-            <line x1="300" y1="220" x2="275" y2="300"/>
-            <line x1="380" y1="220" x2="355" y2="300"/>
-          </g>
-          <!-- door (closed) -->
-          <rect x="50" y="35" width="105" height="185" fill="oklch(80% 0.03 60)" stroke="oklch(48% 0.05 60)" stroke-width="2"/>
-          <rect x="60" y="45" width="85" height="165" fill="oklch(72% 0.04 60)"/>
-          <!-- door panels -->
-          <rect x="68" y="55" width="69" height="60" fill="none" stroke="oklch(55% 0.04 60)" stroke-width="1.4"/>
-          <rect x="68" y="125" width="69" height="75" fill="none" stroke="oklch(55% 0.04 60)" stroke-width="1.4"/>
-          <!-- handle -->
-          <circle cx="140" cy="135" r="3.5" fill="oklch(60% 0.10 80)"/>
-          <!-- light coming under door -->
-          <path d="M 50 220 L 155 220 L 175 232 L 30 232 Z" fill="url(#alln-light)"/>
-          <!-- rug -->
-          <ellipse cx="270" cy="245" rx="115" ry="20" fill="oklch(58% 0.13 25)"/>
-          <ellipse cx="270" cy="245" rx="100" ry="14" fill="oklch(68% 0.13 25)"/>
-          <ellipse cx="270" cy="245" rx="85" ry="9" fill="oklch(75% 0.10 25)"/>
-          <!-- dog lying down, calm -->
-          <g transform="translate(210 195)">
-            <!-- body lying on side -->
-            <ellipse cx="60" cy="42" rx="60" ry="15" fill="oklch(45% 0.06 60)"/>
-            <!-- belly highlight -->
-            <ellipse cx="60" cy="48" rx="50" ry="10" fill="oklch(55% 0.06 60)" opacity="0.7"/>
-            <!-- legs tucked -->
-            <ellipse cx="35" cy="52" rx="8" ry="6" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="55" cy="54" rx="8" ry="5" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="75" cy="54" rx="8" ry="5" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="95" cy="52" rx="8" ry="6" fill="oklch(38% 0.06 60)"/>
-            <!-- head resting on paws -->
-            <ellipse cx="115" cy="34" rx="22" ry="16" fill="oklch(52% 0.06 60)"/>
-            <!-- snout -->
-            <ellipse cx="135" cy="40" rx="10" ry="7" fill="oklch(62% 0.06 60)"/>
-            <!-- ear droopy -->
-            <path d="M 100 24 Q 90 12 102 32 Z" fill="oklch(35% 0.06 60)"/>
-            <!-- closed eye (peaceful) -->
-            <path d="M 117 35 Q 122 32 127 35" stroke="oklch(22% 0.02 60)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-            <!-- nose -->
-            <ellipse cx="142" cy="40" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
-            <!-- mouth -->
-            <path d="M 138 46 Q 142 49 146 46" stroke="oklch(22% 0.02 60)" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <!-- tail curled -->
-            <path d="M 5 40 Q -15 30 -10 18" stroke="oklch(45% 0.06 60)" stroke-width="6" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- floating heart (calm/safe) -->
-          <g transform="translate(220 130)">
-            <path d="M 0 -4 C -6 -14 -18 -14 -18 -2 C -18 8 -8 14 0 22 C 8 14 18 8 18 -2 C 18 -14 6 -14 0 -4 Z"
-                  fill="oklch(62% 0.16 25)" opacity="0.7"/>
-          </g>
-          <g transform="translate(190 90) scale(0.55)">
-            <path d="M 0 -4 C -6 -14 -18 -14 -18 -2 C -18 8 -8 14 0 22 C 8 14 18 8 18 -2 C 18 -14 6 -14 0 -4 Z"
-                  fill="oklch(62% 0.16 25)" opacity="0.5"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-alleinbleiben.jpg" alt="Beagle schaut allein aus dem Fenster" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Schritt für Schritt</p>
@@ -813,75 +412,7 @@
     <a class="card" href="tierphysiotherapie/">
       <div class="card-img-wrap">
         <span class="card-num">06</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-phys-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(92% 0.04 185)"/>
-              <stop offset="100%" stop-color="oklch(82% 0.09 185)"/>
-            </linearGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-phys-2)"/>
-          <!-- ambient circles -->
-          <g fill="none" stroke="oklch(45% 0.12 185 / 0.18)" stroke-width="1.2" stroke-dasharray="3 5">
-            <circle cx="100" cy="80" r="38"/>
-            <circle cx="320" cy="220" r="45"/>
-          </g>
-          <!-- floor mat -->
-          <ellipse cx="200" cy="252" rx="170" ry="22" fill="oklch(0% 0 0 / 0.12)"/>
-          <rect x="50" y="225" width="300" height="40" rx="8" fill="oklch(58% 0.14 25)"/>
-          <rect x="60" y="232" width="280" height="26" rx="4" fill="oklch(70% 0.14 25)"/>
-          <g stroke="oklch(48% 0.14 25 / 0.4)" stroke-width="1.2">
-            <line x1="80" y1="240" x2="80" y2="252"/>
-            <line x1="140" y1="240" x2="140" y2="252"/>
-            <line x1="200" y1="240" x2="200" y2="252"/>
-            <line x1="260" y1="240" x2="260" y2="252"/>
-            <line x1="320" y1="240" x2="320" y2="252"/>
-          </g>
-          <!-- dog stretched on side, eyes closed, relaxed -->
-          <g transform="translate(80 170)">
-            <!-- body elongated -->
-            <ellipse cx="105" cy="50" rx="105" ry="22" fill="oklch(45% 0.06 60)"/>
-            <!-- belly -->
-            <ellipse cx="110" cy="58" rx="85" ry="13" fill="oklch(58% 0.06 60)" opacity="0.7"/>
-            <!-- legs stretched out -->
-            <ellipse cx="15" cy="68" rx="14" ry="6" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="40" cy="72" rx="12" ry="5" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="160" cy="72" rx="12" ry="5" fill="oklch(38% 0.06 60)"/>
-            <ellipse cx="185" cy="68" rx="14" ry="6" fill="oklch(38% 0.06 60)"/>
-            <!-- head -->
-            <ellipse cx="208" cy="40" rx="22" ry="17" fill="oklch(52% 0.06 60)"/>
-            <ellipse cx="225" cy="46" rx="11" ry="8" fill="oklch(62% 0.06 60)"/>
-            <!-- ear floppy -->
-            <path d="M 196 28 Q 188 14 202 26 Z" fill="oklch(35% 0.06 60)"/>
-            <!-- closed eye blissful -->
-            <path d="M 210 38 Q 215 35 220 38" stroke="oklch(22% 0.02 60)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <!-- nose -->
-            <ellipse cx="232" cy="46" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
-            <!-- small relaxed smile -->
-            <path d="M 228 51 Q 232 54 236 51" stroke="oklch(22% 0.02 60)" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <!-- tail -->
-            <path d="M 3 50 Q -15 40 -8 28" stroke="oklch(45% 0.06 60)" stroke-width="7" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- gentle hands from above -->
-          <g transform="translate(195 135)">
-            <ellipse cx="0" cy="0" rx="20" ry="14" fill="oklch(82% 0.05 60)" stroke="oklch(50% 0.05 60)" stroke-width="1.5"/>
-            <!-- fingers -->
-            <path d="M -14 8 L -17 22 M -7 11 L -8 26 M 0 12 L 0 26 M 7 11 L 9 25 M 13 8 L 16 22"
-                  stroke="oklch(50% 0.05 60)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <!-- gentle motion lines -->
-            <path d="M -25 -8 Q -22 -2 -25 4" stroke="oklch(38% 0.12 185)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <path d="M 25 -8 Q 22 -2 25 4" stroke="oklch(38% 0.12 185)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- subtle heart/healing icon -->
-          <g transform="translate(305 105)">
-            <circle r="20" fill="oklch(98% 0.01 80)" opacity="0.85"/>
-            <path d="M 0 -2 C -4 -10 -14 -10 -14 0 C -14 7 -7 11 0 17 C 7 11 14 7 14 0 C 14 -10 4 -10 0 -2 Z"
-                  fill="oklch(62% 0.16 25)" transform="scale(0.7)"/>
-            <line x1="-6" y1="-2" x2="-3" y2="-2" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
-            <line x1="3" y1="-2" x2="6" y2="-2" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
-            <line x1="0" y1="-5" x2="0" y2="1" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-tierphysiotherapie.jpg" alt="Hund auf Balance-Kissen in der Physio" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Gesundheit &amp; Bewegung</p>
@@ -897,88 +428,7 @@
     <a class="card" href="ernaehrung/">
       <div class="card-img-wrap">
         <span class="card-num">07</span>
-        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bg-food-2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="oklch(93% 0.05 75)"/>
-              <stop offset="100%" stop-color="oklch(83% 0.09 65)"/>
-            </linearGradient>
-          </defs>
-          <rect width="400" height="300" fill="url(#bg-food-2)"/>
-          <!-- floating ingredients background -->
-          <g opacity="0.35">
-            <circle cx="60" cy="50" r="6" fill="oklch(70% 0.14 145)"/>
-            <circle cx="340" cy="55" r="7" fill="oklch(70% 0.18 25)"/>
-            <circle cx="60" cy="130" r="5" fill="oklch(80% 0.16 80)"/>
-            <circle cx="360" cy="135" r="6" fill="oklch(70% 0.18 80)"/>
-            <ellipse cx="100" cy="85" rx="8" ry="4" fill="oklch(60% 0.18 25)" transform="rotate(30 100 85)"/>
-            <ellipse cx="320" cy="95" rx="9" ry="4" fill="oklch(70% 0.12 145)" transform="rotate(-30 320 95)"/>
-          </g>
-          <!-- placemat -->
-          <ellipse cx="200" cy="210" rx="160" ry="48" fill="oklch(65% 0.10 60)"/>
-          <ellipse cx="200" cy="210" rx="148" ry="42" fill="oklch(74% 0.10 60)"/>
-          <ellipse cx="200" cy="210" rx="138" ry="36" fill="oklch(80% 0.08 60)"/>
-          <!-- main bowl (front) -->
-          <g transform="translate(200 200)">
-            <!-- shadow under bowl -->
-            <ellipse cx="0" cy="38" rx="92" ry="10" fill="oklch(0% 0 0 / 0.18)"/>
-            <!-- bowl body -->
-            <path d="M -95 -10 Q -95 36 0 36 Q 95 36 95 -10 Z" fill="oklch(45% 0.10 225)"/>
-            <!-- bowl rim -->
-            <ellipse cx="0" cy="-10" rx="95" ry="20" fill="oklch(58% 0.11 225)"/>
-            <ellipse cx="0" cy="-10" rx="85" ry="15" fill="oklch(32% 0.08 240)"/>
-            <!-- inner shadow -->
-            <ellipse cx="0" cy="-7" rx="80" ry="11" fill="oklch(22% 0.05 240)"/>
-            <!-- contents: layered kibble + veggies -->
-            <g>
-              <!-- back row -->
-              <ellipse cx="-50" cy="-12" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
-              <ellipse cx="-30" cy="-14" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
-              <ellipse cx="-10" cy="-13" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
-              <ellipse cx="10" cy="-14" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
-              <ellipse cx="30" cy="-13" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
-              <ellipse cx="50" cy="-12" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
-              <!-- middle -->
-              <circle cx="-40" cy="-8" r="6" fill="oklch(70% 0.14 80)"/>
-              <circle cx="-20" cy="-9" r="6" fill="oklch(62% 0.18 25)"/>
-              <circle cx="0" cy="-7" r="6" fill="oklch(65% 0.14 145)"/>
-              <circle cx="20" cy="-9" r="6" fill="oklch(58% 0.11 60)"/>
-              <circle cx="40" cy="-7" r="6" fill="oklch(72% 0.13 80)"/>
-              <!-- front carrot -->
-              <ellipse cx="-12" cy="-4" rx="10" ry="4" fill="oklch(65% 0.18 50)" transform="rotate(-15 -12 -4)"/>
-              <!-- parsley top -->
-              <path d="M -8 -6 L -10 -10 M -6 -8 L -4 -12 M -3 -7 L -1 -11" stroke="oklch(50% 0.14 145)" stroke-width="1.5" stroke-linecap="round"/>
-              <!-- small bone -->
-              <g transform="translate(22 -3) rotate(20)">
-                <rect x="-10" y="-2" width="20" height="4" rx="2" fill="oklch(95% 0.03 80)"/>
-                <circle cx="-10" cy="-2" r="3" fill="oklch(95% 0.03 80)"/>
-                <circle cx="-10" cy="2" r="3" fill="oklch(95% 0.03 80)"/>
-                <circle cx="10" cy="-2" r="3" fill="oklch(95% 0.03 80)"/>
-                <circle cx="10" cy="2" r="3" fill="oklch(95% 0.03 80)"/>
-              </g>
-            </g>
-            <!-- gloss on rim -->
-            <path d="M -75 -16 Q -55 -22 -25 -22" stroke="oklch(90% 0.06 225)" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
-          </g>
-          <!-- side measuring scoop -->
-          <g transform="translate(85 155) rotate(-20)">
-            <ellipse cx="0" cy="0" rx="22" ry="14" fill="oklch(72% 0.13 30)"/>
-            <ellipse cx="0" cy="-2" rx="20" ry="11" fill="oklch(82% 0.13 30)"/>
-            <rect x="18" y="-3" width="32" height="6" rx="2" fill="oklch(62% 0.13 30)"/>
-            <!-- spilled kibble -->
-            <circle cx="-22" cy="6" r="4" fill="oklch(58% 0.11 60)"/>
-            <circle cx="-32" cy="14" r="3.5" fill="oklch(48% 0.10 60)"/>
-            <circle cx="-15" cy="18" r="3.5" fill="oklch(58% 0.11 60)"/>
-          </g>
-          <!-- paw print top corner -->
-          <g transform="translate(330 60)" fill="oklch(40% 0.06 60 / 0.35)">
-            <ellipse cx="0" cy="6" rx="10" ry="8"/>
-            <circle cx="-10" cy="-4" r="4"/>
-            <circle cx="-4" cy="-10" r="4"/>
-            <circle cx="4" cy="-10" r="4"/>
-            <circle cx="10" cy="-4" r="4"/>
-          </g>
-        </svg>
+        <img class="card-img" src="../assets/hero-ernaehrung.jpg" alt="Labrador mit Futternapf" loading="lazy">
       </div>
       <div class="card-body">
         <p class="card-eyebrow">Was kommt in den Napf?</p>

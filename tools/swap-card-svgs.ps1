@@ -1,0 +1,106 @@
+# Swap the decorative SVG card illustrations in claude.ai/design's
+# Alltagstipps output with the actual hero photos for each topic.
+#
+# Touches:
+#   /alltagstipps/index.html         — hub-page card SVGs (7 cards)
+#   /alltagstipps/<topic>/index.html — more-card SVGs at bottom (3 per page)
+#
+# Idempotent: each card checks whether an <img> is already in place,
+# and the CSS additions check for prior injection before patching.
+
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory)][string]$RepoRoot
+)
+
+# Topic slug → hero filename + alt text
+$topics = @(
+    # Note: HTML entities for umlauts (e.g. &auml; for ä) keep this file
+    # pure ASCII so PowerShell 5.1 (which parses .ps1 as CP1252 unless
+    # the file has a UTF-8 BOM) doesn''t mojibake them. Browsers and
+    # screen readers decode the entities transparently.
+    @{ slug='welpenzeit';         hero='offer-welpenkurs.jpg';        alt='Welpe schl&auml;ft in einem Kissen' }
+    @{ slug='silvester';          hero='hero-silvester.jpg';          alt='Ruhige Stimmung am Silvesterabend' }
+    @{ slug='urlaub';             hero='hero-urlaub.jpg';             alt='Mit Hund auf Reisen' }
+    @{ slug='winter';             hero='hero-winter.jpg';             alt='Hund im verschneiten Wald' }
+    @{ slug='alleinbleiben';      hero='hero-alleinbleiben.jpg';      alt='Beagle schaut allein aus dem Fenster' }
+    @{ slug='tierphysiotherapie'; hero='hero-tierphysiotherapie.jpg'; alt='Hund auf Balance-Kissen in der Physio' }
+    @{ slug='ernaehrung';         hero='hero-ernaehrung.jpg';         alt='Labrador mit Futternapf' }
+)
+
+$rxOpt = [System.Text.RegularExpressions.RegexOptions]::Singleline
+
+function Write-Utf8($path, $content) {
+    [System.IO.File]::WriteAllText($path, $content, [System.Text.UTF8Encoding]::new($false))
+}
+
+function Replace-HubCards($file) {
+    if (-not (Test-Path $file)) { return }
+    $orig = [System.IO.File]::ReadAllText($file)
+    $content = $orig
+
+    foreach ($t in $topics) {
+        $href = "$($t.slug)/"
+        # Skip if this card was already swapped
+        $done = "<a class=""card"" href=""$href"">[^<]*<div class=""card-img-wrap"">\s*<span class=""card-num"">[^<]*</span>\s*<img class=""card-img"""
+        if ([regex]::IsMatch($content, $done, $rxOpt)) { continue }
+
+        # Surgical replace: keep everything up through <span class="card-num">..</span>
+        # then swap the <svg class="art card-img" ...> ... </svg> for an <img>.
+        $pattern = "(<a class=""card"" href=""$href"">.*?<span class=""card-num"">[^<]*</span>\s*)<svg class=""art card-img""[^>]*>.*?</svg>"
+        $repl    = "`$1<img class=""card-img"" src=""../assets/$($t.hero)"" alt=""$($t.alt)"" loading=""lazy"">"
+        $content = [regex]::Replace($content, $pattern, $repl, $rxOpt)
+    }
+
+    # Add `object-fit: cover` to .card-img so the photo fills the 4:3 wrap
+    # without distortion. Only patch once.
+    if ($content -notmatch '\.card-img\s*\{[^}]*object-fit') {
+        $content = [regex]::Replace($content,
+            '(\.card-img\s*\{\s*width:\s*100%;\s*height:\s*100%;\s*display:\s*block;)',
+            '$1 object-fit: cover;', $rxOpt)
+    }
+
+    if ($content -ne $orig) {
+        Write-Utf8 $file $content
+        Write-Host ("  swapped hub cards: " + (Split-Path -Leaf (Split-Path -Parent $file)) + "/" + (Split-Path -Leaf $file))
+    }
+}
+
+function Replace-MoreCards($file) {
+    if (-not (Test-Path $file)) { return }
+    $orig = [System.IO.File]::ReadAllText($file)
+    $content = $orig
+
+    foreach ($t in $topics) {
+        $hrefRx  = "\.\./$($t.slug)/"     # regex-escaped form
+        $hrefLit = "../$($t.slug)/"
+
+        # Skip if already swapped
+        $done = "<a class=""more-card"" href=""$hrefRx"">\s*<div class=""more-card-img"">\s*<img"
+        if ([regex]::IsMatch($content, $done, $rxOpt)) { continue }
+
+        $pattern = "(<a class=""more-card"" href=""$hrefRx"">\s*<div class=""more-card-img"">\s*)<svg [^>]*>.*?</svg>"
+        $repl    = "`$1<img src=""../../assets/$($t.hero)"" alt=""$($t.alt)"" loading=""lazy"">"
+        $content = [regex]::Replace($content, $pattern, $repl, $rxOpt)
+    }
+
+    # Add an img-style sibling to the existing `.more-card-img svg` rule.
+    if ($content -notmatch '\.more-card-img\s+img\s*\{') {
+        $content = [regex]::Replace($content,
+            '(\.more-card-img\s+svg\s*\{[^}]*\})',
+            "`$1`n  .more-card-img img { display: block; width: 100%; height: 100%; object-fit: cover; }",
+            $rxOpt)
+    }
+
+    if ($content -ne $orig) {
+        Write-Utf8 $file $content
+        $parent = Split-Path -Leaf (Split-Path -Parent $file)
+        Write-Host ("  swapped more-cards: alltagstipps/$parent/index.html")
+    }
+}
+
+Replace-HubCards "$RepoRoot/alltagstipps/index.html"
+
+foreach ($t in $topics) {
+    Replace-MoreCards "$RepoRoot/alltagstipps/$($t.slug)/index.html"
+}

@@ -261,6 +261,14 @@ if [ -f "$F" ] && grep -q '\.faq-item\.open \.faq-answer { max-height: 300px; }'
     echo "  bumped FAQ max-height: kontakt/index.html"
 fi
 
+# ─── Alltagstipps card SVGs → IMG with real hero photo ───
+# claude.ai/design renders decorative SVG illustrations in the
+# Alltagstipps hub cards and in the bottom "more from series" cards
+# of each detail page. We want the real topic hero photos there.
+# PowerShell handles the multi-line regex; idempotent per-card.
+echo "  swapping Alltagstipps card SVGs → IMGs"
+powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
+
 # ─── FAQPage JSON-LD on Kontakt ───
 # Schema.org FAQPage markup lets Google show our FAQ questions as
 # expandable rich snippets directly in search results — major CTR boost.
