@@ -206,6 +206,26 @@ if [ -f "$F" ] && grep -q '\.faq-item\.open \.faq-answer { max-height: 300px; }'
     echo "  bumped FAQ max-height: kontakt/index.html"
 fi
 
+# ─── FAQPage JSON-LD on Kontakt ───
+# Schema.org FAQPage markup lets Google show our FAQ questions as
+# expandable rich snippets directly in search results — major CTR boost.
+# Static file mirrors the 10 Q&A pairs on /kontakt/. If FAQ wording
+# changes upstream, update both kontakt/index.html (or faq-extra.html
+# for our added 5) AND this JSON-LD file.
+F="$DST/kontakt/index.html"
+FAQ_SCHEMA="$DST/tools/faqpage-schema.json.html"
+if [ -f "$F" ] && [ -f "$FAQ_SCHEMA" ] && ! grep -q '"@type": "FAQPage"' "$F"; then
+    desc_line=$(grep -n '<meta name="description"' "$F" | head -1 | cut -d: -f1)
+    if [ -n "$desc_line" ]; then
+        tmp=$(mktemp)
+        head -n "$desc_line" "$F"          > "$tmp"
+        cat "$FAQ_SCHEMA"                  >> "$tmp"
+        tail -n +$((desc_line + 1)) "$F"   >> "$tmp"
+        mv "$tmp" "$F"
+        echo "  injected FAQPage JSON-LD on Kontakt"
+    fi
+fi
+
 # ─── LocalBusiness JSON-LD on Landing ───
 # Helps Google understand this is a Hundeschule in Krumbach with phone,
 # address, service area. Supports Local-Search and Knowledge-Panel.
