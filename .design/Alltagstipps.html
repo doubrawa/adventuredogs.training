@@ -26,13 +26,13 @@
   body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
 
   /* ── NAV ── */
-  nav {
+  nav.site-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 0 5%; display: flex; align-items: center; justify-content: space-between;
     height: 70px; background: transparent;
     transition: background 0.3s, box-shadow 0.3s;
   }
-  nav.scrolled {
+  nav.site-nav.scrolled {
     background: oklch(97% 0.01 80 / 0.96);
     backdrop-filter: blur(12px);
     box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
@@ -43,18 +43,18 @@
     font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
     color: var(--white); white-space: nowrap; transition: color 0.3s;
   }
-  nav.scrolled .nav-logo-text { color: var(--blue); }
+  nav.site-nav.scrolled .nav-logo-text { color: var(--blue); }
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
-  nav.scrolled .nav-links a { color: var(--text); }
+  nav.site-nav.scrolled .nav-links a { color: var(--text); }
   .nav-links a:hover, .nav-links a.active { color: var(--white); font-weight: 700; }
-  nav.scrolled .nav-links a:hover, nav.scrolled .nav-links a.active { color: var(--text); font-weight: 700; }
+  nav.site-nav.scrolled .nav-links a:hover, nav.site-nav.scrolled .nav-links a.active { color: var(--text); font-weight: 700; }
   .nav-cta {
     background: var(--white); color: var(--blue) !important;
     padding: 9px 20px; border-radius: 40px; font-weight: 600 !important;
     transition: opacity 0.2s, transform 0.15s !important;
   }
-  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  nav.site-nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
   .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
 
   /* ── HERO ── */
@@ -75,7 +75,7 @@
       oklch(0% 0 0 / 0.78) 100%
     );
   }
-  .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 860px; }
+  .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 920px; }
   .hero-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: oklch(100% 0 0 / 0.92); margin-bottom: 14px;
@@ -83,215 +83,125 @@
   .hero h1 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(38px, 5.5vw, 72px); font-weight: 900;
-    color: var(--white); line-height: 1.06; margin-bottom: 18px;
+    color: var(--white); line-height: 1.06; margin-bottom: 20px;
   }
   .hero h1 em { font-style: italic; color: oklch(90% 0.06 185); }
   .hero-sub {
-    font-size: clamp(15px, 1.8vw, 18px); color: oklch(100% 0 0 / 0.8);
-    max-width: 520px; line-height: 1.65; font-weight: 300;
+    font-size: clamp(15px, 1.8vw, 18px); color: oklch(100% 0 0 / 0.85);
+    max-width: 640px; line-height: 1.7; font-weight: 300;
   }
 
-  /* ── TOPIC NAV (Dotted Inline) ── */
-  nav.topic-nav {
-    position: static;
-    height: auto;
-    background: var(--cream);
-    padding: 28px 7%;
-    border-bottom: 1px solid oklch(0% 0 0 / 0.06);
-    display: block;
+  /* ── HUB SECTION ── */
+  .hub-section {
+    padding: 96px 7% 100px;
   }
-  .topic-nav-eyebrow {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 14px;
+  .hub-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px; margin-bottom: 56px;
+    max-width: 1280px; margin-left: auto; margin-right: auto;
   }
-  .topic-nav-inner {
-    display: flex; flex-wrap: wrap;
-    gap: 8px 20px; align-items: center;
-    font-size: 15px;
-  }
-  .topic-nav a {
-    text-decoration: none;
-    color: var(--blue);
-    font-weight: 500;
-    position: relative;
-    padding-bottom: 2px;
-    transition: color 0.2s;
-  }
-  .topic-nav a::after {
-    content: '';
-    position: absolute; left: 0; right: 0; bottom: 0;
-    height: 1px; background: var(--accent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.25s ease;
-  }
-  .topic-nav a:hover { color: var(--accent); }
-  .topic-nav a:hover::after { transform: scaleX(1); }
-  .topic-nav-sep {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--text-lt);
-    opacity: 0.4;
-    flex-shrink: 0;
-  }
-
-  /* ── SECTIONS ── */
-  .tips-section {
-    padding: 72px 7%;
-    border-bottom: 1px solid oklch(0% 0 0 / 0.06);
-  }
-  .tips-section:nth-child(even) { background: var(--cream2); }
-
-  .section-label {
+  .hub-head .left { max-width: 620px; }
+  .hub-head .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
   }
-  .section-title {
+  .hub-head h2 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(24px, 3vw, 38px); font-weight: 700;
-    color: var(--blue); line-height: 1.15; margin-bottom: 24px; text-wrap: pretty;
+    font-size: clamp(28px, 3.2vw, 42px); font-weight: 700;
+    color: var(--blue); line-height: 1.15; text-wrap: pretty;
+  }
+  .hub-head h2 em { font-style: italic; color: var(--accent); }
+  .hub-head .count {
+    font-size: 13px; color: var(--text-lt);
+    font-variant-numeric: tabular-nums;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hub-head .count::before {
+    content: ''; display: inline-block; width: 30px; height: 1px;
+    background: var(--text-lt);
   }
 
-  /* two-column layout for larger sections */
-  .section-inner {
+  /* ── CARD GRID ── */
+  .card-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
-  }
-  .section-inner.single { grid-template-columns: 1fr; max-width: 760px; margin-left: auto; margin-right: auto; }
-
-  .section-text p {
-    font-size: 16px; line-height: 1.8; color: var(--text-lt); margin-bottom: 16px;
-  }
-  .section-text p strong { color: var(--text); font-weight: 600; }
-  .section-text h3 {
-    font-size: 15px; font-weight: 600; color: var(--blue);
-    margin: 24px 0 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
-  /* tip list */
-  .tip-list { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
-  .tip-item {
-    display: flex; gap: 14px; align-items: flex-start;
-    background: var(--white); border-radius: var(--r-lg);
-    padding: 14px 18px;
-    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.04);
+  .card {
+    background: var(--white);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column;
+    box-shadow: 0 2px 14px oklch(0% 0 0 / 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
   }
-  .tips-section:nth-child(even) .tip-item { background: var(--white); }
-  .tip-dot {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-    flex-shrink: 0; margin-top: 7px;
-  }
-  .tip-item span { font-size: 14px; line-height: 1.6; color: var(--text); }
-  .tip-item strong { color: var(--blue); font-weight: 600; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px oklch(0% 0 0 / 0.12); }
+  .card:hover .card-img { transform: scale(1.04); }
+  .card:hover .card-cta { gap: 14px; color: var(--accent); }
 
-  /* callout box */
-  .callout {
-    background: var(--blue); color: var(--white);
-    border-radius: var(--r-lg); padding: 28px 30px; margin-top: 28px;
-  }
-  .callout p { font-size: 15px; line-height: 1.7; color: oklch(100% 0 0 / 0.82); font-weight: 300; }
-  .callout p strong { color: var(--white); font-weight: 500; }
-  .callout .btn-primary { margin-top: 18px; display: inline-flex; }
-
-  /* image placeholder */
-  .section-img {
-    border-radius: var(--r-lg); overflow: hidden;
-    box-shadow: var(--shadow);
-    aspect-ratio: 4/3;
+  .card-img-wrap {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
     background: var(--cream2);
-    position: sticky; top: 110px;
+    position: relative;
   }
-  .section-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .section-img-placeholder {
-    width: 100%; height: 100%; min-height: 280px;
-    display: flex; align-items: center; justify-content: center;
-    background: repeating-linear-gradient(
-      45deg,
-      oklch(88% 0.04 225 / 0.3) 0px, oklch(88% 0.04 225 / 0.3) 1px,
-      transparent 1px, transparent 12px
-    );
-    font-family: monospace; font-size: 12px; color: var(--text-lt);
-    text-align: center; padding: 20px;
+  .card-img {
+    width: 100%; height: 100%;
+    display: block;
+    transition: transform 0.5s ease;
   }
-
-  /* quote */
-  .tip-quote {
-    border-left: 3px solid var(--accent); padding-left: 20px; margin: 20px 0;
-  }
-  .tip-quote p {
-    font-family: 'Playfair Display', serif; font-size: clamp(16px, 1.8vw, 20px);
-    font-style: italic; color: var(--blue); line-height: 1.5; font-weight: 600;
-  }
-
-  /* partner card */
-  .partner-card {
-    background: var(--white); border-radius: var(--r-lg);
-    padding: 24px 28px; display: flex; gap: 20px; align-items: flex-start;
-    box-shadow: var(--shadow); margin-top: 24px;
-  }
-  .partner-icon {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: var(--accent); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .partner-icon svg { width: 22px; height: 22px; stroke: var(--white); fill: none; }
-  .partner-card h4 { font-size: 15px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
-  .partner-card p { font-size: 13px; line-height: 1.6; color: var(--text-lt); }
-  .partner-card a { color: var(--accent); text-decoration: none; font-weight: 500; font-size: 13px; }
-
-  /* process steps */
-  .steps { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
-  .step {
-    display: flex; gap: 16px; align-items: flex-start;
-    background: var(--white); border-radius: var(--r-lg);
-    padding: 18px 20px;
-    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.04);
-  }
-  .step-num {
+  .card-num {
+    position: absolute; top: 16px; left: 16px;
     width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent); color: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; flex-shrink: 0;
+    background: oklch(0% 0 0 / 0.4); backdrop-filter: blur(6px);
+    color: var(--white); display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; font-style: italic;
+    z-index: 2;
   }
-  .step h4 { font-size: 14px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
-  .step p { font-size: 13px; line-height: 1.6; color: var(--text-lt); }
 
-  /* buttons */
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: var(--white);
-    text-decoration: none; font-size: 15px; font-weight: 600;
-    padding: 13px 28px; border-radius: 40px;
-    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
-    transition: transform 0.18s, box-shadow 0.18s;
+  .card-body {
+    padding: 26px 26px 28px;
+    display: flex; flex-direction: column; flex-grow: 1;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
-
-  /* external link */
-  .ext-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--accent); text-decoration: none; font-weight: 500; font-size: 14px;
-    margin-top: 12px; transition: opacity 0.2s;
+  .card-eyebrow {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
   }
-  .ext-link:hover { opacity: 0.75; }
-  .ext-link svg { width: 13px; height: 13px; }
-
-  /* ── CTA ── */
-  .cta-section { padding: 0 7% 80px; }
-  .cta-banner {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%);
-    padding: 72px 7%; text-align: center; border-radius: var(--r-lg);
-  }
-  .cta-banner h2 {
+  .card-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(24px, 3.5vw, 42px); font-weight: 700;
-    color: var(--white); line-height: 1.15; margin-bottom: 14px;
+    font-size: 22px; font-weight: 700;
+    color: var(--blue); line-height: 1.2;
+    margin-bottom: 12px;
+    text-wrap: pretty;
   }
-  .cta-banner p {
-    color: oklch(100% 0 0 / 0.7); font-size: 16px; font-weight: 300;
-    max-width: 420px; margin: 0 auto 30px; line-height: 1.65;
+  .card-teaser {
+    font-size: 14.5px; line-height: 1.65; color: var(--text-lt);
+    font-weight: 300; margin-bottom: 22px;
+    flex-grow: 1;
+  }
+  .card-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 600;
+    color: var(--blue); letter-spacing: 0.02em;
+    transition: gap 0.2s, color 0.2s;
+  }
+  .card-cta svg {
+    width: 14px; height: 14px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Themed art for cards (SVG placeholder backgrounds) */
+  .art {
+    width: 100%; height: 100%;
+    display: block;
   }
 
   /* ── FOOTER ── */
@@ -301,7 +211,6 @@
     align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
   }
   .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
-  .footer-brand img { width: 32px; height: 32px; filter: brightness(0) invert(1); }
   footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
   footer a:hover { color: var(--accent); }
 
@@ -316,7 +225,7 @@
     background: var(--white); border-radius: 2px;
     transition: transform 0.3s, opacity 0.3s, background 0.3s;
   }
-  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  nav.site-nav.scrolled .nav-hamburger span { background: var(--blue); }
   .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .nav-hamburger.open span:nth-child(2) { opacity: 0; }
   .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -340,20 +249,27 @@
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
     text-align: center; border-bottom: none !important;
   }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 980px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  }
   @media (max-width: 860px) {
     .nav-hamburger { display: flex; }
     .nav-links { display: none !important; }
-    .section-inner { grid-template-columns: 1fr; }
-    .section-img { position: static; }
-    .topic-nav { padding: 22px 5%; }
-    .topic-nav-inner { font-size: 14px; gap: 6px 14px; }
+  }
+  @media (max-width: 620px) {
+    .card-grid { grid-template-columns: 1fr; gap: 20px; }
+    .hub-section { padding: 72px 7% 80px; }
+    .hub-head { margin-bottom: 36px; }
+    .card-body { padding: 22px 22px 24px; }
   }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav id="nav">
+<nav class="site-nav" id="nav">
   <a class="nav-logo" href="Landing Page.html">
     <img src="https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80.png" alt="Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
@@ -382,302 +298,688 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Hundeschule Krumbach & Umgebung</p>
-    <h1><em>Alltagstipps</em> für<br>dich & deinen Hund.</h1>
-    <p class="hero-sub">Praktische Tipps rund um Welpe, Alltag, Reisen und Gesundheit – damit ihr gemeinsam entspannt durchs Leben geht.</p>
+    <p class="hero-eyebrow">Wissen für den Alltag mit Hund</p>
+    <h1>Alltagstipps,<br>kompakt &amp; <em>ehrlich.</em></h1>
+    <p class="hero-sub">Praktische Tipps aus dem Alltag mit Hund. Von der ersten Welpennacht über Silvesterstress bis zur Ernährungsfrage — kompakte Antworten auf die Themen, die im Hundeleben immer wieder auftauchen.</p>
   </div>
 </div>
 
-<!-- TOPIC NAV -->
-<nav class="topic-nav">
-  <p class="topic-nav-eyebrow">Springe zu</p>
-  <div class="topic-nav-inner">
-    <a href="#welpen">Welpe einziehen</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#silvester">Silvester</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#urlaub">Urlaub</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#winter">Winter</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#alleinbleiben">Alleine bleiben</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#physio">Physiotherapie</a>
-    <span class="topic-nav-sep"></span>
-    <a href="#ernaehrung">Ernährung</a>
+<!-- HUB SECTION -->
+<section class="hub-section">
+  <div class="hub-head">
+    <div class="left">
+      <span class="section-label">Themen-Übersicht</span>
+      <h2>Welches Thema beschäftigt <em>euch</em> gerade?</h2>
+    </div>
+    <div class="count">7 Themen · regelmäßig erweitert</div>
   </div>
-</nav>
 
-<!-- WELPE -->
-<section class="tips-section" id="welpen">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Neuer Lebensabschnitt</span>
-      <h2 class="section-title">Welpe zieht ein – Tipps für die Eingewöhnung</h2>
-      <p>Dein Mini-Hund zieht ein? Herzlichen Glückwunsch – jetzt startet das Abenteuer Welpe! Viele fragen sich: Wie gewöhne ich meinen Welpen richtig ein? Was brauche ich an Erstausstattung?</p>
+  <div class="card-grid">
 
-      <h3>Erstausstattung</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Schlafplatz & Rückzugsort</strong> – Körbchen oder Box in deiner Nähe.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Leine & Geschirr</strong> – Von Beginn an positiv verknüpfen.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Transportbox</strong> – Praktisch für Autofahrten und als sicherer Platz.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Spielzeug & Kauartikel</strong> – Zum Entdecken und für die Zahnung.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Sicherheit</strong> – Wohnung „welpensicher" machen, Kabel & Gefahrenquellen wegräumen.</span></div>
+    <!-- 01 Welpenzeit -->
+    <a class="card" href="alltagstipps/welpenzeit/">
+      <div class="card-img-wrap">
+        <span class="card-num">01</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-welpe-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(92% 0.04 60)"/>
+              <stop offset="100%" stop-color="oklch(82% 0.07 50)"/>
+            </linearGradient>
+            <pattern id="dots-welpe-2" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="oklch(40% 0.06 60 / 0.10)"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-welpe-2)"/>
+          <rect width="400" height="300" fill="url(#dots-welpe-2)"/>
+          <!-- soft moon -->
+          <circle cx="335" cy="70" r="38" fill="oklch(97% 0.02 80)" opacity="0.85"/>
+          <circle cx="320" cy="64" r="34" fill="url(#bg-welpe-2)" opacity="0.95"/>
+          <!-- stars -->
+          <g fill="oklch(45% 0.06 60 / 0.4)">
+            <circle cx="80" cy="60" r="1.8"/>
+            <circle cx="140" cy="40" r="1.2"/>
+            <circle cx="260" cy="50" r="1.2"/>
+            <circle cx="380" cy="120" r="1.5"/>
+          </g>
+          <!-- bed shadow -->
+          <ellipse cx="200" cy="260" rx="135" ry="10" fill="oklch(38% 0.05 60 / 0.18)"/>
+          <!-- cushion -->
+          <path d="M 70 240 Q 60 200 110 195 L 290 195 Q 340 200 330 240 L 320 255 Q 200 270 80 255 Z"
+                fill="oklch(58% 0.10 30)"/>
+          <path d="M 80 235 Q 75 210 115 205 L 285 205 Q 325 210 320 235"
+                fill="none" stroke="oklch(42% 0.10 30)" stroke-width="1.4" stroke-linecap="round"/>
+          <!-- inner cushion -->
+          <path d="M 95 230 Q 90 215 120 213 L 280 213 Q 310 215 305 230 Z"
+                fill="oklch(72% 0.08 30)"/>
+          <!-- puppy body (curled) -->
+          <ellipse cx="200" cy="200" rx="90" ry="32" fill="oklch(52% 0.05 60)"/>
+          <ellipse cx="200" cy="195" rx="80" ry="22" fill="oklch(62% 0.05 60)"/>
+          <!-- belly highlight -->
+          <ellipse cx="200" cy="205" rx="70" ry="15" fill="oklch(70% 0.05 60)" opacity="0.55"/>
+          <!-- tail curled -->
+          <path d="M 120 195 Q 95 175 115 165 Q 130 162 130 180" fill="oklch(48% 0.05 60)" stroke="oklch(38% 0.05 60)" stroke-width="0.8"/>
+          <!-- head resting -->
+          <ellipse cx="270" cy="190" rx="32" ry="26" fill="oklch(58% 0.05 60)"/>
+          <!-- snout -->
+          <ellipse cx="290" cy="200" rx="14" ry="10" fill="oklch(68% 0.05 60)"/>
+          <!-- ear flop -->
+          <path d="M 248 168 Q 235 150 252 152 Q 265 156 262 178 Z" fill="oklch(42% 0.06 60)"/>
+          <!-- closed eye -->
+          <path d="M 274 188 Q 280 184 286 188" stroke="oklch(22% 0.02 60)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- nose -->
+          <ellipse cx="300" cy="200" rx="3.2" ry="2.4" fill="oklch(22% 0.02 60)"/>
+          <!-- subtle smile -->
+          <path d="M 296 207 Q 300 211 304 207" stroke="oklch(22% 0.02 60)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <!-- Zzz floating -->
+          <text x="155" y="155" font-family="'Playfair Display', serif" font-style="italic" font-size="28" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.85">z</text>
+          <text x="135" y="135" font-family="'Playfair Display', serif" font-style="italic" font-size="20" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.6">z</text>
+          <text x="120" y="115" font-family="'Playfair Display', serif" font-style="italic" font-size="14" font-weight="700" fill="oklch(45% 0.09 225)" opacity="0.4">z</text>
+        </svg>
       </div>
-
-      <h3>Die ersten Wochen</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Stubenreinheit</strong> – Nach Schlaf, Fressen und Spielen sofort rausgehen – und draußen ruhig loben.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Ruhezeiten</strong> – Welpen brauchen bis zu 20 Stunden Schlaf am Tag.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Sozialkontakte</strong> – Freundlich, ruhig und kontrolliert gestalten – besser wenige gute Begegnungen.</span></div>
+      <div class="card-body">
+        <p class="card-eyebrow">Die ersten Wochen</p>
+        <h3 class="card-title">Welpenzeit gestalten</h3>
+        <p class="card-teaser">Die ersten Wochen im neuen Zuhause: Schlaf, Stubenreinheit, Bindung — was dein Welpe jetzt wirklich braucht.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
       </div>
-
-      <div class="callout">
-        <p>Genau dabei unterstützt dich meine <strong>Welpengruppe in Krumbach</strong>. Reservier deinem Welpen gleich einen Platz.</p>
-        <a href="https://adventuredogs.123hundeschule.de/gruppen/53-welpengruppe" target="_blank" class="btn-primary">
-          Platz sichern
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SILVESTER -->
-<section class="tips-section" id="silvester">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Jahreswechsel</span>
-      <h2 class="section-title">Entspannt durch Silvester</h2>
-      <p>Feuerwerk, Knaller und Aufregung können selbst ruhige Hunde verunsichern. Mit ein paar einfachen Strategien sorgst du dafür, dass dein Hund sicher und gelassen bleibt.</p>
-
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Geräusche spielerisch üben</strong> – Über YouTube oder spezielle Audio-Tracks langsam an Knaller gewöhnen.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Sicherheit draußen</strong> – Sicherheitsgeschirr nutzen, nie ungesichert laufen lassen.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Auslastung am Morgen</strong> – Spielerisch Energie abbauen, damit der Abend entspannter wird.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Rückzugsort zuhause</strong> – Decke, vertraute Gerüche und deine Anwesenheit geben Sicherheit.</span></div>
-      </div>
-
-      <div class="callout">
-        <p>Lass uns die Zeit am <strong>Silvestermorgen gemeinsam verbringen</strong> – dein Hund baut spielerisch Energie ab und startet entspannt ins neue Jahr.</p>
-        <a href="https://adventuredogs.123hundeschule.de/veranstaltungen/31-jahresabschluss-2025" target="_blank" class="btn-primary">
-          Platz sichern
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- URLAUB -->
-<section class="tips-section" id="urlaub">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Gemeinsam unterwegs</span>
-      <h2 class="section-title">Urlaub mit Hund – Abenteuer für euch beide</h2>
-      <p>Ein Urlaub mit Hund ist mehr als eine Reise – es ist ein Geschenk an euch beide. Endlich Zeit füreinander, raus aus dem Alltag und rein ins Abenteuer.</p>
-
-      <h3>Packliste</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Futter & Näpfe</strong> – damit sich dein Hund wie zuhause fühlt.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Decke / Körbchen</strong> – für Ruhepausen und Geborgenheit unterwegs.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Impfpass & Versicherungsnachweis</strong> – alles griffbereit für Tierarztbesuche.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Erste-Hilfe-Set</strong> – für Sicherheit bei kleinen Notfällen.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Handtücher</strong> – um nasses Fell und Pfoten schnell zu trocknen.</span></div>
-      </div>
-
-      <div class="tip-quote">
-        <p>„Viele Hunde sind in neuer Umgebung unsicher. Kleine Routinen helfen, dass sich dein Hund schnell wohlfühlt."</p>
-      </div>
-
-      <p>Ob Wandern in den Bergen, Strandtage oder einfach Kuscheln und ausruhen – die Mischung aus Erleben und Entspannen macht den Urlaub mit Hund zu etwas ganz Besonderem.</p>
-    </div>
-  </div>
-</section>
-
-<!-- WINTER -->
-<section class="tips-section" id="winter">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Kalte Jahreszeit</span>
-      <h2 class="section-title">Hund im Winter – Tipps für kalte Tage</h2>
-      <p>Der Winter kann wunderschön sein – glitzernder Schnee, klare Luft, gemeinsame Spaziergänge – wenn ihr ein paar Dinge beachtet.</p>
-
-      <h3>Schutz & Pflege</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Hundemantel</strong> – besonders bei kleinen, kurzhaarigen oder älteren Hunden sinnvoll.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Pfotenpflege</strong> – nach jedem Spaziergang die Pfoten abspülen, damit Streusalz keine Reizungen verursacht.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Aufwärmen</strong> – langsam loslaufen lassen, um Verletzungen zu vermeiden.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Sichtbarkeit</strong> – reflektierende Halsbänder oder LED-Anhänger erhöhen die Sicherheit in der Dunkelheit.</span></div>
-      </div>
-
-      <h3>Aktiv bleiben</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span>Kurze, aber häufige Spaziergänge halten euch beide fit.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Indoor-Beschäftigung</strong> – Suchspiele, Tricks, Geruchsunterscheidung halten deinen Hund geistig ausgelastet.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span>Hunde verbrennen in der Kälte mehr Energie – kleine Anpassungen der Futtermenge können sinnvoll sein.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ALLEINBLEIBEN -->
-<section class="tips-section" id="alleinbleiben">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Trennungsstress</span>
-      <h2 class="section-title">Entspannt alleine bleiben</h2>
-      <p>Viele Hunde tun sich schwer, wenn sie plötzlich ohne ihre Menschen sind. Mit dem richtigen Training kann jeder Hund lernen, ruhig und entspannt alleine zu bleiben.</p>
-
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div>
-            <h4>Vorbereitung & Grundlagen</h4>
-            <p>Schaffe deinem Hund einen gemütlichen Rückzugsort, halte klare Routinen ein und sorge für Auslastung, ohne ihn zu überdrehen. Kleine Rituale vor dem Gehen geben Sicherheit.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div>
-            <h4>Training Schritt für Schritt</h4>
-            <p>Starte mit ganz kurzen Abwesenheiten und steigere die Dauer langsam. Übe auch typische Signale wie Schlüssel nehmen oder Schuhe anziehen – so verliert dein Hund die Aufregung bei diesen Abläufen.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div>
-            <h4>Typische Fehler vermeiden</h4>
-            <p>Zu große Trainingsschritte erschweren den Lernprozess. Bleib gelassen und gehe in kleinen Etappen vor.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div>
-            <h4>Fortschritte beobachten</h4>
-            <p>Eine Kamera hilft dir zu sehen, ob dein Hund wirklich entspannt ist oder Stress zeigt. So kannst du das Training anpassen.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="callout" style="margin-top: 32px;">
-        <p>Möchtest du, dass dein Hund entspannt alleine bleibt – ohne Bellen oder Stress? Ich unterstütze dich dabei, damit dein Hund das Alleinbleiben lernt.</p>
-        <a href="Kontakt.html" class="btn-primary" style="margin-top: 18px; display: inline-flex;">
-          Meld dich einfach
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PHYSIO -->
-<section class="tips-section" id="physio">
-  <div class="section-inner single">
-    <div class="section-text">
-      <span class="section-label">Gesundheit & Wohlbefinden</span>
-      <h2 class="section-title">Warum Tierphysiotherapie so wichtig ist</h2>
-      <p>Ein gesunder Hund bewegt sich frei, spielt mit Freude und genießt jeden Spaziergang. Tierphysiotherapie und Tierosteopathie sind sanfte, ganzheitliche Methoden, die Beweglichkeit und Lebensfreude erhalten.</p>
-
-      <h3>Vorteile regelmäßiger Behandlungen</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Schmerzlinderung</strong> – Verspannungen und Blockaden werden gezielt behandelt.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Beweglichkeit</strong> – Gelenke, Muskeln und Faszien bleiben geschmeidig.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Heilung</strong> – Unterstützung nach Operationen oder bei chronischen Erkrankungen wie Arthrose.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Prävention</strong> – Frühzeitiger Verschleiß wird verhindert, besonders bei älteren oder aktiven Hunden.</span></div>
-      </div>
-
-      <div class="partner-card">
-        <div class="partner-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </div>
-        <div>
-          <h4>Lena Hillenbrand</h4>
-          <p>Zertifizierte Tierphysiotherapeutin – arbeitet individuell und ganzheitlich, um die Beweglichkeit und Lebensqualität deines Hundes nachhaltig zu verbessern.</p>
-          <a href="https://maps.app.goo.gl/h1LSDABRBUd58vYm7?g_st=ipc" target="_blank" class="ext-link">
-            Auf Google Maps finden
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div>
-      <h3 style="font-size:15px;font-weight:600;color:var(--blue);margin-bottom:16px;">Ablauf einer Behandlung</h3>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div>
-            <h4>Anamnese & Befundung</h4>
-            <p>Ausführliches Gespräch über Vorgeschichte, Beschwerden und Alltag. Beobachtung in Ruhe und Bewegung.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div>
-            <h4>Individueller Therapieplan</h4>
-            <p>Physiotherapeutische Maßnahmen und osteopathische Techniken werden kombiniert.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div>
-            <h4>Behandlungssitzung</h4>
-            <p>Sanfte, gezielte Techniken in ruhiger Atmosphäre. Eine Sitzung dauert ca. 45 Minuten.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div>
-            <h4>Übungen für zuhause</h4>
-            <p>Leicht umsetzbare Übungen, die den Therapieerfolg festigen.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ERNAEHRUNG -->
-<section class="tips-section" id="ernaehrung">
-  <div class="section-inner">
-    <div class="section-img" style="aspect-ratio: 1 / 1;">
-      <img src="https://adventuredogs.training/wp-content/uploads/2025/10/Webbanner_1200x1200_hundeschule_02_1-1024x1024.jpg" alt="Platinum Hundefutter" style="object-fit: contain;">
-    </div>
-    <div class="section-text">
-      <span class="section-label">Ernährung</span>
-      <h2 class="section-title">Gesunde Ernährung für deinen Hund</h2>
-      <p>Hochwertiges Hundefutter unterstützt Gesundheit, Beweglichkeit und Wohlbefinden – und ergänzt Training, Physiotherapie und Osteopathie optimal.</p>
-
-      <h3>Woran man hochwertiges Futter erkennt</h3>
-      <div class="tip-list">
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Hochwertige Proteine</strong> aus Fleisch, Fisch oder Eiern stehen an erster Stelle.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Gesunde Fette</strong> – Omega-3- und Omega-6-Fettsäuren für Gelenke, Haut und Fell.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Vitamine & Mineralstoffe</strong> für Knochen, Gelenke und das Immunsystem.</span></div>
-        <div class="tip-item"><div class="tip-dot"></div><span><strong>Keine künstlichen Zusatzstoffe</strong> wie Farbstoffe, Zucker oder billige Füllstoffe.</span></div>
-      </div>
-
-      <div class="callout">
-        <p>Gut zu wissen: Jeder neue Kunde erhält zum Einstieg eine <strong>Testportion</strong>, um das Futter unkompliziert auszuprobieren.</p>
-        <a href="https://www.platinum.com/?utm_source=adventuredogs.training+&utm_medium=link&utm_campaign=de_extern_koop_adventuredogs" target="_blank" class="btn-primary">
-          Platinum entdecken
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="cta-section" style="padding-top: 80px;">
-  <div class="cta-banner">
-    <h2>Bereit für entspanntes Leben mit Hund?</h2>
-    <p>Schreib mir einfach – ich freue mich darauf, dich und deinen Hund kennenzulernen.</p>
-    <a href="Kontakt.html" class="btn-primary">
-      Meld dich einfach
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
+
+    <!-- 02 Silvester -->
+    <a class="card" href="alltagstipps/silvester/">
+      <div class="card-img-wrap">
+        <span class="card-num">02</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-silv-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(22% 0.07 270)"/>
+              <stop offset="100%" stop-color="oklch(32% 0.07 240)"/>
+            </linearGradient>
+            <radialGradient id="silv-burst-1" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="oklch(85% 0.18 80)"/>
+              <stop offset="100%" stop-color="oklch(85% 0.18 80 / 0)"/>
+            </radialGradient>
+            <radialGradient id="silv-burst-2" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="oklch(62% 0.18 25)"/>
+              <stop offset="100%" stop-color="oklch(62% 0.18 25 / 0)"/>
+            </radialGradient>
+            <radialGradient id="silv-burst-3" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="oklch(70% 0.16 185)"/>
+              <stop offset="100%" stop-color="oklch(70% 0.16 185 / 0)"/>
+            </radialGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-silv-2)"/>
+          <!-- stars -->
+          <g fill="oklch(100% 0 0 / 0.55)">
+            <circle cx="40" cy="50" r="1.4"/>
+            <circle cx="110" cy="30" r="1"/>
+            <circle cx="190" cy="55" r="1.2"/>
+            <circle cx="280" cy="35" r="1"/>
+            <circle cx="360" cy="65" r="1.3"/>
+            <circle cx="70" cy="110" r="1"/>
+            <circle cx="330" cy="135" r="1.2"/>
+          </g>
+          <!-- fireworks (large central + 2 smaller) -->
+          <g transform="translate(140 100)">
+            <circle r="42" fill="url(#silv-burst-1)"/>
+            <g stroke="oklch(95% 0.13 80)" stroke-width="2.2" stroke-linecap="round" fill="none">
+              <line x1="0" y1="-32" x2="0" y2="-14"/>
+              <line x1="0" y1="32" x2="0" y2="14"/>
+              <line x1="-32" y1="0" x2="-14" y2="0"/>
+              <line x1="32" y1="0" x2="14" y2="0"/>
+              <line x1="-23" y1="-23" x2="-10" y2="-10"/>
+              <line x1="23" y1="-23" x2="10" y2="-10"/>
+              <line x1="-23" y1="23" x2="-10" y2="10"/>
+              <line x1="23" y1="23" x2="10" y2="10"/>
+            </g>
+            <circle r="5" fill="oklch(98% 0.05 80)"/>
+            <!-- spark dots at tips -->
+            <g fill="oklch(95% 0.13 80)">
+              <circle cx="0" cy="-34" r="2"/>
+              <circle cx="0" cy="34" r="2"/>
+              <circle cx="-34" cy="0" r="2"/>
+              <circle cx="34" cy="0" r="2"/>
+              <circle cx="-25" cy="-25" r="2"/>
+              <circle cx="25" cy="-25" r="2"/>
+              <circle cx="-25" cy="25" r="2"/>
+              <circle cx="25" cy="25" r="2"/>
+            </g>
+          </g>
+          <g transform="translate(295 65)">
+            <circle r="28" fill="url(#silv-burst-2)"/>
+            <g stroke="oklch(72% 0.18 25)" stroke-width="1.6" stroke-linecap="round" fill="none">
+              <line x1="0" y1="-22" x2="0" y2="-9"/>
+              <line x1="0" y1="22" x2="0" y2="9"/>
+              <line x1="-22" y1="0" x2="-9" y2="0"/>
+              <line x1="22" y1="0" x2="9" y2="0"/>
+              <line x1="-16" y1="-16" x2="-7" y2="-7"/>
+              <line x1="16" y1="-16" x2="7" y2="-7"/>
+              <line x1="-16" y1="16" x2="-7" y2="7"/>
+              <line x1="16" y1="16" x2="7" y2="7"/>
+            </g>
+            <circle r="3" fill="oklch(82% 0.18 25)"/>
+          </g>
+          <g transform="translate(340 165)">
+            <circle r="22" fill="url(#silv-burst-3)"/>
+            <g stroke="oklch(80% 0.16 185)" stroke-width="1.4" stroke-linecap="round" fill="none">
+              <line x1="0" y1="-18" x2="0" y2="-7"/>
+              <line x1="0" y1="18" x2="0" y2="7"/>
+              <line x1="-18" y1="0" x2="-7" y2="0"/>
+              <line x1="18" y1="0" x2="7" y2="0"/>
+              <line x1="-13" y1="-13" x2="-5" y2="-5"/>
+              <line x1="13" y1="-13" x2="-5" y2="-5"/>
+              <line x1="-13" y1="13" x2="-5" y2="5"/>
+              <line x1="13" y1="13" x2="5" y2="5"/>
+            </g>
+            <circle r="2.5" fill="oklch(85% 0.16 185)"/>
+          </g>
+          <!-- soft ground -->
+          <path d="M 0 240 Q 200 220 400 240 L 400 300 L 0 300 Z" fill="oklch(15% 0.06 270)"/>
+          <!-- dog peeking from corner (lower-left, ears down, calm) -->
+          <g transform="translate(50 200)">
+            <!-- body curled, looking out -->
+            <ellipse cx="50" cy="80" rx="80" ry="14" fill="oklch(0% 0 0 / 0.35)"/>
+            <path d="M -10 70 Q -10 35 20 25 Q 50 18 75 30 Q 90 45 88 70 Z" fill="oklch(45% 0.05 60)"/>
+            <!-- head -->
+            <ellipse cx="50" cy="32" rx="26" ry="22" fill="oklch(52% 0.05 60)"/>
+            <!-- droopy ears (worried/calm) -->
+            <path d="M 28 22 Q 18 50 30 55 Q 38 45 36 28 Z" fill="oklch(35% 0.06 60)"/>
+            <path d="M 72 22 Q 82 50 70 55 Q 62 45 64 28 Z" fill="oklch(35% 0.06 60)"/>
+            <!-- snout -->
+            <ellipse cx="50" cy="42" rx="14" ry="10" fill="oklch(62% 0.05 60)"/>
+            <!-- eyes (gentle, not scared) -->
+            <circle cx="42" cy="32" r="2.5" fill="oklch(22% 0.02 60)"/>
+            <circle cx="58" cy="32" r="2.5" fill="oklch(22% 0.02 60)"/>
+            <circle cx="42.8" cy="31.2" r="0.8" fill="oklch(95% 0 0)"/>
+            <circle cx="58.8" cy="31.2" r="0.8" fill="oklch(95% 0 0)"/>
+            <!-- nose -->
+            <ellipse cx="50" cy="44" rx="3.5" ry="2.5" fill="oklch(22% 0.02 60)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Stress-Management</p>
+        <h3 class="card-title">Silvester ohne Stress</h3>
+        <p class="card-teaser">Wenn Böller und Lichter den Hund stressen: Vorbereitung, Rituale und Notfall-Strategien für eine ruhige Nacht.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 03 Urlaub -->
+    <a class="card" href="alltagstipps/urlaub/">
+      <div class="card-img-wrap">
+        <span class="card-num">03</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-url-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(82% 0.08 230)"/>
+              <stop offset="55%" stop-color="oklch(90% 0.07 220)"/>
+              <stop offset="100%" stop-color="oklch(86% 0.08 80)"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-url-2)"/>
+          <!-- sun -->
+          <circle cx="330" cy="80" r="34" fill="oklch(88% 0.16 80)" opacity="0.95"/>
+          <circle cx="330" cy="80" r="24" fill="oklch(94% 0.14 80)"/>
+          <!-- clouds -->
+          <g fill="oklch(99% 0.01 80 / 0.85)">
+            <ellipse cx="80" cy="65" rx="32" ry="10"/>
+            <ellipse cx="95" cy="60" rx="22" ry="8"/>
+            <ellipse cx="200" cy="40" rx="26" ry="8"/>
+          </g>
+          <!-- distant mountains -->
+          <path d="M 0 170 L 60 115 L 110 150 L 180 95 L 250 150 L 320 120 L 400 160 L 400 200 L 0 200 Z"
+                fill="oklch(58% 0.07 240 / 0.55)"/>
+          <path d="M 0 190 L 80 150 L 160 180 L 250 145 L 340 175 L 400 165 L 400 220 L 0 220 Z"
+                fill="oklch(48% 0.07 240 / 0.45)"/>
+          <!-- road -->
+          <path d="M 0 260 Q 200 230 400 260 L 400 300 L 0 300 Z" fill="oklch(38% 0.04 60)"/>
+          <g stroke="oklch(97% 0.03 80)" stroke-width="3" stroke-linecap="round">
+            <line x1="40" y1="275" x2="90" y2="270"/>
+            <line x1="140" y1="266" x2="190" y2="263"/>
+            <line x1="240" y1="263" x2="290" y2="267"/>
+            <line x1="340" y1="270" x2="385" y2="278"/>
+          </g>
+          <!-- camper van -->
+          <g transform="translate(115 175)">
+            <!-- shadow -->
+            <ellipse cx="85" cy="78" rx="100" ry="8" fill="oklch(0% 0 0 / 0.25)"/>
+            <!-- van body -->
+            <path d="M 0 60 L 0 30 Q 0 22 10 22 L 130 22 Q 145 22 152 32 L 168 50 Q 172 56 172 62 L 172 68 L 0 68 Z"
+                  fill="oklch(70% 0.16 30)"/>
+            <!-- top stripe -->
+            <rect x="0" y="36" width="172" height="10" fill="oklch(98% 0.02 80)"/>
+            <rect x="0" y="46" width="172" height="3" fill="oklch(45% 0.10 30)"/>
+            <!-- front window (slanted) -->
+            <path d="M 130 26 L 165 50 L 172 50 L 172 60 L 130 60 Z" fill="oklch(78% 0.10 225)"/>
+            <!-- side window with dog -->
+            <rect x="20" y="28" width="40" height="22" rx="2" fill="oklch(82% 0.10 225)"/>
+            <!-- dog peeking out -->
+            <g transform="translate(40 36)">
+              <ellipse cx="0" cy="6" rx="14" ry="9" fill="oklch(48% 0.06 60)"/>
+              <ellipse cx="0" cy="9" rx="9" ry="5" fill="oklch(58% 0.06 60)"/>
+              <!-- ear flopping out window -->
+              <path d="M -10 0 Q -16 16 -6 14 Z" fill="oklch(35% 0.06 60)"/>
+              <!-- eye -->
+              <circle cx="3" cy="4" r="1.5" fill="oklch(22% 0.02 60)"/>
+              <!-- nose -->
+              <ellipse cx="8" cy="9" rx="1.8" ry="1.3" fill="oklch(22% 0.02 60)"/>
+              <!-- tongue out -->
+              <ellipse cx="10" cy="14" rx="2" ry="3" fill="oklch(65% 0.15 25)"/>
+            </g>
+            <!-- door split line -->
+            <line x1="86" y1="22" x2="86" y2="68" stroke="oklch(45% 0.10 30)" stroke-width="1.2"/>
+            <!-- handle -->
+            <rect x="78" y="50" width="6" height="2" fill="oklch(45% 0.10 30)"/>
+            <!-- wheels -->
+            <circle cx="34" cy="68" r="12" fill="oklch(22% 0.02 60)"/>
+            <circle cx="34" cy="68" r="5" fill="oklch(60% 0.04 60)"/>
+            <circle cx="138" cy="68" r="12" fill="oklch(22% 0.02 60)"/>
+            <circle cx="138" cy="68" r="5" fill="oklch(60% 0.04 60)"/>
+            <!-- surfboard on top -->
+            <rect x="20" y="11" width="120" height="6" rx="3" fill="oklch(85% 0.12 145)"/>
+            <line x1="80" y1="11" x2="80" y2="17" stroke="oklch(58% 0.10 145)" stroke-width="1"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Reisen mit Hund</p>
+        <h3 class="card-title">Mit Hund in den Urlaub</h3>
+        <p class="card-teaser">Auto, Bahn, Flugzeug, Ferienwohnung — was du planen musst, damit alle entspannt ankommen.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 04 Winter -->
+    <a class="card" href="alltagstipps/winter/">
+      <div class="card-img-wrap">
+        <span class="card-num">04</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-win-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(88% 0.04 220)"/>
+              <stop offset="100%" stop-color="oklch(96% 0.02 220)"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-win-2)"/>
+          <!-- snowflakes -->
+          <g fill="oklch(100% 0 0 / 0.95)">
+            <circle cx="40" cy="40" r="2"/>
+            <circle cx="100" cy="70" r="1.5"/>
+            <circle cx="170" cy="35" r="2.5"/>
+            <circle cx="240" cy="60" r="2"/>
+            <circle cx="310" cy="30" r="1.8"/>
+            <circle cx="370" cy="90" r="2.2"/>
+            <circle cx="60" cy="130" r="1.5"/>
+            <circle cx="200" cy="110" r="2"/>
+            <circle cx="340" cy="170" r="1.8"/>
+            <circle cx="120" cy="200" r="1.5"/>
+            <circle cx="280" cy="230" r="1.5"/>
+          </g>
+          <!-- pine trees -->
+          <g transform="translate(70 100)">
+            <path d="M 0 110 L -28 60 L -14 60 L -34 25 L -16 25 L -36 -15 L 0 -28 L 36 -15 L 16 25 L 34 25 L 14 60 L 28 60 Z"
+                  fill="oklch(38% 0.07 145)"/>
+            <!-- snow caps -->
+            <path d="M -28 60 L -22 56 L -16 60 L -8 56 L 0 60 L 8 56 L 16 60 L 22 56 L 28 60" stroke="oklch(98% 0 0)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 0 -28 L 8 -22 L 16 -28" stroke="oklch(98% 0 0)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <rect x="-7" y="110" width="14" height="22" fill="oklch(32% 0.05 60)"/>
+          </g>
+          <g transform="translate(350 130)">
+            <path d="M 0 90 L -22 48 L -10 48 L -26 18 L -12 18 L -28 -10 L 0 -22 L 28 -10 L 12 18 L 26 18 L 10 48 L 22 48 Z"
+                  fill="oklch(40% 0.07 145)"/>
+            <path d="M -22 48 L -17 44 L -10 48 L 0 44 L 10 48 L 17 44 L 22 48" stroke="oklch(98% 0 0)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <rect x="-5" y="90" width="10" height="16" fill="oklch(32% 0.05 60)"/>
+          </g>
+          <!-- snowy ground -->
+          <path d="M 0 230 Q 100 215 200 225 Q 300 235 400 218 L 400 300 L 0 300 Z" fill="oklch(98% 0.005 220)"/>
+          <!-- paw prints -->
+          <g fill="oklch(75% 0.05 220 / 0.8)">
+            <g transform="translate(80 252)">
+              <ellipse cx="0" cy="2" rx="4" ry="3"/>
+              <circle cx="-4" cy="-2" r="1.6"/>
+              <circle cx="-1.5" cy="-4.5" r="1.6"/>
+              <circle cx="1.5" cy="-4.5" r="1.6"/>
+              <circle cx="4" cy="-2" r="1.6"/>
+            </g>
+            <g transform="translate(115 268)">
+              <ellipse cx="0" cy="2" rx="4" ry="3"/>
+              <circle cx="-4" cy="-2" r="1.6"/>
+              <circle cx="-1.5" cy="-4.5" r="1.6"/>
+              <circle cx="1.5" cy="-4.5" r="1.6"/>
+              <circle cx="4" cy="-2" r="1.6"/>
+            </g>
+            <g transform="translate(160 258)">
+              <ellipse cx="0" cy="2" rx="4" ry="3"/>
+              <circle cx="-4" cy="-2" r="1.6"/>
+              <circle cx="-1.5" cy="-4.5" r="1.6"/>
+              <circle cx="1.5" cy="-4.5" r="1.6"/>
+              <circle cx="4" cy="-2" r="1.6"/>
+            </g>
+          </g>
+          <!-- dog with hat and scarf -->
+          <g transform="translate(195 180)">
+            <ellipse cx="40" cy="68" rx="65" ry="7" fill="oklch(0% 0 0 / 0.15)"/>
+            <!-- body -->
+            <ellipse cx="40" cy="50" rx="45" ry="20" fill="oklch(45% 0.06 60)"/>
+            <ellipse cx="40" cy="54" rx="38" ry="14" fill="oklch(55% 0.06 60)" opacity="0.65"/>
+            <!-- legs -->
+            <rect x="10" y="58" width="7" height="14" rx="2.5" fill="oklch(38% 0.06 60)"/>
+            <rect x="25" y="60" width="7" height="13" rx="2.5" fill="oklch(38% 0.06 60)"/>
+            <rect x="50" y="60" width="7" height="13" rx="2.5" fill="oklch(38% 0.06 60)"/>
+            <rect x="64" y="58" width="7" height="14" rx="2.5" fill="oklch(38% 0.06 60)"/>
+            <!-- head -->
+            <circle cx="82" cy="34" r="20" fill="oklch(50% 0.06 60)"/>
+            <!-- ear -->
+            <path d="M 68 22 Q 60 8 76 18 Z" fill="oklch(35% 0.06 60)"/>
+            <path d="M 96 22 Q 104 8 88 18 Z" fill="oklch(35% 0.06 60)"/>
+            <!-- knit hat -->
+            <path d="M 64 22 Q 80 8 100 22 L 102 18 Q 104 12 96 8 Q 80 -4 64 12 Q 60 16 64 22 Z" fill="oklch(58% 0.16 25)"/>
+            <g stroke="oklch(45% 0.13 25)" stroke-width="0.8" fill="none">
+              <line x1="68" y1="16" x2="98" y2="16"/>
+              <line x1="68" y1="12" x2="98" y2="12"/>
+            </g>
+            <!-- pom -->
+            <circle cx="82" cy="0" r="5" fill="oklch(98% 0.01 80)"/>
+            <!-- eye -->
+            <circle cx="86" cy="34" r="2.5" fill="oklch(22% 0.02 60)"/>
+            <circle cx="86.8" cy="33.2" r="0.8" fill="oklch(95% 0 0)"/>
+            <!-- nose -->
+            <ellipse cx="98" cy="38" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
+            <!-- mouth small smile -->
+            <path d="M 95 44 Q 98 47 101 44" stroke="oklch(22% 0.02 60)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <!-- scarf -->
+            <path d="M 64 42 Q 82 52 100 42 L 102 52 Q 82 60 62 52 Z" fill="oklch(58% 0.16 25)"/>
+            <path d="M 58 52 Q 46 60 50 72 L 60 72 Q 60 60 64 52 Z" fill="oklch(58% 0.16 25)"/>
+            <line x1="50" y1="60" x2="60" y2="68" stroke="oklch(45% 0.13 25)" stroke-width="0.8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Kalte Jahreszeit</p>
+        <h3 class="card-title">Winter mit Hund</h3>
+        <p class="card-teaser">Pfotenpflege, Streusalz, kalte Tage und kurze Spaziergänge: So kommt dein Hund gut durch die kalte Jahreszeit.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 05 Alleinbleiben -->
+    <a class="card" href="alltagstipps/alleinbleiben/">
+      <div class="card-img-wrap">
+        <span class="card-num">05</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-alln-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(94% 0.025 70)"/>
+              <stop offset="100%" stop-color="oklch(84% 0.05 60)"/>
+            </linearGradient>
+            <linearGradient id="alln-light" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="oklch(95% 0.10 80 / 0.6)"/>
+              <stop offset="100%" stop-color="oklch(95% 0.10 80 / 0)"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-alln-2)"/>
+          <!-- floor -->
+          <path d="M 0 220 L 400 220 L 400 300 L 0 300 Z" fill="oklch(62% 0.07 60)"/>
+          <g stroke="oklch(45% 0.07 60 / 0.4)" stroke-width="1">
+            <line x1="60" y1="220" x2="35" y2="300"/>
+            <line x1="140" y1="220" x2="115" y2="300"/>
+            <line x1="220" y1="220" x2="195" y2="300"/>
+            <line x1="300" y1="220" x2="275" y2="300"/>
+            <line x1="380" y1="220" x2="355" y2="300"/>
+          </g>
+          <!-- door (closed) -->
+          <rect x="50" y="35" width="105" height="185" fill="oklch(80% 0.03 60)" stroke="oklch(48% 0.05 60)" stroke-width="2"/>
+          <rect x="60" y="45" width="85" height="165" fill="oklch(72% 0.04 60)"/>
+          <!-- door panels -->
+          <rect x="68" y="55" width="69" height="60" fill="none" stroke="oklch(55% 0.04 60)" stroke-width="1.4"/>
+          <rect x="68" y="125" width="69" height="75" fill="none" stroke="oklch(55% 0.04 60)" stroke-width="1.4"/>
+          <!-- handle -->
+          <circle cx="140" cy="135" r="3.5" fill="oklch(60% 0.10 80)"/>
+          <!-- light coming under door -->
+          <path d="M 50 220 L 155 220 L 175 232 L 30 232 Z" fill="url(#alln-light)"/>
+          <!-- rug -->
+          <ellipse cx="270" cy="245" rx="115" ry="20" fill="oklch(58% 0.13 25)"/>
+          <ellipse cx="270" cy="245" rx="100" ry="14" fill="oklch(68% 0.13 25)"/>
+          <ellipse cx="270" cy="245" rx="85" ry="9" fill="oklch(75% 0.10 25)"/>
+          <!-- dog lying down, calm -->
+          <g transform="translate(210 195)">
+            <!-- body lying on side -->
+            <ellipse cx="60" cy="42" rx="60" ry="15" fill="oklch(45% 0.06 60)"/>
+            <!-- belly highlight -->
+            <ellipse cx="60" cy="48" rx="50" ry="10" fill="oklch(55% 0.06 60)" opacity="0.7"/>
+            <!-- legs tucked -->
+            <ellipse cx="35" cy="52" rx="8" ry="6" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="55" cy="54" rx="8" ry="5" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="75" cy="54" rx="8" ry="5" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="95" cy="52" rx="8" ry="6" fill="oklch(38% 0.06 60)"/>
+            <!-- head resting on paws -->
+            <ellipse cx="115" cy="34" rx="22" ry="16" fill="oklch(52% 0.06 60)"/>
+            <!-- snout -->
+            <ellipse cx="135" cy="40" rx="10" ry="7" fill="oklch(62% 0.06 60)"/>
+            <!-- ear droopy -->
+            <path d="M 100 24 Q 90 12 102 32 Z" fill="oklch(35% 0.06 60)"/>
+            <!-- closed eye (peaceful) -->
+            <path d="M 117 35 Q 122 32 127 35" stroke="oklch(22% 0.02 60)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <!-- nose -->
+            <ellipse cx="142" cy="40" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
+            <!-- mouth -->
+            <path d="M 138 46 Q 142 49 146 46" stroke="oklch(22% 0.02 60)" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <!-- tail curled -->
+            <path d="M 5 40 Q -15 30 -10 18" stroke="oklch(45% 0.06 60)" stroke-width="6" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- floating heart (calm/safe) -->
+          <g transform="translate(220 130)">
+            <path d="M 0 -4 C -6 -14 -18 -14 -18 -2 C -18 8 -8 14 0 22 C 8 14 18 8 18 -2 C 18 -14 6 -14 0 -4 Z"
+                  fill="oklch(62% 0.16 25)" opacity="0.7"/>
+          </g>
+          <g transform="translate(190 90) scale(0.55)">
+            <path d="M 0 -4 C -6 -14 -18 -14 -18 -2 C -18 8 -8 14 0 22 C 8 14 18 8 18 -2 C 18 -14 6 -14 0 -4 Z"
+                  fill="oklch(62% 0.16 25)" opacity="0.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Schritt für Schritt</p>
+        <h3 class="card-title">Alleinbleiben lernen</h3>
+        <p class="card-teaser">Vom Schatten zur Selbstständigkeit: So lernt dein Hund Schritt für Schritt, dass Alleinsein okay ist.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 06 Tierphysiotherapie -->
+    <a class="card" href="alltagstipps/tierphysiotherapie/">
+      <div class="card-img-wrap">
+        <span class="card-num">06</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-phys-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(92% 0.04 185)"/>
+              <stop offset="100%" stop-color="oklch(82% 0.09 185)"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-phys-2)"/>
+          <!-- ambient circles -->
+          <g fill="none" stroke="oklch(45% 0.12 185 / 0.18)" stroke-width="1.2" stroke-dasharray="3 5">
+            <circle cx="100" cy="80" r="38"/>
+            <circle cx="320" cy="220" r="45"/>
+          </g>
+          <!-- floor mat -->
+          <ellipse cx="200" cy="252" rx="170" ry="22" fill="oklch(0% 0 0 / 0.12)"/>
+          <rect x="50" y="225" width="300" height="40" rx="8" fill="oklch(58% 0.14 25)"/>
+          <rect x="60" y="232" width="280" height="26" rx="4" fill="oklch(70% 0.14 25)"/>
+          <g stroke="oklch(48% 0.14 25 / 0.4)" stroke-width="1.2">
+            <line x1="80" y1="240" x2="80" y2="252"/>
+            <line x1="140" y1="240" x2="140" y2="252"/>
+            <line x1="200" y1="240" x2="200" y2="252"/>
+            <line x1="260" y1="240" x2="260" y2="252"/>
+            <line x1="320" y1="240" x2="320" y2="252"/>
+          </g>
+          <!-- dog stretched on side, eyes closed, relaxed -->
+          <g transform="translate(80 170)">
+            <!-- body elongated -->
+            <ellipse cx="105" cy="50" rx="105" ry="22" fill="oklch(45% 0.06 60)"/>
+            <!-- belly -->
+            <ellipse cx="110" cy="58" rx="85" ry="13" fill="oklch(58% 0.06 60)" opacity="0.7"/>
+            <!-- legs stretched out -->
+            <ellipse cx="15" cy="68" rx="14" ry="6" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="40" cy="72" rx="12" ry="5" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="160" cy="72" rx="12" ry="5" fill="oklch(38% 0.06 60)"/>
+            <ellipse cx="185" cy="68" rx="14" ry="6" fill="oklch(38% 0.06 60)"/>
+            <!-- head -->
+            <ellipse cx="208" cy="40" rx="22" ry="17" fill="oklch(52% 0.06 60)"/>
+            <ellipse cx="225" cy="46" rx="11" ry="8" fill="oklch(62% 0.06 60)"/>
+            <!-- ear floppy -->
+            <path d="M 196 28 Q 188 14 202 26 Z" fill="oklch(35% 0.06 60)"/>
+            <!-- closed eye blissful -->
+            <path d="M 210 38 Q 215 35 220 38" stroke="oklch(22% 0.02 60)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <!-- nose -->
+            <ellipse cx="232" cy="46" rx="3" ry="2.2" fill="oklch(22% 0.02 60)"/>
+            <!-- small relaxed smile -->
+            <path d="M 228 51 Q 232 54 236 51" stroke="oklch(22% 0.02 60)" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <!-- tail -->
+            <path d="M 3 50 Q -15 40 -8 28" stroke="oklch(45% 0.06 60)" stroke-width="7" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- gentle hands from above -->
+          <g transform="translate(195 135)">
+            <ellipse cx="0" cy="0" rx="20" ry="14" fill="oklch(82% 0.05 60)" stroke="oklch(50% 0.05 60)" stroke-width="1.5"/>
+            <!-- fingers -->
+            <path d="M -14 8 L -17 22 M -7 11 L -8 26 M 0 12 L 0 26 M 7 11 L 9 25 M 13 8 L 16 22"
+                  stroke="oklch(50% 0.05 60)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- gentle motion lines -->
+            <path d="M -25 -8 Q -22 -2 -25 4" stroke="oklch(38% 0.12 185)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 25 -8 Q 22 -2 25 4" stroke="oklch(38% 0.12 185)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- subtle heart/healing icon -->
+          <g transform="translate(305 105)">
+            <circle r="20" fill="oklch(98% 0.01 80)" opacity="0.85"/>
+            <path d="M 0 -2 C -4 -10 -14 -10 -14 0 C -14 7 -7 11 0 17 C 7 11 14 7 14 0 C 14 -10 4 -10 0 -2 Z"
+                  fill="oklch(62% 0.16 25)" transform="scale(0.7)"/>
+            <line x1="-6" y1="-2" x2="-3" y2="-2" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
+            <line x1="3" y1="-2" x2="6" y2="-2" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
+            <line x1="0" y1="-5" x2="0" y2="1" stroke="oklch(98% 0.01 80)" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Gesundheit &amp; Bewegung</p>
+        <h3 class="card-title">Tierphysiotherapie verstehen</h3>
+        <p class="card-teaser">Wann es Sinn macht, einen Physiotherapeuten dazuzuholen — und woran du erkennst, dass dein Hund Hilfe braucht.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 07 Ernährung -->
+    <a class="card" href="alltagstipps/ernaehrung/">
+      <div class="card-img-wrap">
+        <span class="card-num">07</span>
+        <svg class="art card-img" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg-food-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="oklch(93% 0.05 75)"/>
+              <stop offset="100%" stop-color="oklch(83% 0.09 65)"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="url(#bg-food-2)"/>
+          <!-- floating ingredients background -->
+          <g opacity="0.35">
+            <circle cx="60" cy="50" r="6" fill="oklch(70% 0.14 145)"/>
+            <circle cx="340" cy="55" r="7" fill="oklch(70% 0.18 25)"/>
+            <circle cx="60" cy="130" r="5" fill="oklch(80% 0.16 80)"/>
+            <circle cx="360" cy="135" r="6" fill="oklch(70% 0.18 80)"/>
+            <ellipse cx="100" cy="85" rx="8" ry="4" fill="oklch(60% 0.18 25)" transform="rotate(30 100 85)"/>
+            <ellipse cx="320" cy="95" rx="9" ry="4" fill="oklch(70% 0.12 145)" transform="rotate(-30 320 95)"/>
+          </g>
+          <!-- placemat -->
+          <ellipse cx="200" cy="210" rx="160" ry="48" fill="oklch(65% 0.10 60)"/>
+          <ellipse cx="200" cy="210" rx="148" ry="42" fill="oklch(74% 0.10 60)"/>
+          <ellipse cx="200" cy="210" rx="138" ry="36" fill="oklch(80% 0.08 60)"/>
+          <!-- main bowl (front) -->
+          <g transform="translate(200 200)">
+            <!-- shadow under bowl -->
+            <ellipse cx="0" cy="38" rx="92" ry="10" fill="oklch(0% 0 0 / 0.18)"/>
+            <!-- bowl body -->
+            <path d="M -95 -10 Q -95 36 0 36 Q 95 36 95 -10 Z" fill="oklch(45% 0.10 225)"/>
+            <!-- bowl rim -->
+            <ellipse cx="0" cy="-10" rx="95" ry="20" fill="oklch(58% 0.11 225)"/>
+            <ellipse cx="0" cy="-10" rx="85" ry="15" fill="oklch(32% 0.08 240)"/>
+            <!-- inner shadow -->
+            <ellipse cx="0" cy="-7" rx="80" ry="11" fill="oklch(22% 0.05 240)"/>
+            <!-- contents: layered kibble + veggies -->
+            <g>
+              <!-- back row -->
+              <ellipse cx="-50" cy="-12" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
+              <ellipse cx="-30" cy="-14" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
+              <ellipse cx="-10" cy="-13" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
+              <ellipse cx="10" cy="-14" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
+              <ellipse cx="30" cy="-13" rx="7" ry="5" fill="oklch(58% 0.11 60)"/>
+              <ellipse cx="50" cy="-12" rx="7" ry="5" fill="oklch(48% 0.10 60)"/>
+              <!-- middle -->
+              <circle cx="-40" cy="-8" r="6" fill="oklch(70% 0.14 80)"/>
+              <circle cx="-20" cy="-9" r="6" fill="oklch(62% 0.18 25)"/>
+              <circle cx="0" cy="-7" r="6" fill="oklch(65% 0.14 145)"/>
+              <circle cx="20" cy="-9" r="6" fill="oklch(58% 0.11 60)"/>
+              <circle cx="40" cy="-7" r="6" fill="oklch(72% 0.13 80)"/>
+              <!-- front carrot -->
+              <ellipse cx="-12" cy="-4" rx="10" ry="4" fill="oklch(65% 0.18 50)" transform="rotate(-15 -12 -4)"/>
+              <!-- parsley top -->
+              <path d="M -8 -6 L -10 -10 M -6 -8 L -4 -12 M -3 -7 L -1 -11" stroke="oklch(50% 0.14 145)" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- small bone -->
+              <g transform="translate(22 -3) rotate(20)">
+                <rect x="-10" y="-2" width="20" height="4" rx="2" fill="oklch(95% 0.03 80)"/>
+                <circle cx="-10" cy="-2" r="3" fill="oklch(95% 0.03 80)"/>
+                <circle cx="-10" cy="2" r="3" fill="oklch(95% 0.03 80)"/>
+                <circle cx="10" cy="-2" r="3" fill="oklch(95% 0.03 80)"/>
+                <circle cx="10" cy="2" r="3" fill="oklch(95% 0.03 80)"/>
+              </g>
+            </g>
+            <!-- gloss on rim -->
+            <path d="M -75 -16 Q -55 -22 -25 -22" stroke="oklch(90% 0.06 225)" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+          </g>
+          <!-- side measuring scoop -->
+          <g transform="translate(85 155) rotate(-20)">
+            <ellipse cx="0" cy="0" rx="22" ry="14" fill="oklch(72% 0.13 30)"/>
+            <ellipse cx="0" cy="-2" rx="20" ry="11" fill="oklch(82% 0.13 30)"/>
+            <rect x="18" y="-3" width="32" height="6" rx="2" fill="oklch(62% 0.13 30)"/>
+            <!-- spilled kibble -->
+            <circle cx="-22" cy="6" r="4" fill="oklch(58% 0.11 60)"/>
+            <circle cx="-32" cy="14" r="3.5" fill="oklch(48% 0.10 60)"/>
+            <circle cx="-15" cy="18" r="3.5" fill="oklch(58% 0.11 60)"/>
+          </g>
+          <!-- paw print top corner -->
+          <g transform="translate(330 60)" fill="oklch(40% 0.06 60 / 0.35)">
+            <ellipse cx="0" cy="6" rx="10" ry="8"/>
+            <circle cx="-10" cy="-4" r="4"/>
+            <circle cx="-4" cy="-10" r="4"/>
+            <circle cx="4" cy="-10" r="4"/>
+            <circle cx="10" cy="-4" r="4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-eyebrow">Was kommt in den Napf?</p>
+        <h3 class="card-title">Hundeernährung Grundlagen</h3>
+        <p class="card-teaser">Trocken, nass, BARF, vegan? Ein Überblick über die Möglichkeiten und worauf es bei der Auswahl wirklich ankommt.</p>
+        <span class="card-cta">Zum Artikel
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
   </div>
-</div>
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -692,13 +994,15 @@
   </div>
 </footer>
 
+<!-- Preview-Banner -->
+<div class="preview-note">Vorschau · Alltagstipps.html bleibt unverändert</div>
+
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
-</script>
-<script>
+
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {

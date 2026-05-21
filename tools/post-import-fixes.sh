@@ -54,6 +54,10 @@ inject_favicon "$DST/alltagstipps/index.html"  "../"
 inject_favicon "$DST/impressum/index.html"     "../"
 inject_favicon "$DST/ueber-mich/index.html"    "../"
 [ -f "$DST/gebucht/index.html" ] && inject_favicon "$DST/gebucht/index.html" "../"
+# Alltagstipps detail pages live 2 levels deep, so prefix is "../../".
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+    [ -f "$DST/alltagstipps/$topic/index.html" ] && inject_favicon "$DST/alltagstipps/$topic/index.html" "../../"
+done
 
 # ─── Subpage path fix: any "assets/..." → "../assets/..." ───
 # Subpages live at /<slug>/index.html, so a bare "assets/foo" resolves
@@ -74,6 +78,19 @@ for p in kontakt angebot alltagstipps impressum ueber-mich gebucht; do
         sed -i 's|url("assets/|url("../assets/|g'   "$F"
         sed -i 's|url(assets/|url(../assets/|g'     "$F"
         echo "  fixed subpage asset paths: $p"
+    fi
+done
+# Same fix, two levels deep, for alltagstipps detail pages.
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+    F="$DST/alltagstipps/$topic/index.html"
+    [ -f "$F" ] || continue
+    if grep -qE "$PATTERN" "$F" 2>/dev/null; then
+        sed -i 's|src="assets/|src="../../assets/|g'   "$F"
+        sed -i 's|href="assets/|href="../../assets/|g' "$F"
+        sed -i "s|url('assets/|url('../../assets/|g"   "$F"
+        sed -i 's|url("assets/|url("../../assets/|g'   "$F"
+        sed -i 's|url(assets/|url(../../assets/|g'     "$F"
+        echo "  fixed detail-page asset paths: alltagstipps/$topic"
     fi
 done
 
@@ -158,6 +175,44 @@ inject_seo "$DST/ueber-mich/index.html" "ueber-mich/" \
   "Über mich – Julia Doubrawa | Adventure Dogs Krumbach" \
   "Julia Doubrawa, Hundetrainerin aus Krumbach – mein Trainingsansatz, mein Weg mit Einstein und meine Fortbildungen rund um faires Hundetraining." \
   "hero-ueber-mich.jpg"
+
+# Alltagstipps detail pages — per-topic SEO. Hero image filename refers
+# to whatever is in /assets/ today; if the topic-specific photo gets
+# uploaded later, update the filename here too.
+inject_seo "$DST/alltagstipps/welpenzeit/index.html" "alltagstipps/welpenzeit/" \
+  "Welpenzeit gestalten – Alltagstipps | Adventure Dogs" \
+  "Die ersten Wochen mit Welpe: Schlaf, Stubenreinheit, Bindung und Sozialisierung. Tipps von Hundetrainerin Julia Doubrawa aus Krumbach." \
+  "offer-welpenkurs.jpg"
+
+inject_seo "$DST/alltagstipps/silvester/index.html" "alltagstipps/silvester/" \
+  "Silvester mit Hund – ohne Stress | Adventure Dogs" \
+  "Silvester mit Hund entspannt überstehen: Vorbereitung, Rituale und Notfallstrategien gegen Stress durch Böller und Lichter." \
+  "hero-alltagstipps.jpg"
+
+inject_seo "$DST/alltagstipps/urlaub/index.html" "alltagstipps/urlaub/" \
+  "Mit Hund in den Urlaub – Reisetipps | Adventure Dogs" \
+  "Mit Hund verreisen: Was du für Auto, Bahn, Flugzeug oder Ferienwohnung planen musst, damit alle entspannt ankommen." \
+  "hero-angebot.jpg"
+
+inject_seo "$DST/alltagstipps/winter/index.html" "alltagstipps/winter/" \
+  "Winter mit Hund – Pflege und Spaziergänge | Adventure Dogs" \
+  "So kommt dein Hund gut durch den Winter: Pfotenpflege, Streusalz, kalte Tage und die richtigen Spaziergänge." \
+  "hero-alltagstipps.jpg"
+
+inject_seo "$DST/alltagstipps/alleinbleiben/index.html" "alltagstipps/alleinbleiben/" \
+  "Alleinbleiben lernen – Schritt für Schritt | Adventure Dogs" \
+  "So lernt dein Hund, dass Alleinsein okay ist — fairer und nachhaltiger Trainingsweg von Hundetrainerin Julia Doubrawa." \
+  "service-einzeltraining.jpg"
+
+inject_seo "$DST/alltagstipps/tierphysiotherapie/index.html" "alltagstipps/tierphysiotherapie/" \
+  "Tierphysiotherapie für Hunde – wann sinnvoll? | Adventure Dogs" \
+  "Wann eine Tierphysiotherapie für deinen Hund sinnvoll ist und woran du erkennst, dass dein Hund Hilfe braucht." \
+  "offer-intensivcoaching.jpg"
+
+inject_seo "$DST/alltagstipps/ernaehrung/index.html" "alltagstipps/ernaehrung/" \
+  "Hundeernährung Grundlagen – Trocken, Nass, BARF | Adventure Dogs" \
+  "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF und mehr. Ein Überblick über die Möglichkeiten und worauf es ankommt." \
+  "service-sozialkontakt.jpg"
 
 # Gebucht (booking-confirmation page): inject SEO + noindex so Google
 # doesn't index this post-conversion landing in search results.
