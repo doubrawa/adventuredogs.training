@@ -174,6 +174,38 @@ if [ -f "$DST/gebucht/index.html" ]; then
     fi
 fi
 
+# ─── Kontakt FAQ: 5 extra Q&A pairs for SEO ───
+# claude.ai/design ships 5 FAQs on the Kontakt page (logistics-heavy:
+# Wo, Wer, Antwortzeit, Erstanfrage, Formate). We extend with 5 questions
+# people google BEFORE making contact: Kosten, Methode, Welpen-Alter,
+# Problemverhalten, Trainerausbildung. Content lives in tools/faq-extra.html
+# so the wording stays reviewable and editable in isolation.
+# Idempotent: the "Was kostet das Training" sentinel ensures we only inject
+# once. Anchor is the last existing FAQ ("Welche Trainingsformate ...").
+# Also bump max-height on .faq-answer so the longer Methode answer
+# doesn't clip on mobile.
+F="$DST/kontakt/index.html"
+if [ -f "$F" ] && ! grep -q 'Was kostet das Training' "$F"; then
+    LAST_Q=$(grep -n 'Welche Trainingsformate bietest du an?' "$F" | head -1 | cut -d: -f1)
+    if [ -n "$LAST_Q" ]; then
+        # The closing </div> of that faq-item is 4 lines below the question.
+        INSERT_LINE=$((LAST_Q + 4))
+        tmp=$(mktemp)
+        head -n "$INSERT_LINE" "$F"            > "$tmp"
+        cat "$DST/tools/faq-extra.html"        >> "$tmp"
+        tail -n +$((INSERT_LINE + 1)) "$F"     >> "$tmp"
+        mv "$tmp" "$F"
+        echo "  injected 5 extra FAQs on Kontakt"
+    else
+        echo "  WARN: FAQ anchor not found on Kontakt — extra FAQs not injected"
+    fi
+fi
+# Bump max-height so the two-paragraph Methode answer doesn't clip on mobile.
+if [ -f "$F" ] && grep -q '\.faq-item\.open \.faq-answer { max-height: 300px; }' "$F"; then
+    sed -i 's|\.faq-item\.open \.faq-answer { max-height: 300px; }|.faq-item.open .faq-answer { max-height: 800px; }|g' "$F"
+    echo "  bumped FAQ max-height: kontakt/index.html"
+fi
+
 # ─── LocalBusiness JSON-LD on Landing ───
 # Helps Google understand this is a Hundeschule in Krumbach with phone,
 # address, service area. Supports Local-Search and Knowledge-Panel.
