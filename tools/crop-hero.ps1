@@ -20,7 +20,7 @@ param(
     [Parameter(Mandatory)][string]$Dst,
     [int]$W = 1920,
     [int]$H = 1080,
-    [int]$Quality = 88,
+    [int]$Quality = 82,
     [ValidateSet('center','top','bottom')][string]$Anchor = 'center'
 )
 

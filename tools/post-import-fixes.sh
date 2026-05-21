@@ -261,11 +261,15 @@ if [ -f "$F" ] && grep -q '\.faq-item\.open \.faq-answer { max-height: 300px; }'
     echo "  bumped FAQ max-height: kontakt/index.html"
 fi
 
-# ─── Alltagstipps card SVGs → IMG with real hero photo ───
-# claude.ai/design renders decorative SVG illustrations in the
-# Alltagstipps hub cards and in the bottom "more from series" cards
-# of each detail page. We want the real topic hero photos there.
-# PowerShell handles the multi-line regex; idempotent per-card.
+# ─── Alltagstipps: thumbnail-Variants + card SVG → IMG swap ───
+# 1) Generate small thumb-<slug>.jpg from each hero (800px wide, q=80).
+#    Cards reference these to avoid loading 7 full heroes on the hub
+#    (was ~2.9 MB, now ~0.5 MB).
+# 2) Replace the design tool's decorative card SVGs with <img> tags
+#    pointing at the thumbs. PowerShell handles multi-line regex;
+#    idempotent per-card and per-CSS-rule.
+echo "  generating Alltagstipps card thumbnails"
+powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-thumbs.ps1" -AssetsDir "$DST/assets"
 echo "  swapping Alltagstipps card SVGs → IMGs"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
 
