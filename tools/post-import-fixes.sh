@@ -207,12 +207,12 @@ inject_seo "$DST/alltagstipps/alleinbleiben/index.html" "alltagstipps/alleinblei
 inject_seo "$DST/alltagstipps/tierphysiotherapie/index.html" "alltagstipps/tierphysiotherapie/" \
   "Tierphysiotherapie für Hunde – wann sinnvoll? | Adventure Dogs" \
   "Wann eine Tierphysiotherapie für deinen Hund sinnvoll ist und woran du erkennst, dass dein Hund Hilfe braucht." \
-  "offer-intensivcoaching.jpg"
+  "hero-tierphysiotherapie.jpg"
 
 inject_seo "$DST/alltagstipps/ernaehrung/index.html" "alltagstipps/ernaehrung/" \
   "Hundeernährung Grundlagen – Trocken, Nass, BARF | Adventure Dogs" \
   "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF und mehr. Ein Überblick über die Möglichkeiten und worauf es ankommt." \
-  "partner-platinum.jpg"
+  "hero-ernaehrung.jpg"
 
 # Gebucht (booking-confirmation page): inject SEO + noindex so Google
 # doesn't index this post-conversion landing in search results.
