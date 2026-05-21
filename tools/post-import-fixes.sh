@@ -202,7 +202,7 @@ inject_seo "$DST/alltagstipps/winter/index.html" "alltagstipps/winter/" \
 inject_seo "$DST/alltagstipps/alleinbleiben/index.html" "alltagstipps/alleinbleiben/" \
   "Alleinbleiben lernen – Schritt für Schritt | Adventure Dogs" \
   "So lernt dein Hund, dass Alleinsein okay ist — fairer und nachhaltiger Trainingsweg von Hundetrainerin Julia Doubrawa." \
-  "service-einzeltraining.jpg"
+  "hero-alleinbleiben.jpg"
 
 inject_seo "$DST/alltagstipps/tierphysiotherapie/index.html" "alltagstipps/tierphysiotherapie/" \
   "Tierphysiotherapie für Hunde – wann sinnvoll? | Adventure Dogs" \
