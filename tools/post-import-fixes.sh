@@ -197,7 +197,7 @@ inject_seo "$DST/alltagstipps/urlaub/index.html" "alltagstipps/urlaub/" \
 inject_seo "$DST/alltagstipps/winter/index.html" "alltagstipps/winter/" \
   "Winter mit Hund – Pflege und Spaziergänge | Adventure Dogs" \
   "So kommt dein Hund gut durch den Winter: Pfotenpflege, Streusalz, kalte Tage und die richtigen Spaziergänge." \
-  "hero-alltagstipps.jpg"
+  "hero-winter.jpg"
 
 inject_seo "$DST/alltagstipps/alleinbleiben/index.html" "alltagstipps/alleinbleiben/" \
   "Alleinbleiben lernen – Schritt für Schritt | Adventure Dogs" \
