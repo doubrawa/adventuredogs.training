@@ -44,16 +44,21 @@ function Replace-HubCards($file) {
     $orig = [System.IO.File]::ReadAllText($file)
     $content = $orig
 
-    foreach ($t in $topics) {
+    for ($i = 0; $i -lt $topics.Count; $i++) {
+        $t = $topics[$i]
         $href = "$($t.slug)/"
         # Skip if this card was already swapped
         $done = "<a class=""card"" href=""$href"">[^<]*<div class=""card-img-wrap"">\s*<span class=""card-num"">[^<]*</span>\s*<img class=""card-img"""
         if ([regex]::IsMatch($content, $done, $rxOpt)) { continue }
 
+        # First card is above the fold on most viewports → eager-load so it
+        # counts toward LCP. Cards 2-7 stay lazy (off-screen on initial paint).
+        $loading = if ($i -eq 0) { 'eager' } else { 'lazy' }
+
         # Surgical replace: keep everything up through <span class="card-num">..</span>
         # then swap the <svg class="art card-img" ...> ... </svg> for an <img>.
         $pattern = "(<a class=""card"" href=""$href"">.*?<span class=""card-num"">[^<]*</span>\s*)<svg class=""art card-img""[^>]*>.*?</svg>"
-        $repl    = "`$1<img class=""card-img"" src=""../assets/$($t.thumb)"" alt=""$($t.alt)"" loading=""lazy"">"
+        $repl    = "`$1<img class=""card-img"" src=""../assets/$($t.thumb)"" alt=""$($t.alt)"" loading=""$loading"">"
         $content = [regex]::Replace($content, $pattern, $repl, $rxOpt)
     }
 
