@@ -293,6 +293,23 @@ if [ -f "$F" ] && [ -f "$FAQ_SCHEMA" ] && ! grep -q '"@type": "FAQPage"' "$F"; t
     fi
 fi
 
+# ─── Trust-Bar: aktuelle Bewertungs-Zahl + Link zu Google Reviews ───
+# Design-Tool liefert generisch "5-Sterne Bewertungen / Von glücklichen
+# Hundebesitzern". Wir ersetzen durch eine konkrete Zahl ("50+") plus
+# Klicklink zur Google-Maps-Seite, wo die Bewertungen einsehbar sind.
+# Zahl manuell hochsetzen wenn signifikant gewachsen (Faustregel: jede
+# +25 Bewertungen die nächste 5er-Stelle).
+F="$DST/index.html"
+if [ -f "$F" ] && ! grep -q '50+ 5-Sterne' "$F"; then
+    # Text + Link: sed -z für Multi-Line, [^<]* statt 'ü' wegen
+    # Git-Bash-sed-Locale-Quirks.
+    sed -i -z 's|<strong>5-Sterne Bewertungen</strong>[[:space:]]*<span>Von gl[^<]*</span>|<strong>50+ 5-Sterne Bewertungen</strong>\n      <span><a href="https://maps.app.goo.gl/esSVYBByDAj2E8KY8" target="_blank" rel="noopener">Hier ansehen</a></span>|g' "$F"
+    # Link-Styling: erbt Farbe vom Span (helles Weiß auf Hero-Bild),
+    # dezent unterstrichen damit clickbar erkennbar ist.
+    sed -i -z 's|\(\.trust-text span {[^}]*}\)|\1\n  .trust-text span a { color: inherit; text-decoration: underline; text-decoration-color: oklch(100% 0 0 / 0.35); text-underline-offset: 3px; }\n  .trust-text span a:hover { color: oklch(100% 0 0 / 0.95); text-decoration-color: oklch(100% 0 0 / 0.7); }|' "$F"
+    echo "  injected trust-bar reviews link on Landing"
+fi
+
 # ─── LocalBusiness JSON-LD on Landing ───
 # Helps Google understand this is a Hundeschule in Krumbach with phone,
 # address, service area. Supports Local-Search and Knowledge-Panel.
