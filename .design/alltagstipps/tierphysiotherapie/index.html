@@ -104,6 +104,21 @@
   .closing-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.2); }
   .closing-cta a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
+  .empfehlung-card { margin-top: 80px; padding: 38px 44px; border-radius: var(--r-lg); background: var(--blue); color: var(--white); position: relative; overflow: hidden; display: grid; grid-template-columns: 168px 1fr; gap: 38px; align-items: center; }
+  .empfehlung-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: oklch(100% 0 0 / 0.05); }
+  .empfehlung-logo { width: 168px; height: 168px; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; padding: 12px; position: relative; z-index: 1; flex-shrink: 0; }
+  .empfehlung-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .empfehlung-body { position: relative; z-index: 1; }
+  .empfehlung-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; color: oklch(90% 0.06 185); text-transform: uppercase; margin-bottom: 12px; }
+  .empfehlung-body h3 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .empfehlung-role { font-size: 14px; color: oklch(100% 0 0 / 0.75); font-weight: 300; margin-bottom: 18px; font-style: italic; }
+  .empfehlung-contact { display: flex; flex-wrap: wrap; gap: 10px; }
+  .empfehlung-contact a { display: inline-flex; align-items: center; gap: 9px; background: var(--white); color: var(--blue); padding: 11px 20px; border-radius: 40px; text-decoration: none; font-weight: 600; font-size: 14px; transition: transform 0.2s, box-shadow 0.2s; }
+  .empfehlung-contact a.secondary { background: transparent; color: var(--white); border: 1.5px solid oklch(100% 0 0 / 0.4); }
+  .empfehlung-contact a:hover { transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.2); }
+  .empfehlung-contact a.secondary:hover { background: oklch(100% 0 0 / 0.08); box-shadow: none; }
+  .empfehlung-contact a svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
   .more-section { background: var(--cream2); padding: 80px 7% 100px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
   .more-head { max-width: 1200px; margin: 0 auto 36px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   .more-head .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block; }
@@ -153,6 +168,9 @@
     .pullquote { margin: 40px 0; padding: 4px 0 4px 18px; }
     article .lede-paragraph::first-letter { font-size: 3.6em; padding: 6px 10px 0 0; }
     .closing-cta { padding: 28px 22px; }
+    .empfehlung-card { grid-template-columns: 1fr; padding: 30px 24px; gap: 22px; text-align: center; }
+    .empfehlung-logo { width: 130px; height: 130px; margin: 0 auto; }
+    .empfehlung-contact { justify-content: center; }
   }
 </style>
 </head>
@@ -190,8 +208,8 @@
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       <span class="crumb-current">Tierphysiotherapie</span>
     </p>
-    <h1>Tierphysiotherapie<br><em>verstehen.</em></h1>
-    <p class="hero-lede">Wann es Sinn macht, einen Tierphysiotherapeuten dazuzuholen — und woran du erkennst, dass dein Hund Hilfe braucht. Ein ehrlicher Überblick.</p>
+    <h1>Tierphysiotherapie macht <em>Sinn.</em></h1>
+    <p class="hero-lede">Nicht erst nach der OP — sondern vorher. Wie Tierphysiotherapie deinen Hund länger beweglich, schmerzfrei und gesund hält, und woran du erkennst, dass es Zeit für einen Termin ist.</p>
     <div class="hero-meta">
       <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6 Min. Lesezeit</span>
       <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Aktualisiert · Mai 2026</span>
@@ -213,22 +231,24 @@
 
   <article>
 
-    <p class="lede-paragraph">Tierphysiotherapie ist kein Luxus für verwöhnte Hundehalter. Sie ist für viele Hunde echte Medizin — vor allem nach Operationen, bei Senior-Hunden oder bei chronischen Bewegungsproblemen. Trotzdem wird sie oft zu spät oder gar nicht eingesetzt. Hier ein Überblick, wann es sich lohnt.</p>
+    <p class="lede-paragraph">Tierphysiotherapie wird oft erst dann gerufen, wenn schon etwas passiert ist — nach der OP, bei akuter Lahmheit, im hohen Alter. Dabei liegt ihre größte Stärke woanders: <strong>im Vorher</strong>. Regelmäßige Checks, gezieltes Muskelaufbau-Training, das frühe Erkennen von Schiefhaltungen — das alles kann Beschwerden verhindern, bevor sie chronisch werden. Prävention ist die unspektakulärste, aber wirksamste Form der Tierphysiotherapie.</p>
 
     <h2 id="was">Was ist Tierphysiotherapie?</h2>
-    <p>Tierphysiotherapie umfasst Behandlungen am Bewegungsapparat — Muskeln, Gelenke, Faszien, Bänder. Sie kommt zum Einsatz <strong>vor und nach Operationen</strong>, bei <strong>chronischen Erkrankungen</strong> wie Arthrose oder HD, bei <strong>Verletzungen</strong> oder einfach zur <strong>Mobilitätserhaltung</strong> im Alter.</p>
+    <p>Tierphysiotherapie umfasst Behandlungen am Bewegungsapparat — Muskeln, Gelenke, Faszien, Bänder. Sie kommt zum Einsatz <strong>zur Prävention und Mobilitätserhaltung</strong>, vor und nach Operationen, bei chronischen Erkrankungen wie Arthrose oder HD, bei Verletzungen — und bei jedem Hund, dessen Bewegungsapparat einfach gesund bleiben soll.</p>
     <p>Methoden reichen von Massage, passiven Bewegungsübungen und Wärmeanwendungen über Lymphdrainage bis hin zu Lasertherapie, Magnetfeld und Unterwasser-Laufband. Was passend ist, entscheidet die Therapeutin gemeinsam mit dir.</p>
 
     <h2 id="wann">Wann sie sinnvoll ist</h2>
     <ul>
-      <li><strong>Nach Operationen am Bewegungsapparat.</strong> Kreuzband, Patella, Bandscheibe — Reha entscheidet oft, wie gut der Hund wieder läuft.</li>
-      <li><strong>Bei Senior-Hunden.</strong> Bewegung erhalten, Muskelabbau verlangsamen, Schmerzen reduzieren.</li>
+      <li><strong>Präventiv — bei jedem gesunden Hund.</strong> Ein jährlicher Check deckt Schieflagen, Verspannungen und Muskelungleichgewichte auf, lange bevor sie zu Schmerzen oder Lahmheit werden. Die günstigste Investition ins lange Hundeleben.</li>
+      <li><strong>Bei Sport- und Aktivhunden.</strong> Regelmäßige Behandlung beugt Überlastung vor und verkürzt die Regeneration nach intensivem Training.</li>
+      <li><strong>Bei wachsenden Junghunden.</strong> In der Wachstumsphase entstehen oft Schiefhaltungen — früh erkannt sind sie meist leicht zu korrigieren.</li>
+      <li><strong>Bei Senior-Hunden.</strong> Bewegung erhalten, Muskelabbau verlangsamen, Schmerzen reduzieren — idealerweise beginnt das, bevor die ersten Probleme auftauchen.</li>
       <li><strong>Bei Arthrose, HD, ED oder Spondylose.</strong> Chronische Themen profitieren stark von kontinuierlicher Therapie.</li>
+      <li><strong>Nach Operationen am Bewegungsapparat.</strong> Kreuzband, Patella, Bandscheibe — Reha entscheidet oft, wie gut der Hund wieder läuft.</li>
       <li><strong>Bei Lahmheit ohne klaren Befund.</strong> Manchmal liegen die Ursachen in Verspannungen, die nur ein geschultes Auge findet.</li>
-      <li><strong>Bei Sport- und Aktivhunden.</strong> Zur Prävention und schnellen Regeneration.</li>
     </ul>
 
-    <p class="pullquote">Ein Hund, der schief läuft, ist nicht „einfach so" schief. Er hat einen Grund — und der lässt sich oft finden.</p>
+    <p class="pullquote">Der beste Zeitpunkt für Tierphysiotherapie ist nicht, wenn dein Hund anfängt zu humpeln — sondern lange davor.</p>
 
     <h2 id="anzeichen">Anzeichen, die du nicht ignorieren solltest</h2>
     <p>Hunde sind Meister im Verbergen von Schmerzen. Auf diese Signale solltest du achten:</p>
@@ -266,13 +286,25 @@
     </ul>
     
 
-    <div class="closing-cta">
-      <p class="closing-cta-label">Du bist unsicher?</p>
-      <h3>Lass uns reden</h3>
-      <p>Wenn du nicht weißt, ob bei deinem Hund Physiotherapie sinnvoll ist — schreib mir, ich kann dich an gute Therapeutinnen in der Region weiterleiten.</p>
-      <a href="../../Kontakt.html">Kontakt aufnehmen
-        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
+    <div class="empfehlung-card">
+      <div class="empfehlung-logo">
+        <img src="lena-hillenbrand-logo.png" alt="Deine Tierphysiotherapie — Lena Hillenbrand">
+      </div>
+      <div class="empfehlung-body">
+        <p class="empfehlung-label">Meine Empfehlung</p>
+        <h3>Lena Hillenbrand</h3>
+        <p class="empfehlung-role">Tierphysiotherapeutin &amp; Tierosteopathin</p>
+        <div class="empfehlung-contact">
+          <a href="tel:+4917652718832">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +49 176 52718832
+          </a>
+          <a class="secondary" href="https://wa.me/4917652718832" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
     </div>
 
   </article>

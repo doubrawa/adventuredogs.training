@@ -104,6 +104,17 @@
   .closing-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.2); }
   .closing-cta a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
+  /* Platinum recommendation variant */
+  .closing-cta.platinum-card { padding: 0; }
+  .closing-cta.platinum-card a.platinum-banner { display: block; line-height: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; background: transparent; padding: 0; gap: 0; text-decoration: none; color: inherit; }
+  .closing-cta.platinum-card a.platinum-banner:hover { transform: none; box-shadow: none; }
+  .closing-cta.platinum-card a.platinum-banner img { display: block; width: 100%; height: auto; }
+  .platinum-body { padding: 36px 40px 40px; position: relative; z-index: 1; }
+  .platinum-body p { font-size: 15px; color: oklch(100% 0 0 / 0.85); line-height: 1.65; font-weight: 300; max-width: 580px; margin-bottom: 22px; }
+  .platinum-body p strong { color: var(--white); font-weight: 600; }
+  a.platinum-cta { background: var(--accent); color: var(--white); padding: 13px 24px; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+  a.platinum-cta:hover { background: oklch(58% 0.13 185); transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.25); }
+
   .more-section { background: var(--cream2); padding: 80px 7% 100px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
   .more-head { max-width: 1200px; margin: 0 auto 36px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   .more-head .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block; }
@@ -153,6 +164,8 @@
     .pullquote { margin: 40px 0; padding: 4px 0 4px 18px; }
     article .lede-paragraph::first-letter { font-size: 3.6em; padding: 6px 10px 0 0; }
     .closing-cta { padding: 28px 22px; }
+    .closing-cta.platinum-card { padding: 0; }
+    .platinum-body { padding: 24px 22px 28px; }
   }
 </style>
 </head>
@@ -266,13 +279,16 @@
     </ul>
     
 
-    <div class="closing-cta">
-      <p class="closing-cta-label">Empfehlungen?</p>
-      <h3>Welches Futter passt zu deinem Hund?</h3>
-      <p>Ich gebe keine Marken-Empfehlungen pauschal — aber ich kenne gute Ernährungsberaterinnen in der Region. Sag Bescheid, wenn ich vermitteln soll.</p>
-      <a href="../../Kontakt.html">Kontakt aufnehmen
-        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+    <div class="closing-cta platinum-card">
+      <a class="platinum-banner" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="noopener">
+        <img src="platinum.jpg" alt="Platinum — Hundenahrung aus Fleischsaftgarung, bestens ausgerüstet für das Welpentraining">
       </a>
+      <div class="platinum-body">
+        <p>Gut zu wissen: Jeder neue Kunde erhält zum Einstieg eine <strong>Testportion</strong>, um das Futter unkompliziert auszuprobieren.</p>
+        <a class="platinum-cta" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="noopener">Platinum entdecken
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
     </div>
 
   </article>
