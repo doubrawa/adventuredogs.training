@@ -186,32 +186,32 @@ inject_seo "$DST/alltagstipps/welpenzeit/index.html" "alltagstipps/welpenzeit/" 
 
 inject_seo "$DST/alltagstipps/silvester/index.html" "alltagstipps/silvester/" \
   "Silvester mit Hund – ohne Stress | Adventure Dogs" \
-  "Silvester mit Hund entspannt überstehen: Vorbereitung, Rituale und Notfallstrategien gegen Stress durch Böller und Lichter." \
+  "Silvester mit Hund: Vorbereitung, Rituale und Notfallstrategien gegen Stress durch Böller. Tipps aus der Hundeschule Adventure Dogs in Krumbach." \
   "hero-silvester.jpg"
 
 inject_seo "$DST/alltagstipps/urlaub/index.html" "alltagstipps/urlaub/" \
   "Mit Hund in den Urlaub – Reisetipps | Adventure Dogs" \
-  "Mit Hund verreisen: Was du für Auto, Bahn, Flugzeug oder Ferienwohnung planen musst, damit alle entspannt ankommen." \
+  "Mit Hund verreisen: Was du für Auto, Bahn, Flugzeug oder Ferienwohnung planen musst — Tipps aus der Hundeschule Adventure Dogs Krumbach." \
   "hero-urlaub.jpg"
 
 inject_seo "$DST/alltagstipps/winter/index.html" "alltagstipps/winter/" \
   "Winter mit Hund – Pflege und Spaziergänge | Adventure Dogs" \
-  "So kommt dein Hund gut durch den Winter: Pfotenpflege, Streusalz, kalte Tage und die richtigen Spaziergänge." \
+  "So kommt dein Hund gut durch den Winter: Pfotenpflege, Streusalz, kalte Tage und die richtigen Spaziergänge. Aus Krumbach, Adventure Dogs." \
   "hero-winter.jpg"
 
 inject_seo "$DST/alltagstipps/alleinbleiben/index.html" "alltagstipps/alleinbleiben/" \
   "Alleinbleiben lernen – Schritt für Schritt | Adventure Dogs" \
-  "So lernt dein Hund, dass Alleinsein okay ist — fairer und nachhaltiger Trainingsweg von Hundetrainerin Julia Doubrawa." \
+  "So lernt dein Hund, dass Alleinsein okay ist — fairer und nachhaltiger Trainingsweg. Julia Doubrawa, Adventure Dogs Krumbach." \
   "hero-alleinbleiben.jpg"
 
 inject_seo "$DST/alltagstipps/tierphysiotherapie/index.html" "alltagstipps/tierphysiotherapie/" \
   "Tierphysiotherapie für Hunde – wann sinnvoll? | Adventure Dogs" \
-  "Wann eine Tierphysiotherapie für deinen Hund sinnvoll ist und woran du erkennst, dass dein Hund Hilfe braucht." \
+  "Wann eine Tierphysiotherapie für deinen Hund sinnvoll ist und woran du erkennst, dass er Hilfe braucht. Empfehlungen aus Krumbach (Schwaben)." \
   "hero-tierphysiotherapie.jpg"
 
 inject_seo "$DST/alltagstipps/ernaehrung/index.html" "alltagstipps/ernaehrung/" \
   "Hundeernährung Grundlagen – Trocken, Nass, BARF | Adventure Dogs" \
-  "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF und mehr. Ein Überblick über die Möglichkeiten und worauf es ankommt." \
+  "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF — Überblick und Auswahl-Kriterien. Hundeschule Adventure Dogs Krumbach." \
   "hero-ernaehrung.jpg"
 
 # Gebucht (booking-confirmation page): inject SEO + noindex so Google
