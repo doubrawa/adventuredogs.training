@@ -273,6 +273,72 @@ powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-thumbs.ps1" -Asset
 echo "  swapping Alltagstipps card SVGs → IMGs"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
 
+# ─── Article JSON-LD on Alltagstipps detail pages ───
+# Schema.org Article-Markup pro Detail-Seite gibt Google strukturierte
+# Daten für Rich-Results (Sitelinks, "Top Stories"-Snippets). Pflicht-
+# Felder: headline, image, datePublished, author, publisher.
+# Werte werden aus den vorhandenen Meta-Tags der jeweiligen Seite
+# extrahiert (DRY — Änderung am Title oder OG-Image kommt automatisch
+# mit). Idempotent über "@type": "Article"-Sentinel.
+inject_article_schema() {
+    local f="$1"
+    local url="$2"
+    if grep -q '"@type": "Article"' "$f"; then return; fi
+
+    # Aus existing meta-Tags ziehen (sed extrahiert content="...")
+    local title=$(grep -E '<meta property="og:title"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
+    local desc=$(grep -E '<meta name="description"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
+    local img=$(grep -E '<meta property="og:image"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
+
+    # JSON-LD schreiben. Datumsformat: ISO 8601. datePublished bleibt
+    # statisch (Erst-Veröffentlichung der Hub-Struktur), dateModified
+    # wird bei jedem Re-Run auf "jetzt" gesetzt.
+    local published="2026-05-21"
+    local modified=$(date -u +%Y-%m-%d)
+
+    local schema="<script type=\"application/ld+json\">
+{
+  \"@context\": \"https://schema.org\",
+  \"@type\": \"Article\",
+  \"headline\": \"${title}\",
+  \"description\": \"${desc}\",
+  \"image\": \"${img}\",
+  \"mainEntityOfPage\": \"${url}\",
+  \"author\": {
+    \"@type\": \"Person\",
+    \"name\": \"Julia Doubrawa\",
+    \"url\": \"${SITE_BASE}/ueber-mich/\"
+  },
+  \"publisher\": {
+    \"@type\": \"Organization\",
+    \"name\": \"Adventure Dogs\",
+    \"logo\": {
+      \"@type\": \"ImageObject\",
+      \"url\": \"${SITE_BASE}/assets/logo.png\"
+    }
+  },
+  \"datePublished\": \"${published}\",
+  \"dateModified\": \"${modified}\"
+}
+</script>"
+
+    # Einfügen direkt nach der Description-Meta-Zeile (gleicher Trick
+    # wie bei LocalBusiness/FAQPage Schemata).
+    local desc_line=$(grep -n '<meta name="description"' "$f" | head -1 | cut -d: -f1)
+    if [ -n "$desc_line" ]; then
+        local tmp=$(mktemp)
+        head -n "$desc_line" "$f"          > "$tmp"
+        echo "$schema"                     >> "$tmp"
+        tail -n +$((desc_line + 1)) "$f"   >> "$tmp"
+        mv "$tmp" "$f"
+        echo "  injected Article JSON-LD: alltagstipps/$(basename $(dirname "$f"))/"
+    fi
+}
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+    F="$DST/alltagstipps/$topic/index.html"
+    [ -f "$F" ] && inject_article_schema "$F" "$SITE_BASE/alltagstipps/$topic/"
+done
+
 # ─── FAQPage JSON-LD on Kontakt ───
 # Schema.org FAQPage markup lets Google show our FAQ questions as
 # expandable rich snippets directly in search results — major CTR boost.
