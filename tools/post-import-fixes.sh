@@ -273,6 +273,24 @@ powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-thumbs.ps1" -Asset
 echo "  swapping Alltagstipps card SVGs → IMGs"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
 
+# ─── rel-Attribute für externe Empfehlungs-/Affiliate-Links ───
+# Platinum-Affiliate-Link (auf /alltagstipps/ernaehrung/) braucht
+# rel="sponsored nofollow" — sonst kann Google die Domain als
+# kommerziell-betrieben einstufen und das Trust-Signal schwächt.
+# Lena-Hillenbrand-WhatsApp-Link (auf /alltagstipps/tierphysiotherapie/)
+# kriegt rel="nofollow" — Empfehlung ohne Bezahlung, soll trotzdem
+# keinen PageRank an Lena's wa.me-Link verlieren.
+F="$DST/alltagstipps/ernaehrung/index.html"
+if [ -f "$F" ] && grep -q 'platinum.com.*rel="noopener"' "$F"; then
+    sed -i 's|\(href="https://www.platinum.com[^"]*" target="_blank" \)rel="noopener"|\1rel="sponsored nofollow noopener"|g' "$F"
+    echo "  added rel=sponsored nofollow to Platinum links: ernaehrung"
+fi
+F="$DST/alltagstipps/tierphysiotherapie/index.html"
+if [ -f "$F" ] && grep -q 'wa.me/[0-9]*" target="_blank" rel="noopener"' "$F"; then
+    sed -i 's|\(href="https://wa.me/[0-9]*" target="_blank" \)rel="noopener"|\1rel="nofollow noopener"|g' "$F"
+    echo "  added rel=nofollow to Lena WhatsApp link: tierphysiotherapie"
+fi
+
 # ─── Article JSON-LD on Alltagstipps detail pages ───
 # Schema.org Article-Markup pro Detail-Seite gibt Google strukturierte
 # Daten für Rich-Results (Sitelinks, "Top Stories"-Snippets). Pflicht-
