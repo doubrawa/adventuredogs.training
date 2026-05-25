@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://adventuredogs.training/sitemap.xml
+Sitemap: https://adventuredogs.training/sitemap-images.xml

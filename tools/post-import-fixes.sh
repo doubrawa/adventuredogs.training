@@ -399,4 +399,10 @@ if ! grep -q '"@type": "LocalBusiness"' "$F"; then
     fi
 fi
 
+# ─── Image-Sitemap regenerieren ───
+# Scant alle HTML-Seiten, sammelt assets/-Image-Refs, schreibt
+# sitemap-images.xml. Läuft am Ende, nachdem alle Schemas + Image-
+# Swaps drin sind.
+powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-image-sitemap.ps1" -RepoRoot "$DST"
+
 echo "post-import fixes done."
