@@ -273,6 +273,71 @@ powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-thumbs.ps1" -Asset
 echo "  swapping Alltagstipps card SVGs → IMGs"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
 
+# ─── BreadcrumbList JSON-LD auf Alltagstipps-Hub + Detail-Seiten ───
+# Strukturierte Breadcrumb-Hierarchie für Google. Hub bekommt
+# 2-Level (Home → Alltagstipps), Detail-Seiten 3-Level (Home →
+# Alltagstipps → Topic). Topic-Display-Name aus dem <title>-Tag
+# extrahiert (alles vor " – Alltagstipps").
+inject_breadcrumb_schema() {
+    local f="$1"
+    local url="$2"
+    local topic_name="$3"   # Anzeige-Name; leer für Hub-Page
+    if grep -q '"@type": "BreadcrumbList"' "$f"; then return; fi
+
+    local items
+    if [ -z "$topic_name" ]; then
+        # Hub: Home → Alltagstipps (kein href am letzten Element)
+        items='[
+    {"@type": "ListItem", "position": 1, "name": "Adventure Dogs", "item": "'"$SITE_BASE"'/"},
+    {"@type": "ListItem", "position": 2, "name": "Alltagstipps"}
+  ]'
+    else
+        items='[
+    {"@type": "ListItem", "position": 1, "name": "Adventure Dogs", "item": "'"$SITE_BASE"'/"},
+    {"@type": "ListItem", "position": 2, "name": "Alltagstipps", "item": "'"$SITE_BASE"'/alltagstipps/"},
+    {"@type": "ListItem", "position": 3, "name": "'"$topic_name"'"}
+  ]'
+    fi
+
+    local schema='<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": '"$items"'
+}
+</script>'
+
+    # Nach der Description-Meta-Zeile einfügen (gleicher Trick wie
+    # andere Schema-Injections).
+    local desc_line=$(grep -n '<meta name="description"' "$f" | head -1 | cut -d: -f1)
+    if [ -n "$desc_line" ]; then
+        local tmp=$(mktemp)
+        head -n "$desc_line" "$f"          > "$tmp"
+        echo "$schema"                     >> "$tmp"
+        tail -n +$((desc_line + 1)) "$f"   >> "$tmp"
+        mv "$tmp" "$f"
+        echo "  injected Breadcrumb JSON-LD: $(echo "$url" | sed 's|'"$SITE_BASE"'||')"
+    fi
+}
+# Display-Namen pro Topic. Halten wir hier explizit, damit der
+# Schema-Output kontrolliert bleibt (kein Parsing aus dem H1, das
+# Markup-Reste haben kann).
+inject_breadcrumb_schema "$DST/alltagstipps/index.html" "$SITE_BASE/alltagstipps/" ""
+inject_breadcrumb_schema "$DST/alltagstipps/welpenzeit/index.html" \
+    "$SITE_BASE/alltagstipps/welpenzeit/" "Welpenzeit gestalten"
+inject_breadcrumb_schema "$DST/alltagstipps/silvester/index.html" \
+    "$SITE_BASE/alltagstipps/silvester/" "Silvester ohne Stress"
+inject_breadcrumb_schema "$DST/alltagstipps/urlaub/index.html" \
+    "$SITE_BASE/alltagstipps/urlaub/" "Mit Hund in den Urlaub"
+inject_breadcrumb_schema "$DST/alltagstipps/winter/index.html" \
+    "$SITE_BASE/alltagstipps/winter/" "Winter mit Hund"
+inject_breadcrumb_schema "$DST/alltagstipps/alleinbleiben/index.html" \
+    "$SITE_BASE/alltagstipps/alleinbleiben/" "Alleinbleiben lernen"
+inject_breadcrumb_schema "$DST/alltagstipps/tierphysiotherapie/index.html" \
+    "$SITE_BASE/alltagstipps/tierphysiotherapie/" "Tierphysiotherapie verstehen"
+inject_breadcrumb_schema "$DST/alltagstipps/ernaehrung/index.html" \
+    "$SITE_BASE/alltagstipps/ernaehrung/" "Hundeernährung Grundlagen"
+
 # ─── rel-Attribute für externe Empfehlungs-/Affiliate-Links ───
 # Platinum-Affiliate-Link (auf /alltagstipps/ernaehrung/) braucht
 # rel="sponsored nofollow" — sonst kann Google die Domain als
