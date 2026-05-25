@@ -308,10 +308,13 @@ inject_article_schema() {
     local desc=$(grep -E '<meta name="description"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
     local img=$(grep -E '<meta property="og:image"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
 
-    # JSON-LD schreiben. Datumsformat: ISO 8601. datePublished bleibt
-    # statisch (Erst-Veröffentlichung der Hub-Struktur), dateModified
-    # wird bei jedem Re-Run auf "jetzt" gesetzt.
-    local published="2026-05-21"
+    # datePublished aus dem ersten git-Commit des Files ziehen
+    # (--diff-filter=A → erstes Add der Datei). dateModified ist
+    # immer "jetzt" (Pipeline-Run-Zeitpunkt). Fallback wenn die Datei
+    # noch nicht in git ist: heutiges Datum.
+    local rel_path="${f#$DST/}"
+    local published=$(git -C "$DST" log --follow --format=%cd --date=short --diff-filter=A -- "$rel_path" 2>/dev/null | tail -1)
+    [ -z "$published" ] && published=$(date -u +%Y-%m-%d)
     local modified=$(date -u +%Y-%m-%d)
 
     local schema="<script type=\"application/ld+json\">
