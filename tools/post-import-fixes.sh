@@ -125,6 +125,14 @@ inject_seo() {
     local url="$SITE_BASE/${path}"
     local img="$SITE_BASE/assets/${hero}"
 
+    # og:title soll dem echten <title> der Seite folgen (Single Source:
+    # das Design-Tool). Abweichende og:title verwirren Google + Social-
+    # Previews. Der title-Parameter ist nur noch Fallback, falls die
+    # Seite keinen <title> hat. Das Article-Schema liest og:title und
+    # bleibt damit automatisch konsistent.
+    local page_title=$(grep -oE '<title>[^<]+</title>' "$f" | head -1 | sed 's/<title>//;s/<\/title>//')
+    [ -n "$page_title" ] && title="$page_title"
+
     # Build the block. Insert right after the existing <title> line.
     # Description gets injected only if the page doesn't already have one
     # (Landing got one in earlier work; the design tool doesn't emit it).
@@ -463,6 +471,9 @@ if ! grep -q '"@type": "LocalBusiness"' "$F"; then
         echo "  injected LocalBusiness JSON-LD on Landing"
     fi
 fi
+
+# ─── Sitemap regenerieren (lastmod aus git) ───
+bash "$DST/tools/generate-sitemap.sh"
 
 # ─── Image-Sitemap regenerieren ───
 # Scant alle HTML-Seiten, sammelt assets/-Image-Refs, schreibt
