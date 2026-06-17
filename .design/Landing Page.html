@@ -195,6 +195,37 @@
   }
   .btn-ghost:hover { background: oklch(100% 0 0 / 0.1); border-color: oklch(100% 0 0 / 0.7); }
 
+  /* ── EVENT-BADGE (Kreis mit Lauftext) ── */
+  .hero-badge {
+    position: absolute; z-index: 4;
+    right: 6%; bottom: 96px;
+    width: 130px; height: 130px; border-radius: 50%;
+    background: var(--accent); color: var(--white); text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 16px;
+    box-shadow: 0 16px 44px oklch(0% 0 0 / 0.42);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .hero-badge:hover { transform: scale(1.05); box-shadow: 0 20px 52px oklch(0% 0 0 / 0.5); }
+  .hero-badge .badge-date {
+    font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 900; line-height: 1;
+  }
+  .hero-badge .badge-cta {
+    margin-top: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .hero-badge .badge-cta svg { width: 11px; height: 11px; stroke: currentColor; fill: none; }
+  .hero-badge .badge-spin {
+    position: absolute; width: 200px; height: 200px; left: 50%; top: 50%;
+    margin: -100px 0 0 -100px; animation: badgeSpin 22s linear infinite;
+    pointer-events: none;
+  }
+  .hero-badge .badge-spin text {
+    fill: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.2em;
+  }
+  @keyframes badgeSpin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .hero-badge .badge-spin { animation: none; } }
+
   .hero-scroll-hint {
     position: absolute;
     bottom: 24px;
@@ -599,6 +630,11 @@
     }
     .hero h1 { text-shadow: 0 2px 18px oklch(0% 0 0 / 0.7); }
     .hero-eyebrow, .hero-sub { text-shadow: 0 1px 12px oklch(0% 0 0 / 0.7); }
+    /* Badge oben rechts, damit es Headline/Buttons nicht verdeckt */
+    .hero-badge { right: 5%; bottom: auto; top: 88px; width: 110px; height: 110px; }
+    .hero-badge .badge-date { font-size: 23px; }
+    .hero-badge .badge-spin { width: 170px; height: 170px; margin: -85px 0 0 -85px; }
+    .hero-badge .badge-spin text { font-size: 11px; letter-spacing: 0.16em; }
   }
 
   /* ── HAMBURGER ── */
@@ -707,6 +743,15 @@
       <a href="Kontakt.html" class="btn-ghost">Erstgespräch vereinbaren</a>
     </div>
   </div>
+  <!-- EVENT-BADGE: bei event-freien Zeiten einfach diesen <a>-Block auskommentieren oder entfernen -->
+  <a class="hero-badge" href="https://adventuredogs.123hundeschule.de/kurse/139-jagen-nein-danke-zusatztermin" target="_blank" rel="noopener">
+    <svg class="badge-spin" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><path id="badgeTextPath" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs>
+      <text><textPath href="#badgeTextPath" startOffset="0">Kurs&nbsp;&nbsp;·&nbsp;&nbsp;Jagen - Nein Danke!&nbsp;&nbsp;&nbsp;&nbsp;</textPath></text>
+    </svg>
+    <span class="badge-date">16.07.</span>
+    <span class="badge-cta">Mehr Infos <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>
   <div class="hero-scroll-hint">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>
