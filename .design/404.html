@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seite nicht gefunden – Adventure Dogs</title>
+<link href="assets/fonts.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-dk:  oklch(26% 0.06 240);
+    --cream:    oklch(97% 0.01 80);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--white);
+    background: var(--blue);
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%; height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo .mark {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--accent); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-logo .mark svg { width: 21px; height: 21px; fill: var(--white); }
+  .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--white); white-space: nowrap; }
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  .nav-cta { background: var(--white); color: var(--blue) !important; padding: 9px 20px; border-radius: 40px; font-weight: 600 !important; transition: transform 0.15s, opacity 0.2s; }
+  .nav-cta:hover { transform: translateY(-1px); opacity: 0.92; }
+
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+    background: oklch(26% 0.06 240 / 0.98); backdrop-filter: blur(10px);
+    flex-direction: column; padding: 12px 7% 24px;
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a { color: var(--white); text-decoration: none; font-size: 16px; font-weight: 500; padding: 15px 0; border-bottom: 1px solid oklch(100% 0 0 / 0.12); }
+  .nav-mobile .nav-cta-mobile { margin-top: 12px; background: var(--accent); color: var(--white); padding: 14px 20px; border-radius: 40px; font-weight: 600; text-align: center; border-bottom: none; }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding: 130px 7% 90px;
+    background: radial-gradient(120% 90% at 80% 10%, var(--blue-mid) 0%, var(--blue) 55%, var(--blue-dk) 100%);
+  }
+
+  /* faint paw trail */
+  .paw-trail { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .paw-trail svg { position: absolute; fill: oklch(100% 0 0 / 0.05); }
+  .pt1 { width: 70px; top: 16%; left: 8%; transform: rotate(-18deg); }
+  .pt2 { width: 52px; top: 30%; left: 17%; transform: rotate(8deg); }
+  .pt3 { width: 88px; top: 60%; left: 6%; transform: rotate(22deg); }
+  .pt4 { width: 60px; bottom: 12%; left: 22%; transform: rotate(-10deg); }
+  .pt5 { width: 100px; top: 22%; right: 9%; transform: rotate(14deg); }
+  .pt6 { width: 64px; bottom: 18%; right: 16%; transform: rotate(-20deg); }
+  .pt7 { width: 46px; bottom: 30%; right: 7%; transform: rotate(6deg); }
+
+  .panel { position: relative; z-index: 2; max-width: 660px; text-align: center; }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: oklch(90% 0.06 185); margin-bottom: 22px;
+  }
+
+  .big404 {
+    display: flex; align-items: center; justify-content: center; gap: clamp(6px, 1.4vw, 18px);
+    line-height: 0.9; margin-bottom: 12px;
+  }
+  .big404 span {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(96px, 19vw, 200px); color: var(--white);
+    text-shadow: 0 8px 40px oklch(0% 0 0 / 0.35);
+  }
+  .big404 .paw0 {
+    width: clamp(82px, 16vw, 168px); height: clamp(82px, 16vw, 168px);
+    flex-shrink: 0; animation: pawBob 3.2s ease-in-out infinite;
+  }
+  .big404 .paw0 svg { width: 100%; height: 100%; fill: var(--accent); filter: drop-shadow(0 8px 26px oklch(0% 0 0 / 0.4)); }
+  @keyframes pawBob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-10px) rotate(4deg); } }
+  @media (prefers-reduced-motion: reduce) { .big404 .paw0 { animation: none; } }
+
+  h1 {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: clamp(28px, 4.4vw, 46px); line-height: 1.12; text-wrap: pretty;
+    margin-bottom: 18px;
+  }
+  h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+
+  .lead {
+    font-size: clamp(15px, 1.7vw, 18px); line-height: 1.7; font-weight: 300;
+    color: oklch(100% 0 0 / 0.82); max-width: 520px; margin: 0 auto 34px;
+  }
+
+  .actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--white); text-decoration: none;
+    font-size: 15px; font-weight: 600; padding: 14px 30px; border-radius: 40px;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.4); transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.5); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--white); text-decoration: none; font-size: 15px; font-weight: 500;
+    padding: 14px 24px; border-radius: 40px; border: 1.5px solid oklch(100% 0 0 / 0.4);
+    transition: background 0.18s, border-color 0.18s;
+  }
+  .btn-ghost:hover { background: oklch(100% 0 0 / 0.1); border-color: oklch(100% 0 0 / 0.7); }
+  .btn-primary svg, .btn-ghost svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+  .quick {
+    margin-top: 30px; font-size: 13.5px; color: oklch(100% 0 0 / 0.6);
+    display: inline-flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center;
+  }
+  .quick a { color: oklch(90% 0.06 185); text-decoration: none; font-weight: 500; }
+  .quick a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--blue-dk); padding: 30px 7%;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    font-size: 13px; color: oklch(100% 0 0 / 0.55);
+  }
+  footer .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  footer a { color: oklch(100% 0 0 / 0.5); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 820px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="Landing Page.html">
+    <span class="mark"><svg viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg></span>
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="Über mich.html">Über mich</a></li>
+    <li><a href="Kontakt.html">Kontakt</a></li>
+    <li><a href="Alltagstipps.html">Alltagstipps</a></li>
+    <li><a href="Angebotsseite.html" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="Über mich.html">Über mich</a>
+  <a href="Kontakt.html">Kontakt</a>
+  <a href="Alltagstipps.html">Alltagstipps</a>
+  <a href="Angebotsseite.html" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="paw-trail" aria-hidden="true">
+    <svg class="pt1" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt2" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt3" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt4" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt5" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt6" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+    <svg class="pt7" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
+  </div>
+
+  <div class="panel">
+    <p class="eyebrow">Fehler 404</p>
+    <div class="big404">
+      <span>4</span>
+      <span class="paw0"><svg viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg></span>
+      <span>4</span>
+    </div>
+    <h1>Diese Fährte führt <em>ins Leere</em>.</h1>
+    <p class="lead">Wir haben überall geschnüffelt – aber die Seite, die du suchst, ließ sich nicht aufstöbern. Vielleicht ist sie umgezogen oder hat sich gut im Unterholz versteckt.</p>
+    <div class="actions">
+      <a href="Landing Page.html" class="btn-primary">Zurück zur Startseite <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="Angebotsseite.html" class="btn-ghost">Trainings entdecken</a>
+    </div>
+    <div class="quick">
+      <span>Schnell weiter:</span>
+      <a href="Über mich.html">Über mich</a>
+      <a href="Alltagstipps.html">Alltagstipps</a>
+      <a href="Kontakt.html">Kontakt</a>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  <div class="footer-links">
+    <a href="Impressum.html">Impressum</a>
+    <a href="Impressum.html#datenschutz">Datenschutz</a>
+    <a href="Kontakt.html">Kontakt</a>
+    <a href="Angebotsseite.html">Angebote</a>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('navHamburger');
+  const mob = document.getElementById('navMobile');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>

@@ -224,7 +224,6 @@
     fill: var(--white); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.2em;
   }
   @keyframes badgeSpin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .hero-badge .badge-spin { animation: none; } }
 
   .hero-scroll-hint {
     position: absolute;
@@ -631,10 +630,12 @@
     .hero h1 { text-shadow: 0 2px 18px oklch(0% 0 0 / 0.7); }
     .hero-eyebrow, .hero-sub { text-shadow: 0 1px 12px oklch(0% 0 0 / 0.7); }
     /* Badge oben rechts, damit es Headline/Buttons nicht verdeckt */
-    .hero-badge { right: 5%; bottom: auto; top: 88px; width: 110px; height: 110px; }
-    .hero-badge .badge-date { font-size: 23px; }
-    .hero-badge .badge-spin { width: 170px; height: 170px; margin: -85px 0 0 -85px; }
-    .hero-badge .badge-spin text { font-size: 11px; letter-spacing: 0.16em; }
+    .hero-badge { right: 44px; bottom: auto; top: 84px; width: 96px; height: 96px; }
+    .hero-badge .badge-date { font-size: 18px; }
+    .hero-badge .badge-cta { font-size: 9px; margin-top: 5px; }
+    .hero-badge .cta-long { display: none; }
+    .hero-badge .badge-spin { width: 150px; height: 150px; margin: -75px 0 0 -75px; }
+    .hero-badge .badge-spin text { font-size: 15px; letter-spacing: 0.1em; }
   }
 
   /* ── HAMBURGER ── */
@@ -750,7 +751,7 @@
       <text><textPath href="#badgeTextPath" startOffset="0">Kurs&nbsp;&nbsp;·&nbsp;&nbsp;Jagen - Nein Danke!&nbsp;&nbsp;&nbsp;&nbsp;</textPath></text>
     </svg>
     <span class="badge-date">16.07.</span>
-    <span class="badge-cta">Mehr Infos <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <span class="badge-cta"><span class="cta-long">Mehr </span>Infos <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
   </a>
   <div class="hero-scroll-hint">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
