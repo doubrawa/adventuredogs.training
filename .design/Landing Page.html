@@ -744,8 +744,9 @@
       <a href="Kontakt.html" class="btn-ghost">Erstgespräch vereinbaren</a>
     </div>
   </div>
-  <!-- EVENT-BADGE: bei event-freien Zeiten einfach diesen <a>-Block auskommentieren oder entfernen -->
-  <a class="hero-badge" href="https://adventuredogs.123hundeschule.de/kurse/139-jagen-nein-danke-zusatztermin" target="_blank" rel="noopener">
+  <!-- EVENT-BADGE mit Ablaufdatum: data-expires = letzter Anzeigetag.
+       Fürs nächste Event: Datum, Text, Link + data-expires aktualisieren. -->
+  <a class="hero-badge" data-expires="2026-07-16" href="https://adventuredogs.123hundeschule.de/kurse/139-jagen-nein-danke-zusatztermin" target="_blank" rel="noopener">
     <svg class="badge-spin" viewBox="0 0 200 200" aria-hidden="true">
       <defs><path id="badgeTextPath" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs>
       <text><textPath href="#badgeTextPath" startOffset="0">Kurs&nbsp;&nbsp;·&nbsp;&nbsp;Jagen - Nein Danke!&nbsp;&nbsp;&nbsp;&nbsp;</textPath></text>
@@ -753,6 +754,20 @@
     <span class="badge-date">16.07.</span>
     <span class="badge-cta"><span class="cta-long">Mehr </span>Infos <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
   </a>
+  <script>
+    // Badge nach Ablaufdatum automatisch ausblenden (data-expires inklusiv).
+    (function () {
+      var b = document.querySelector('.hero-badge');
+      if (!b) return;
+      var exp = b.getAttribute('data-expires');
+      if (!exp) return;
+      var now = new Date();
+      var today = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0');
+      if (today > exp) b.style.display = 'none';
+    })();
+  </script>
   <div class="hero-scroll-hint">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>

@@ -775,9 +775,7 @@
       <a href="kontakt/" class="btn-ghost">Erstgespräch vereinbaren</a>
     </div>
   </div>
-  <!-- EVENT-BADGE mit Ablaufdatum: data-expires = letzter Tag, an dem der
-       Badge angezeigt wird (einschließlich, meist der Event-Tag selbst).
-       Danach blendet das Script darunter ihn automatisch aus.
+  <!-- EVENT-BADGE mit Ablaufdatum: data-expires = letzter Anzeigetag.
        Fürs nächste Event: Datum, Text, Link + data-expires aktualisieren. -->
   <a class="hero-badge" data-expires="2026-07-16" href="https://adventuredogs.123hundeschule.de/kurse/139-jagen-nein-danke-zusatztermin" target="_blank" rel="noopener">
     <svg class="badge-spin" viewBox="0 0 200 200" aria-hidden="true">
@@ -789,7 +787,6 @@
   </a>
   <script>
     // Badge nach Ablaufdatum automatisch ausblenden (data-expires inklusiv).
-    // Läuft synchron direkt nach dem Element — kein Aufblitzen.
     (function () {
       var b = document.querySelector('.hero-badge');
       if (!b) return;
