@@ -346,6 +346,44 @@ inject_breadcrumb_schema "$DST/alltagstipps/tierphysiotherapie/index.html" \
 inject_breadcrumb_schema "$DST/alltagstipps/ernaehrung/index.html" \
     "$SITE_BASE/alltagstipps/ernaehrung/" "Hundeernährung Grundlagen"
 
+# ─── "Aktualisiert · <Monat> <Jahr>" dynamisch aus Content-Datum ───
+# Das Design-Tool schreibt ein statisches "Aktualisiert · Mai 2026" in
+# die Artikel-Hero-Meta. Das veraltet sichtbar. Wir ersetzen den Monat/
+# Jahr-Teil durch das echte Inhalts-Änderungsdatum (git-Datum des
+# .design-Snapshots — konsistent mit dateModified im Article-Schema).
+german_month() {
+    case "$1" in
+        01) echo "Januar";; 02) echo "Februar";; 03) echo "März";;
+        04) echo "April";;  05) echo "Mai";;     06) echo "Juni";;
+        07) echo "Juli";;   08) echo "August";;  09) echo "September";;
+        10) echo "Oktober";; 11) echo "November";; 12) echo "Dezember";;
+    esac
+}
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+    F="$DST/alltagstipps/$topic/index.html"
+    [ -f "$F" ] || continue
+    d=$(git -C "$DST" log -1 --format=%cd --date=short -- ".design/alltagstipps/$topic/index.html" 2>/dev/null)
+    [ -z "$d" ] && continue
+    label="$(german_month "${d:5:2}") ${d:0:4}"
+    # Ersetze jeden vorhandenen "Aktualisiert · Monat Jahr"-Text
+    if grep -qE 'Aktualisiert · ' "$F" && ! grep -qF "Aktualisiert · $label" "$F"; then
+        sed -i -E "s#Aktualisiert · [A-Za-zäöüÄÖÜ]+ [0-9]{4}#Aktualisiert · $label#" "$F"
+        echo "  updated 'Aktualisiert'-Label: $topic → $label"
+    fi
+done
+
+# ─── FAQ-Accordion: aria-expanded für Screenreader ───
+# Die Buttons togglen nur eine CSS-Klasse — Screenreader erfahren nicht,
+# ob ein Panel offen ist. Wir setzen initial aria-expanded="false" und
+# patchen das Toggle-JS, damit es das Attribut mitführt.
+F="$DST/kontakt/index.html"
+if [ -f "$F" ] && ! grep -q 'aria-expanded' "$F"; then
+    sed -i 's|<button class="faq-question">|<button class="faq-question" aria-expanded="false">|g' "$F"
+    sed -i "s|document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));|document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));\n      document.querySelectorAll('.faq-question').forEach(b => b.setAttribute('aria-expanded', 'false'));|" "$F"
+    sed -i "s|if (!isOpen) item.classList.add('open');|if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }|" "$F"
+    echo "  added aria-expanded to FAQ accordion: kontakt"
+fi
+
 # ─── rel-Attribute für externe Empfehlungs-/Affiliate-Links ───
 # Platinum-Affiliate-Link (auf /alltagstipps/ernaehrung/) braucht
 # rel="sponsored nofollow" — sonst kann Google die Domain als
@@ -388,7 +426,14 @@ inject_article_schema() {
     local rel_path="${f#$DST/}"
     local published=$(git -C "$DST" log --follow --format=%cd --date=short --diff-filter=A -- "$rel_path" 2>/dev/null | tail -1)
     [ -z "$published" ] && published=$(date -u +%Y-%m-%d)
-    local modified=$(date -u +%Y-%m-%d)
+    # dateModified = letzte INHALTS-Änderung, nicht Pipeline-Run-Datum.
+    # Quelle: git-Datum des .design-Snapshots (der ändert sich nur, wenn
+    # claude.ai/design wirklich Neues liefert). Vorher wurde bei jedem
+    # Pipeline-Lauf auf "heute" gebumpt — Datums-Inflation, die Googles
+    # Vertrauen in die Datumsangaben erodiert.
+    local snapshot=".design/${rel_path}"
+    local modified=$(git -C "$DST" log -1 --format=%cd --date=short -- "$snapshot" 2>/dev/null)
+    [ -z "$modified" ] && modified=$(date -u +%Y-%m-%d)
 
     local schema="<script type=\"application/ld+json\">
 {
