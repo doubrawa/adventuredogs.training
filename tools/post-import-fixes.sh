@@ -283,6 +283,37 @@ fi
 #    idempotent per-card and per-CSS-rule.
 echo "  generating Alltagstipps card thumbnails"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/generate-thumbs.ps1" -AssetsDir "$DST/assets"
+
+# ─── Hub-Karte für hund-entlaufen (falls im Design-Hub noch nicht drin) ───
+# Der Artikel wurde per Pipeline ergänzt; die Hub-Übersicht kennt ihn u.U.
+# noch nicht. Wir hängen die 8. Karte nach der Ernährungs-Karte ein.
+# Idempotent: nur wenn href="hund-entlaufen/" auf dem Hub fehlt. Sobald
+# Julia die Karte in claude.ai/design selbst pflegt, greift der Check
+# und es entsteht kein Duplikat.
+HUB="$DST/alltagstipps/index.html"
+if [ -f "$HUB" ] && ! grep -q 'href="hund-entlaufen/"' "$HUB"; then
+    CARD=$(cat "$DST/tools/hub-card-hund-entlaufen.html")
+    # Nach dem schließenden </a> der Ernährungs-Karte einsetzen. Anker ist
+    # der eindeutige Ernährungs-Teaser; wir splicen direkt vor dem Grid-Ende.
+    line=$(grep -n 'card-teaser">Trocken, nass, BARF' "$HUB" | head -1 | cut -d: -f1)
+    if [ -n "$line" ]; then
+        # Ende der Ernährungs-Karte = erstes </a> ab der Teaser-Zeile
+        endrel=$(tail -n +"$line" "$HUB" | grep -n '</a>' | head -1 | cut -d: -f1)
+        endline=$((line + endrel - 1))
+        tmp=$(mktemp)
+        head -n "$endline" "$HUB"          > "$tmp"
+        cat "$DST/tools/hub-card-hund-entlaufen.html" >> "$tmp"
+        tail -n +$((endline + 1)) "$HUB"   >> "$tmp"
+        mv "$tmp" "$HUB"
+        echo "  injected hub card: hund-entlaufen"
+    fi
+fi
+# "7 Themen" → "8 Themen" (nur wenn hund-entlaufen-Karte jetzt vorhanden)
+if grep -q 'href="hund-entlaufen/"' "$HUB" && grep -q '7 Themen' "$HUB"; then
+    sed -i 's/7 Themen/8 Themen/g' "$HUB"
+    echo "  bumped hub count: 8 Themen"
+fi
+
 echo "  swapping Alltagstipps card SVGs → IMGs"
 powershell -ExecutionPolicy Bypass -File "$DST/tools/swap-card-svgs.ps1" -RepoRoot "$DST"
 
