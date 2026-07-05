@@ -55,7 +55,7 @@ inject_favicon "$DST/impressum/index.html"     "../"
 inject_favicon "$DST/ueber-mich/index.html"    "../"
 [ -f "$DST/gebucht/index.html" ] && inject_favicon "$DST/gebucht/index.html" "../"
 # Alltagstipps detail pages live 2 levels deep, so prefix is "../../".
-for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     [ -f "$DST/alltagstipps/$topic/index.html" ] && inject_favicon "$DST/alltagstipps/$topic/index.html" "../../"
 done
 
@@ -81,7 +81,7 @@ for p in kontakt angebot alltagstipps impressum ueber-mich gebucht; do
     fi
 done
 # Same fix, two levels deep, for alltagstipps detail pages.
-for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     F="$DST/alltagstipps/$topic/index.html"
     [ -f "$F" ] || continue
     if grep -qE "$PATTERN" "$F" 2>/dev/null; then
@@ -222,6 +222,11 @@ inject_seo "$DST/alltagstipps/ernaehrung/index.html" "alltagstipps/ernaehrung/" 
   "Hundeernährung verstehen: Trockenfutter, Nassfutter, BARF — Überblick und Auswahl-Kriterien. Hundeschule Adventure Dogs Krumbach." \
   "hero-ernaehrung.jpg"
 
+inject_seo "$DST/alltagstipps/hund-entlaufen/index.html" "alltagstipps/hund-entlaufen/" \
+  "Hund entlaufen – was tun? | Adventure Dogs" \
+  "Hund entlaufen? Die wichtigsten Sofortmaßnahmen Schritt für Schritt – plus Notfall-Anlaufstellen für Krumbach, den Landkreis Günzburg und das Unterallgäu." \
+  "hero-hund-entlaufen.jpg"
+
 # Gebucht (booking-confirmation page): inject SEO + noindex so Google
 # doesn't index this post-conversion landing in search results.
 if [ -f "$DST/gebucht/index.html" ]; then
@@ -345,6 +350,8 @@ inject_breadcrumb_schema "$DST/alltagstipps/tierphysiotherapie/index.html" \
     "$SITE_BASE/alltagstipps/tierphysiotherapie/" "Tierphysiotherapie verstehen"
 inject_breadcrumb_schema "$DST/alltagstipps/ernaehrung/index.html" \
     "$SITE_BASE/alltagstipps/ernaehrung/" "Hundeernährung Grundlagen"
+inject_breadcrumb_schema "$DST/alltagstipps/hund-entlaufen/index.html" \
+    "$SITE_BASE/alltagstipps/hund-entlaufen/" "Hund entlaufen"
 
 # ─── "Aktualisiert · <Monat> <Jahr>" dynamisch aus Content-Datum ───
 # Das Design-Tool schreibt ein statisches "Aktualisiert · Mai 2026" in
@@ -359,15 +366,19 @@ german_month() {
         10) echo "Oktober";; 11) echo "November";; 12) echo "Dezember";;
     esac
 }
-for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     F="$DST/alltagstipps/$topic/index.html"
     [ -f "$F" ] || continue
     d=$(git -C "$DST" log -1 --format=%cd --date=short -- ".design/alltagstipps/$topic/index.html" 2>/dev/null)
-    [ -z "$d" ] && continue
+    # Neuer Artikel noch nicht committet → git-Datum leer → heute nehmen
+    # (konsistent mit dem dateModified-Fallback im Article-Schema).
+    [ -z "$d" ] && d=$(date -u +%Y-%m-%d)
     label="$(german_month "${d:5:2}") ${d:0:4}"
-    # Ersetze jeden vorhandenen "Aktualisiert · Monat Jahr"-Text
-    if grep -qE 'Aktualisiert · ' "$F" && ! grep -qF "Aktualisiert · $label" "$F"; then
-        sed -i -E "s#Aktualisiert · [A-Za-zäöüÄÖÜ]+ [0-9]{4}#Aktualisiert · $label#" "$F"
+    # Ersetzt alles nach "Aktualisiert · " bis zum nächsten Tag durch das
+    # Content-Datum. Deckt alle Formen ab: echtes "Mai 2026", Klammer-
+    # Platzhalter "[Monat Jahr]" (bei neuen Artikeln) und leer.
+    if grep -qE 'Aktualisiert · ' "$F" && ! grep -qF "Aktualisiert · $label<" "$F"; then
+        sed -i -E "s#(Aktualisiert · )[^<]*#\1$label#" "$F"
         echo "  updated 'Aktualisiert'-Label: $topic → $label"
     fi
 done
@@ -473,7 +484,7 @@ inject_article_schema() {
         echo "  injected Article JSON-LD: alltagstipps/$(basename $(dirname "$f"))/"
     fi
 }
-for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     F="$DST/alltagstipps/$topic/index.html"
     [ -f "$F" ] && inject_article_schema "$F" "$SITE_BASE/alltagstipps/$topic/"
 done

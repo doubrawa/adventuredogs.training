@@ -248,6 +248,21 @@
     </image:image>
   </url>
   <url>
+    <loc>https://adventuredogs.training/alltagstipps/hund-entlaufen/</loc>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/hero-hund-entlaufen.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/thumb-alleinbleiben.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/thumb-silvester.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/thumb-welpenzeit.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://adventuredogs.training/kontakt/</loc>
     <image:image>
       <image:loc>https://adventuredogs.training/assets/anfahrt.gif</image:loc>

@@ -154,6 +154,10 @@ process_detail() {
   # den anderen ein No-op.
   sed -i 's|src="lena-hillenbrand-logo\.png"|src="../../assets/lena-hillenbrand-logo.png"|g' "$F"
   sed -i 's|src="platinum\.jpg"|src="../../assets/platinum.jpg"|g' "$F"
+  # Nav-Logo vereinheitlichen: manche Exporte referenzieren logo-nav.svg
+  # (unoptimierte 204-KB-Kopie desselben runden Logos). Auf das bereits
+  # optimierte logo.svg umbiegen — konsistent mit allen anderen Seiten.
+  sed -i 's|assets/logo-nav\.svg|assets/logo.svg|g' "$F"
   echo "OK alltagstipps/$topic/index.html"
 }
 
@@ -165,6 +169,31 @@ process_detail "winter"            "hero-winter.jpg"           "julia-nebel-fels
 process_detail "alleinbleiben"     "hero-alleinbleiben.jpg"    "julia-einstein-wiese.jpg"
 process_detail "tierphysiotherapie" "hero-tierphysiotherapie.jpg" "intensivcoaching.jpg"
 process_detail "ernaehrung"        "hero-ernaehrung.jpg"       "julia-coffee-dogs.jpg"
+
+# ── hund-entlaufen (Notfall-Artikel, Sonderfälle) ──
+# clean_page + logo-nav-Fix laufen über process_detail; design_hero ist
+# hier ein Dummy, weil die Seite (noch) kein Hero-FOTO hat, sondern einen
+# Gradient-Platzhalter.
+process_detail "hund-entlaufen"    "hero-hund-entlaufen.jpg"   "__kein-hero-foto__"
+F="$DST/alltagstipps/hund-entlaufen/index.html"
+# Hero: Gradient-Platzhalter durch Foto ersetzen. hero-hund-entlaufen.jpg
+# ist aktuell eine Interim-Kopie von hero-alltagstipps.jpg — sobald Julia
+# in claude.ai/design ein echtes "suchender Hund"-Foto liefert, wird nur
+# diese eine Datei überschrieben, ohne Mapping-Änderung.
+perl -0777 -pi -e "s#\.hero-bg\s*\{[^}]*repeating-linear-gradient[^}]*\}#.hero-bg { position: absolute; inset: 0; background: url('../../assets/hero-hund-entlaufen.jpg') center 40% / cover no-repeat; }#s" "$F"
+# Sichtbaren Hero-Platzhalter-Tag ("[ HERO-FOTO — wird ausgetauscht ]")
+# entfernen — sobald ein echtes Foto liegt, ist er ohnehin überflüssig.
+sed -i 's#<span class="hero-placeholder-tag">[^<]*</span>##g' "$F"
+# TASSO-Platzhalter (inkl. <mark class="ph">-Highlight-Wrapper) durch die
+# offizielle Notruf-Nummer ersetzen (vom Betreiber im Original-Text so
+# angegeben). Wrapper mit weg, sonst zeigt die Nummer gelb hervorgehoben.
+sed -i 's#<mark class="ph">\[Julia:[^]]*\]</mark>#06190 937300#g' "$F"
+# Sicherheitsnetz: sollten weitere <mark class="ph">…</mark>-Platzhalter
+# übrig sein (z.B. das Aktualisiert-Datum füllt post-import-fixes), den
+# Highlight-Wrapper entfernen, damit auf der Live-Seite nichts gelb
+# markiert erscheint — Inhalt bleibt erhalten.
+sed -i 's#<mark class="ph">\([^<]*\)</mark>#\1#g' "$F"
+echo "OK alltagstipps/hund-entlaufen (Sonderfixes: Hero-Foto, TASSO-Nummer)"
 
 # ── IMPRESSUM ──
 F="$DST/impressum/index.html"
@@ -229,7 +258,7 @@ cp "$SRC/404.html"           "$DST/.design/404.html"
 mkdir -p "$DST/.design/gebucht"
 cp "$SRC/gebucht/index.html" "$DST/.design/gebucht/index.html"
 mkdir -p "$DST/.design/alltagstipps"
-for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung; do
+for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
   mkdir -p "$DST/.design/alltagstipps/$topic"
   cp "$SRC/alltagstipps/$topic/index.html" "$DST/.design/alltagstipps/$topic/index.html"
 done

@@ -23,6 +23,7 @@ TABLE="
 /alltagstipps/alleinbleiben/|alltagstipps/alleinbleiben/index.html|monthly|0.7
 /alltagstipps/tierphysiotherapie/|alltagstipps/tierphysiotherapie/index.html|monthly|0.7
 /alltagstipps/ernaehrung/|alltagstipps/ernaehrung/index.html|monthly|0.7
+/alltagstipps/hund-entlaufen/|alltagstipps/hund-entlaufen/index.html|monthly|0.7
 /kontakt/|kontakt/index.html|monthly|0.7
 /impressum/|impressum/index.html|yearly|0.3
 "

@@ -32,6 +32,7 @@ $urls = @(
     @{ url='/alltagstipps/alleinbleiben/';       file='alltagstipps/alleinbleiben/index.html' }
     @{ url='/alltagstipps/tierphysiotherapie/';  file='alltagstipps/tierphysiotherapie/index.html' }
     @{ url='/alltagstipps/ernaehrung/';          file='alltagstipps/ernaehrung/index.html' }
+    @{ url='/alltagstipps/hund-entlaufen/';      file='alltagstipps/hund-entlaufen/index.html' }
     @{ url='/kontakt/';                          file='kontakt/index.html' }
 )
 

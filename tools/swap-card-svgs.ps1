@@ -31,6 +31,7 @@ $topics = @(
     @{ slug='alleinbleiben';      thumb='thumb-alleinbleiben.jpg';      alt='Beagle schaut allein aus dem Fenster' }
     @{ slug='tierphysiotherapie'; thumb='thumb-tierphysiotherapie.jpg'; alt='Hund auf Balance-Kissen in der Physio' }
     @{ slug='ernaehrung';         thumb='thumb-ernaehrung.jpg';         alt='Labrador mit Futternapf' }
+    @{ slug='hund-entlaufen';     thumb='thumb-hund-entlaufen.jpg';     alt='Hund l&auml;uft frei &uuml;ber eine Wiese' }
 )
 
 $rxOpt = [System.Text.RegularExpressions.RegexOptions]::Singleline

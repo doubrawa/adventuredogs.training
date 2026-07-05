@@ -28,6 +28,7 @@ $thumbs = @(
     @{ slug='alleinbleiben';      source='hero-alleinbleiben.jpg' }
     @{ slug='tierphysiotherapie'; source='hero-tierphysiotherapie.jpg' }
     @{ slug='ernaehrung';         source='hero-ernaehrung.jpg' }
+    @{ slug='hund-entlaufen';     source='hero-hund-entlaufen.jpg' }
 )
 
 Add-Type -AssemblyName System.Drawing
