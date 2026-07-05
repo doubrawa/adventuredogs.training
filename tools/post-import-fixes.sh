@@ -462,11 +462,14 @@ inject_article_schema() {
     local img=$(grep -E '<meta property="og:image"' "$f" | head -1 | sed 's|.*content="\([^"]*\)".*|\1|')
 
     # datePublished aus dem ersten git-Commit des Files ziehen
-    # (--diff-filter=A → erstes Add der Datei). dateModified ist
-    # immer "jetzt" (Pipeline-Run-Zeitpunkt). Fallback wenn die Datei
-    # noch nicht in git ist: heutiges Datum.
+    # (--diff-filter=A → erstes Add der Datei, tail -1 = ältester).
+    # KEIN --follow: die Artikel teilen viel Boilerplate, wodurch git
+    # fälschlich "Umbenennungen" zwischen ihnen erkennt und die Erst-
+    # veröffentlichung eines neuen Artikels auf einen älteren zurück-
+    # datiert. Ohne --follow gilt das echte erste Add DIESES Pfads.
+    # Fallback wenn die Datei noch nicht in git ist: heutiges Datum.
     local rel_path="${f#$DST/}"
-    local published=$(git -C "$DST" log --follow --format=%cd --date=short --diff-filter=A -- "$rel_path" 2>/dev/null | tail -1)
+    local published=$(git -C "$DST" log --format=%cd --date=short --diff-filter=A -- "$rel_path" 2>/dev/null | tail -1)
     [ -z "$published" ] && published=$(date -u +%Y-%m-%d)
     # dateModified = letzte INHALTS-Änderung, nicht Pipeline-Run-Datum.
     # Quelle: git-Datum des .design-Snapshots (der ändert sich nur, wenn
