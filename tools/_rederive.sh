@@ -217,7 +217,11 @@ mkdir -p "$DST/gebucht"
 F="$DST/gebucht/index.html"
 cp "$SRC/gebucht/index.html" "$F"
 clean_page "$F" "../"
-echo "OK gebucht/index.html"
+# Hero-Foto: Design liefert strand.jpg; wir tauschen es gegen die Graffiti-Wand
+# (aus assets/grafitiwand.png -> assets/hero-gebucht.jpg optimiert). strand.jpg
+# kommt nur hier vor, daher ersetzt ein sed beide Vorkommen (CSS-Hintergrund + og:image).
+sed -i 's#assets/strand\.jpg#assets/hero-gebucht.jpg#g' "$F"
+echo "OK gebucht/index.html (Hero: Graffiti-Wand statt strand.jpg)"
 
 # ── 404 (Fehlerseite) ──
 # GitHub Pages serviert /404.html für JEDE fehlende URL, egal in welcher
