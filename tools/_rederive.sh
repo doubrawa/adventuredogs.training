@@ -218,10 +218,13 @@ F="$DST/gebucht/index.html"
 cp "$SRC/gebucht/index.html" "$F"
 clean_page "$F" "../"
 # Hero-Foto: Design liefert strand.jpg; wir tauschen es gegen die Graffiti-Wand
-# (aus assets/grafitiwand.png -> assets/hero-gebucht.jpg optimiert). strand.jpg
+# (aus assets/grafitiwand_HQ.jpg -> assets/hero-gebucht.jpg optimiert). strand.jpg
 # kommt nur hier vor, daher ersetzt ein sed beide Vorkommen (CSS-Hintergrund + og:image).
 sed -i 's#assets/strand\.jpg#assets/hero-gebucht.jpg#g' "$F"
-echo "OK gebucht/index.html (Hero: Graffiti-Wand statt strand.jpg)"
+# Mobile-Framing: Design ankert das Hero rechts (fuer altes strand.jpg); die
+# Graffiti-Wand hat Hund+Trainerin im linken Drittel -> mobil links ankern.
+sed -i 's/background-position: right 40%/background-position: left 40%/' "$F"
+echo "OK gebucht/index.html (Hero: Graffiti-Wand, mobil links geankert)"
 
 # ── 404 (Fehlerseite) ──
 # GitHub Pages serviert /404.html für JEDE fehlende URL, egal in welcher
