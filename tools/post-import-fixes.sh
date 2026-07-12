@@ -233,7 +233,7 @@ if [ -f "$DST/gebucht/index.html" ]; then
     inject_seo "$DST/gebucht/index.html" "gebucht/" \
       "Buchung bestätigt – Adventure Dogs | Julia Doubrawa" \
       "Buchungsbestätigung der Hundeschule Adventure Dogs in Krumbach." \
-      "strand.jpg"
+      "hero-gebucht.jpg"
     # Add robots: noindex,nofollow (idempotent)
     if ! grep -q '<meta name="robots"' "$DST/gebucht/index.html"; then
         D=$(printf '\035')

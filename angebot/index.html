@@ -320,6 +320,45 @@
   }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
 
+  /* ── TERMINLISTE ── */
+  .termine-section {
+    background: var(--cream2);
+    padding: 64px 7% 72px;
+    margin-top: 64px;
+  }
+  .termine-inner { max-width: 900px; margin: 0 auto; }
+  .termine-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent) !important; margin-bottom: 12px;
+    font-style: italic;
+  }
+  .termine-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 34px); font-weight: 800;
+    color: var(--blue); line-height: 1.15; margin-bottom: 10px;
+  }
+  .termine-section > .termine-inner > p {
+    font-size: 15px; color: var(--text-lt); line-height: 1.65;
+    max-width: 560px; margin-bottom: 28px;
+  }
+  .termine-section > .termine-inner > p.termine-eyebrow { margin-bottom: 12px; }
+  .termine-frame {
+    background: var(--white);
+    border: 1px solid oklch(0% 0 0 / 0.07);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .termine-frame iframe { display: block; width: 100%; border: 0; height: 680px; }
+  .termine-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .termine-tabs button {
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    background: var(--white); color: var(--text);
+    border: 1px solid oklch(0% 0 0 / 0.1); border-radius: 40px;
+    padding: 9px 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .termine-tabs button.active { background: var(--blue); color: var(--white); border-color: var(--blue); font-weight: 600; }
+
   /* ── FOOTER ── */
   footer {
     background: var(--text); color: oklch(100% 0 0 / 0.55);
@@ -706,6 +745,24 @@
     </div>
 
   </div>
+
+  <!-- TERMINLISTE (123Hundeschule, nur buchbare Angebote) -->
+  <section class="termine-section" id="termine" data-screen-label="Terminliste">
+    <div class="termine-inner">
+      <p class="termine-eyebrow">Immer aktuell</p>
+      <h2>Jetzt buchbare Termine</h2>
+      <p>Hier siehst du nur Angebote, die du aktuell noch buchen kannst – mit freien Plätzen. Ein Klick führt dich direkt zur Buchung.</p>
+      <div class="termine-tabs" id="termineTabs">
+        <button type="button" class="active" data-src="https://adventuredogs.123hundeschule.de/kurse?embed=1">Kurse</button>
+        <button type="button" data-src="https://adventuredogs.123hundeschule.de/gruppen?embed=1">Gruppenstunden</button>
+        <button type="button" data-src="https://adventuredogs.123hundeschule.de/veranstaltungen?embed=1">Veranstaltungen</button>
+      </div>
+      <div class="termine-frame">
+        <iframe id="termineFrame" src="https://adventuredogs.123hundeschule.de/kurse?embed=1" title="Buchbare Termine" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA BANNER -->
   <div class="cta-banner">
     <h2>Nicht sicher, was zu euch passt?</h2>
@@ -731,6 +788,15 @@
   </div>
 </footer>
 
+<script>
+  // Terminliste: Tabs umschalten
+  document.getElementById('termineTabs').addEventListener('click', function (e) {
+    var btn = e.target.closest('button'); if (!btn) return;
+    this.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('termineFrame').src = btn.dataset.src;
+  });
+</script>
 <script>
   function filterCards(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
