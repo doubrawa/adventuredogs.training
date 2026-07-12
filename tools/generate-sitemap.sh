@@ -33,7 +33,18 @@ TABLE="
   echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
   echo "$TABLE" | while IFS='|' read -r url file freq prio; do
     [ -z "$url" ] && continue
-    lastmod=$(git -C "$DST" log -1 --format=%cd --date=short -- "$file" 2>/dev/null)
+    case "$file" in
+      alltagstipps/*/index.html)
+        # Fertige Artikel-Detailseiten: lastmod = Erstelldatum (erstes
+        # git-Add), konsistent mit dateModified im Article-Schema und
+        # stabil. Globale Änderungen (z.B. Logo-Swap im gemeinsamen Header)
+        # sollen die Artikel-lastmod NICHT hochbumpen.
+        lastmod=$(git -C "$DST" log --format=%cd --date=short --diff-filter=A -- "$file" 2>/dev/null | tail -1) ;;
+      *)
+        # Dynamische Seiten (Start, Angebot, Kontakt, Hub, …): lastmod =
+        # letztes Commit-Datum, die ändern sich real über die Zeit.
+        lastmod=$(git -C "$DST" log -1 --format=%cd --date=short -- "$file" 2>/dev/null) ;;
+    esac
     [ -z "$lastmod" ] && lastmod=$(date -u +%Y-%m-%d)
     echo "  <url>"
     echo "    <loc>${BASE}${url}</loc>"

@@ -400,9 +400,13 @@ german_month() {
 for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     F="$DST/alltagstipps/$topic/index.html"
     [ -f "$F" ] || continue
-    d=$(git -C "$DST" log -1 --format=%cd --date=short -- ".design/alltagstipps/$topic/index.html" 2>/dev/null)
-    # Neuer Artikel noch nicht committet → git-Datum leer → heute nehmen
-    # (konsistent mit dem dateModified-Fallback im Article-Schema).
+    # Erstelldatum = erstes git-Add des Artikels (gleiche Quelle wie
+    # datePublished im Article-Schema). NICHT das Änderungs-/Snapshot-Datum:
+    # an einem fertigen Artikel ändert sich inhaltlich nichts, und ein
+    # Modified-Datum wurde von globalen Änderungen (z.B. Logo-Swap im
+    # gemeinsamen Header) fälschlich bei jedem Import hochgezogen.
+    d=$(git -C "$DST" log --format=%cd --date=short --diff-filter=A -- "alltagstipps/$topic/index.html" 2>/dev/null | tail -1)
+    # Neuer Artikel noch nicht committet → git-Datum leer → heute nehmen.
     [ -z "$d" ] && d=$(date -u +%Y-%m-%d)
     label="$(german_month "${d:5:2}") ${d:0:4}"
     # Ersetzt alles nach "Aktualisiert · " bis zum nächsten Tag durch das
@@ -471,14 +475,12 @@ inject_article_schema() {
     local rel_path="${f#$DST/}"
     local published=$(git -C "$DST" log --format=%cd --date=short --diff-filter=A -- "$rel_path" 2>/dev/null | tail -1)
     [ -z "$published" ] && published=$(date -u +%Y-%m-%d)
-    # dateModified = letzte INHALTS-Änderung, nicht Pipeline-Run-Datum.
-    # Quelle: git-Datum des .design-Snapshots (der ändert sich nur, wenn
-    # claude.ai/design wirklich Neues liefert). Vorher wurde bei jedem
-    # Pipeline-Lauf auf "heute" gebumpt — Datums-Inflation, die Googles
-    # Vertrauen in die Datumsangaben erodiert.
-    local snapshot=".design/${rel_path}"
-    local modified=$(git -C "$DST" log -1 --format=%cd --date=short -- "$snapshot" 2>/dev/null)
-    [ -z "$modified" ] && modified=$(date -u +%Y-%m-%d)
+    # dateModified = datePublished (Erstelldatum). An einem fertigen Artikel
+    # wird inhaltlich nichts mehr geändert. Frühere Quelle (git-Datum des
+    # .design-Snapshots) wurde von globalen Änderungen wie dem Logo-Swap im
+    # gemeinsamen Header fälschlich hochgezogen → Datums-Rauschen bei jedem
+    # Import. Erstelldatum ist stabil und ehrlich.
+    local modified="$published"
 
     local schema="<script type=\"application/ld+json\">
 {
