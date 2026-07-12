@@ -358,6 +358,59 @@
     padding: 9px 20px; cursor: pointer; transition: all 0.15s;
   }
   .termine-tabs button.active { background: var(--blue); color: var(--white); border-color: var(--blue); font-weight: 600; }
+  .termine-tabs[hidden] { display: none; }
+
+  /* ── TERMINLISTE: Einwilligung (2-Klick) ── */
+  .termine-consent {
+    background: var(--cream);
+    border-radius: var(--r-lg);
+    padding: 56px 8% 52px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .termine-consent[hidden] { display: none; }
+  .termine-consent .consent-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: oklch(62% 0.12 185 / 0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .termine-consent .consent-icon svg { width: 26px; height: 26px; stroke: var(--accent); }
+  .termine-consent h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.4vw, 26px); font-weight: 800;
+    color: var(--blue); line-height: 1.2; margin-bottom: 14px;
+  }
+  .termine-consent p {
+    font-size: 14px; line-height: 1.7; color: var(--text-lt);
+    max-width: 520px; margin-bottom: 26px;
+  }
+  .termine-consent p a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .termine-consent p a:hover { color: var(--blue); }
+  .consent-load-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    background: var(--accent); color: var(--white);
+    border: 0; border-radius: 40px; padding: 14px 32px;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+  }
+  .consent-load-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
+  .consent-load-btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .termine-revoke { margin-top: 14px; text-align: right; }
+  .termine-revoke[hidden] { display: none; }
+  .termine-revoke button {
+    font-family: inherit; font-size: 12.5px; color: var(--text-lt);
+    background: none; border: 0; padding: 4px 2px; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  .termine-revoke button:hover { color: var(--accent); }
+  .termine-revoke button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (max-width: 720px) {
+    .termine-consent { padding: 40px 6% 40px; }
+    .consent-load-btn { width: 100%; justify-content: center; }
+  }
 
   /* ── FOOTER ── */
   footer {
@@ -451,7 +504,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="../">
-    <img src="../assets/logo.png" alt="Logo">
+    <img src="../assets/logo.svg" alt="Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
@@ -752,13 +805,26 @@
       <p class="termine-eyebrow">Immer aktuell</p>
       <h2>Jetzt buchbare Termine</h2>
       <p>Hier siehst du nur Angebote, die du aktuell noch buchen kannst – mit freien Plätzen. Ein Klick führt dich direkt zur Buchung.</p>
-      <div class="termine-tabs" id="termineTabs">
+      <div class="termine-tabs" id="termineTabs" hidden>
         <button type="button" class="active" data-src="https://adventuredogs.123hundeschule.de/kurse?embed=1">Kurse</button>
         <button type="button" data-src="https://adventuredogs.123hundeschule.de/gruppen?embed=1">Gruppenstunden</button>
         <button type="button" data-src="https://adventuredogs.123hundeschule.de/veranstaltungen?embed=1">Veranstaltungen</button>
       </div>
       <div class="termine-frame">
-        <iframe id="termineFrame" src="https://adventuredogs.123hundeschule.de/kurse?embed=1" title="Buchbare Termine" loading="lazy"></iframe>
+        <div class="termine-consent" id="termineConsent">
+          <div class="consent-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M8 3v4"></path><path d="M16 3v4"></path><path d="M9 15.5l2 2 4-4"></path></svg>
+          </div>
+          <h3>Buchbare Termine anzeigen</h3>
+          <p>Hier zeigen wir dir buchbare Termine über unser Buchungssystem 123hundeschule. Klickst du auf „Termine laden“, wird eine Verbindung zu 123hundeschule (Orlyapps – Janzen und Strauß GbR) hergestellt. Dabei wird deine IP-Adresse übertragen und es werden Cookies gesetzt. Deine Einwilligung kannst du jederzeit widerrufen. Mehr dazu in unserer <a href="../impressum/#datenschutz">Datenschutzerklärung</a>.</p>
+          <button type="button" class="consent-load-btn" id="consentLoadBtn" aria-label="Einwilligen und buchbare Termine von 123hundeschule laden">
+            Termine laden
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+      <div class="termine-revoke" id="termineRevoke" hidden>
+        <button type="button" id="consentRevokeBtn">Einwilligung für 123hundeschule widerrufen</button>
       </div>
     </div>
   </section>
@@ -789,13 +855,57 @@
 </footer>
 
 <script>
-  // Terminliste: Tabs umschalten
-  document.getElementById('termineTabs').addEventListener('click', function (e) {
-    var btn = e.target.closest('button'); if (!btn) return;
-    this.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
-    btn.classList.add('active');
-    document.getElementById('termineFrame').src = btn.dataset.src;
-  });
+  // Terminliste: 2-Klick-Einwilligung + Tabs
+  (function () {
+    var KEY = 'consent_123hundeschule';
+    var tabs = document.getElementById('termineTabs');
+    var consent = document.getElementById('termineConsent');
+    var revoke = document.getElementById('termineRevoke');
+    var frameWrap = consent.parentElement;
+
+    function loadTermine() {
+      var active = tabs.querySelector('button.active');
+      var iframe = document.createElement('iframe');
+      iframe.id = 'termineFrame';
+      iframe.src = active.dataset.src;
+      iframe.title = 'Buchbare Termine';
+      iframe.loading = 'lazy';
+      frameWrap.appendChild(iframe);
+      consent.hidden = true;
+      tabs.hidden = false;
+      revoke.hidden = false;
+    }
+
+    function unloadTermine() {
+      var iframe = document.getElementById('termineFrame');
+      if (iframe) iframe.remove();
+      consent.hidden = false;
+      tabs.hidden = true;
+      revoke.hidden = true;
+    }
+
+    tabs.addEventListener('click', function (e) {
+      var btn = e.target.closest('button'); if (!btn) return;
+      tabs.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var iframe = document.getElementById('termineFrame');
+      if (iframe) iframe.src = btn.dataset.src;
+    });
+
+    document.getElementById('consentLoadBtn').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, 'granted'); } catch (err) {}
+      loadTermine();
+    });
+
+    document.getElementById('consentRevokeBtn').addEventListener('click', function () {
+      try { localStorage.removeItem(KEY); } catch (err) {}
+      unloadTermine();
+    });
+
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (err) {}
+    if (stored === 'granted') loadTermine();
+  })();
 </script>
 <script>
   function filterCards(cat, btn) {

@@ -12,7 +12,7 @@
 # Juli 2026 gelöscht (3,4 GB); Evolution der Patches steht in der
 # git-History dieser Datei bzw. vorher in den Commit-Messages.
 set -e
-SRC="C:/DATA/Claude/design-extract-v49"
+SRC="C:/DATA/Claude/design-extract-v50"
 DST="C:/DATA/Claude/adventuredogs.training"
 
 clean_page() {
@@ -25,6 +25,12 @@ clean_page() {
   local back="${p:-./}"
   # Logo URL from WordPress upload — same on every page
   sed -i "s|https://adventuredogs.training/wp-content/uploads/2025/05/logo-80x80\.png|${p}assets/logo.png|g" "$f"
+  # Nav-Logo vereinheitlichen: seit v50 referenzieren ALLE Seiten (nicht mehr
+  # nur die Detailseiten) das runde Nav-Logo als assets/logo-nav.svg. Die
+  # unoptimierte 204-KB-Kopie gibt es im Repo nicht — auf das bereits
+  # optimierte assets/logo.svg umbiegen. Muster ist pfad-präfix-agnostisch
+  # (matcht assets/, ../assets/, ../../assets/ gleichermaßen).
+  sed -i 's|assets/logo-nav\.svg|assets/logo.svg|g' "$f"
   # The design tool emits sibling links in different forms depending on
   # the source file's own depth in its export tree:
   #   - Bare ("Landing Page.html") from flat root pages
@@ -154,10 +160,8 @@ process_detail() {
   # den anderen ein No-op.
   sed -i 's|src="lena-hillenbrand-logo\.png"|src="../../assets/lena-hillenbrand-logo.png"|g' "$F"
   sed -i 's|src="platinum\.jpg"|src="../../assets/platinum.jpg"|g' "$F"
-  # Nav-Logo vereinheitlichen: manche Exporte referenzieren logo-nav.svg
-  # (unoptimierte 204-KB-Kopie desselben runden Logos). Auf das bereits
-  # optimierte logo.svg umbiegen — konsistent mit allen anderen Seiten.
-  sed -i 's|assets/logo-nav\.svg|assets/logo.svg|g' "$F"
+  # (Nav-Logo-Vereinheitlichung logo-nav.svg -> logo.svg passiert jetzt
+  # global in clean_page, gilt also auch hier.)
   echo "OK alltagstipps/$topic/index.html"
 }
 
