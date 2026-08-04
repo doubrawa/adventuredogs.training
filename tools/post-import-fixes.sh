@@ -32,6 +32,20 @@ for f in "$DST/index.html" "$DST/angebot/index.html"; do
     fi
 done
 
+# ─── Impressum: TMG → DDG ───
+# Das Telemediengesetz wurde im Mai 2024 vom Digitale-Dienste-Gesetz (DDG)
+# abgelöst. Das Impressum aus dem Design zitiert noch die alten Normen:
+# § 5 TMG (Impressumspflicht) und § 7 Abs. 1 / §§ 8 bis 10 TMG
+# (Verantwortlichkeit für eigene/fremde Inhalte). Die Paragrafennummern sind
+# im DDG identisch, es ändert sich nur das Kürzel — deshalb reicht ein
+# pauschales TMG→DDG auf dieser einen Datei.
+# Sobald es in claude.ai/design korrigiert ist, läuft der Block leer.
+IMP="$DST/impressum/index.html"
+if grep -q 'TMG' "$IMP"; then
+    sed -i 's|TMG|DDG|g' "$IMP"
+    echo "  Impressum: TMG → DDG ($(grep -c 'DDG' "$IMP") Stellen)"
+fi
+
 # ─── Favicon links (browser tab icon + iOS home-screen icon) ───
 # claude.ai/design doesn't emit favicon links. We inject three variants:
 #   - SVG icon for modern browsers (sharp at every size, vector)
