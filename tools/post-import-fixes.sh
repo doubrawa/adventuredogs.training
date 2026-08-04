@@ -32,6 +32,22 @@ for f in "$DST/index.html" "$DST/angebot/index.html"; do
     fi
 done
 
+# ─── Nav-Media-Query: toter Bereich unterhalb des Hamburgers ───
+# Das Design bringt seit v53 eine Media-Query, die den fünften Nav-Eintrag
+# ("Office Dogs") bei mittleren Breiten enger setzt — deklariert ab 821px.
+# .nav-links wird aber schon ab 960px per `display:none !important` vom
+# Hamburger abgelöst, der Bereich 821–960px läuft also ins Leere.
+# Untergrenze auf 961px anheben, damit die Query genau dort greift, wo die
+# Desktop-Nav auch wirklich sichtbar ist.
+for f in "$DST/index.html" "$DST"/*/index.html "$DST"/alltagstipps/*/index.html "$DST/404.html"; do
+    [ -f "$f" ] || continue
+    if grep -q 'min-width: 821px' "$f"; then
+        sed -i 's|min-width: 821px|min-width: 961px|g' "$f"
+        NAVQ=$((${NAVQ:-0} + 1))
+    fi
+done
+[ "${NAVQ:-0}" -gt 0 ] && echo "  Nav-Media-Query 821px → 961px: $NAVQ Seiten"
+
 # ─── Impressum: TMG → DDG ───
 # Das Telemediengesetz wurde im Mai 2024 vom Digitale-Dienste-Gesetz (DDG)
 # abgelöst. Das Impressum aus dem Design zitiert noch die alten Normen:
@@ -433,8 +449,12 @@ for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie
     # Der Umlaut in "Veröffentlicht" wird über [^ ]* umschifft — Git-Bash-sed
     # matcht ö in Punkt/Klassen unzuverlässig, "Ver" und "ffentlicht" sind
     # dagegen sauberes ASCII.
+    # Der Idempotenz-Check muss BEIDE Formen erkennen: auf manchen Seiten
+    # folgt direkt "</span>", auf anderen endet die Zeile nach dem Datum und
+    # das Tag steht eine Zeile tiefer. Ohne das "(<|$)" schrieb der Block dort
+    # bei jedem Lauf denselben Wert neu — harmlos, aber eben nicht idempotent.
     W='(Aktualisiert|Ver[^ ]*ffentlicht)'
-    if grep -qE "$W · " "$F" && ! grep -qE "$W · $label<" "$F"; then
+    if grep -qE "$W · " "$F" && ! grep -qE "$W · $label(<|$)" "$F"; then
         sed -i -E "s#($W · )[^<]*#\1$label#" "$F"
         echo "  Datums-Label gesetzt: $topic → $label"
     fi
