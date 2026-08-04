@@ -12,7 +12,7 @@
 # Juli 2026 gelöscht (3,4 GB); Evolution der Patches steht in der
 # git-History dieser Datei bzw. vorher in den Commit-Messages.
 set -e
-SRC="C:/DATA/Claude/design-extract-v51"
+SRC="C:/DATA/Claude/design-extract-v53"
 DST="C:/DATA/Claude/adventuredogs.training"
 
 clean_page() {

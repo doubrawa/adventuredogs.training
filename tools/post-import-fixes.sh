@@ -398,11 +398,15 @@ inject_breadcrumb_schema "$DST/alltagstipps/ernaehrung/index.html" \
 inject_breadcrumb_schema "$DST/alltagstipps/hund-entlaufen/index.html" \
     "$SITE_BASE/alltagstipps/hund-entlaufen/" "Hund entlaufen"
 
-# ─── "Aktualisiert · <Monat> <Jahr>" dynamisch aus Content-Datum ───
-# Das Design-Tool schreibt ein statisches "Aktualisiert · Mai 2026" in
-# die Artikel-Hero-Meta. Das veraltet sichtbar. Wir ersetzen den Monat/
-# Jahr-Teil durch das echte Inhalts-Änderungsdatum (git-Datum des
-# .design-Snapshots — konsistent mit dateModified im Article-Schema).
+# ─── "Veröffentlicht · <Monat> <Jahr>" dynamisch aus Content-Datum ───
+# Das Design-Tool schreibt ein statisches Datum in die Artikel-Hero-Meta.
+# Das veraltet sichtbar. Wir ersetzen den Monat/Jahr-Teil durch das echte
+# Erstelldatum aus git (konsistent mit datePublished im Article-Schema).
+#
+# Das Label-Wort kam bis v52 als "Aktualisiert", seit v53 als
+# "Veröffentlicht". Beide werden erkannt, damit ein Wortwechsel im Design
+# das Datum nicht wieder statisch werden lässt — genau das war nach dem
+# v53-Import kurzzeitig der Fall.
 german_month() {
     case "$1" in
         01) echo "Januar";; 02) echo "Februar";; 03) echo "März";;
@@ -423,12 +427,16 @@ for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie
     # Neuer Artikel noch nicht committet → git-Datum leer → heute nehmen.
     [ -z "$d" ] && d=$(date -u +%Y-%m-%d)
     label="$(german_month "${d:5:2}") ${d:0:4}"
-    # Ersetzt alles nach "Aktualisiert · " bis zum nächsten Tag durch das
-    # Content-Datum. Deckt alle Formen ab: echtes "Mai 2026", Klammer-
+    # Ersetzt alles nach dem Label-Wort + " · " bis zum nächsten Tag durch
+    # das Content-Datum. Deckt alle Formen ab: echtes "Mai 2026", Klammer-
     # Platzhalter "[Monat Jahr]" (bei neuen Artikeln) und leer.
-    if grep -qE 'Aktualisiert · ' "$F" && ! grep -qF "Aktualisiert · $label<" "$F"; then
-        sed -i -E "s#(Aktualisiert · )[^<]*#\1$label#" "$F"
-        echo "  updated 'Aktualisiert'-Label: $topic → $label"
+    # Der Umlaut in "Veröffentlicht" wird über [^ ]* umschifft — Git-Bash-sed
+    # matcht ö in Punkt/Klassen unzuverlässig, "Ver" und "ffentlicht" sind
+    # dagegen sauberes ASCII.
+    W='(Aktualisiert|Ver[^ ]*ffentlicht)'
+    if grep -qE "$W · " "$F" && ! grep -qE "$W · $label<" "$F"; then
+        sed -i -E "s#($W · )[^<]*#\1$label#" "$F"
+        echo "  Datums-Label gesetzt: $topic → $label"
     fi
 done
 
