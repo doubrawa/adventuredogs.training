@@ -48,6 +48,69 @@ for f in "$DST/index.html" "$DST"/*/index.html "$DST"/alltagstipps/*/index.html 
 done
 [ "${NAVQ:-0}" -gt 0 ] && echo "  Nav-Media-Query 821px → 961px: $NAVQ Seiten"
 
+# ─── Nav-Geometrie an officedogs.training angleichen ───
+# Beide Sites verlinken sich gegenseitig in der Nav. Beim Domainwechsel bleibt
+# die Leiste stehen, ihre Maße sprangen aber sichtbar (gemessen bei 1280px):
+#
+#                       officedogs   adventuredogs
+#   Balkenhöhe             80px          70px
+#   Rand links           51,2px        63,2px
+#   Logo                   46px       42/40px
+#   Button-Höhe          41,0px        35,6px
+#
+# officedogs ist die Referenz (Wunsch von Juergen, 05.08.2026). Dessen
+# `clamp(22px,4vw,52px)` ersetzt die 5%: officedogs deckelt den Rand bei 52px,
+# 5% wachsen unbegrenzt weiter (bei 1920px 96px → 44px Sprung). Dass die Nav
+# dadurch weiter außen sitzt als der Inhalt (7%), ist gewollt und auf
+# officedogs genauso — die Nav ist ein Rahmenelement am Fensterrand, nicht am
+# Textblock ausgerichtet. Sie überlagert ohnehin einen bildschirmhohen Hero.
+#
+# Nebeneffekt, der hier gleich mit erledigt wird: die Nav war schon site-intern
+# uneinheitlich — Startseite Logo 42px / Abstand 32px, Unterseiten 40px / 28px.
+# Beides geht auf officedogs' 46px / 30px.
+#
+# Die Link-Schriftgröße 14px → 13,5px ist nötig, damit der Button exakt und
+# nicht nur ungefähr gleich dick wird (Höhe = Polster + Textzeile); 13,5px ist
+# im Design ohnehin schon der Wert der 961–1120px-Query.
+#
+# Alle Ersetzungen sind mit perl auf die jeweilige Regel begrenzt. Ein
+# pauschales sed wäre falsch: `padding: 9px 20px` sitzt auf angebot/ auch an
+# den Termine-Tabs, `gap: 32px` und `font-size: 14px` kommen vielfach vor.
+# Sobald das in claude.ai/design korrigiert ist, läuft der Block leer.
+NAVG=0
+for f in "$DST/index.html" "$DST"/*/index.html "$DST"/alltagstipps/*/index.html "$DST/404.html"; do
+    [ -f "$f" ] || continue
+    grep -q 'height: 70px\|padding: 0 5%\|top: 70px' "$f" || continue
+    perl -0777 -i -pe '
+        s/(\bnav \{[^}]*?)height: 70px/${1}height: 80px/s;
+        s/(\bnav \{[^}]*?)padding: 0 5%/${1}padding: 0 clamp(22px, 4vw, 52px)/s;
+        s/\.nav-logo img \{ width: 4[02]px; height: 4[02]px; \}/.nav-logo img { width: 46px; height: 46px; }/;
+        s/(\.nav-links \{[^}]*?)gap: (?:28|32)px/${1}gap: 30px/s;
+        s/(\.nav-links a \{[^}]*?)font-size: 14px/${1}font-size: 13.5px/s;
+        s/(\.nav-cta \{[^}]*?)padding: 9px 20px/${1}padding: 12px 22px/s;
+        s/(\.nav-mobile \{[^}]*?)top: 70px/${1}top: 80px/s;
+        s/(\.nav-mobile \{[^}]*?padding: \d+px )7%/${1}clamp(22px, 4vw, 52px)/s;
+    ' "$f"
+    # Toter Rest: die 720px-Query setzte nav-padding auf denselben Wert wie die
+    # Basisregel. Mit dem clamp wäre sie sogar schädlich (5% = 18,75px auf 375px
+    # statt der 22px, die officedogs dort hat).
+    sed -i '/^    nav { padding: 0 5%; }$/d' "$f"
+    NAVG=$((NAVG + 1))
+done
+[ "$NAVG" -gt 0 ] && echo "  Nav-Geometrie auf officedogs-Maße: $NAVG Seiten"
+
+# Sprungmarken in den Artikeln: 90px Freiraum waren auf die 70px-Nav gerechnet
+# (20px Luft). Mit 80px Nav bleiben sonst nur 10px.
+SMT=0
+for f in "$DST"/alltagstipps/*/index.html; do
+    [ -f "$f" ] || continue
+    if grep -q 'scroll-margin-top: 90px' "$f"; then
+        sed -i 's|scroll-margin-top: 90px|scroll-margin-top: 100px|g' "$f"
+        SMT=$((SMT + 1))
+    fi
+done
+[ "$SMT" -gt 0 ] && echo "  Artikel-Sprungmarken 90px → 100px: $SMT Seiten"
+
 # ─── Impressum: TMG → DDG ───
 # Das Telemediengesetz wurde im Mai 2024 vom Digitale-Dienste-Gesetz (DDG)
 # abgelöst. Das Impressum aus dem Design zitiert noch die alten Normen:
