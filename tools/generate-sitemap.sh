@@ -43,7 +43,34 @@ TABLE="
       *)
         # Dynamische Seiten (Start, Angebot, Kontakt, Hub, …): lastmod =
         # letztes Commit-Datum, die ändern sich real über die Zeit.
-        lastmod=$(git -C "$DST" log -1 --format=%cd --date=short -- "$file" 2>/dev/null) ;;
+        #
+        # Hat DIESER Lauf die Datei verändert, zählt allerdings das heutige
+        # Datum. Grund: die Sitemap entsteht MITTEN im Import, also bevor die
+        # soeben erzeugten Änderungen committet sind. `git log` liefert dann
+        # den Stand von vorher, und die Sitemap meldet für eine gerade
+        # geänderte Seite hartnäckig das Datum der vorherigen Runde. Das fällt
+        # nicht auf, solange Umbau und Commit auf denselben Tag fallen — läuft
+        # der Import an einem anderen Tag als der letzte Commit, steht dort
+        # ein Datum zu früh. (Gleiche Korrektur wie in officedogs/_rederive.sh,
+        # Funktion lastmod_of.)
+        #
+        # `diff HEAD` deckt Arbeitsverzeichnis UND Index ab, egal ob schon
+        # `git add` gelaufen ist. Im frisch initialisierten Repo (noch kein
+        # HEAD) scheitert es mit Exit 128 — dann greift ebenfalls das heutige
+        # Datum, was dort richtig ist. Beides steht in einer if-Bedingung,
+        # `set -e` greift also nicht.
+        #
+        # Die Artikel-Detailseiten oben bleiben bewusst außen vor: dort ist
+        # lastmod das Erstelldatum und darf sich durch spätere Korrekturen
+        # gerade NICHT verschieben.
+        if ! git -C "$DST" diff --quiet HEAD -- "$file" 2>/dev/null; then
+          lastmod=$(date -u +%Y-%m-%d)
+        else
+          # `|| true`: bei einer unversionierten Datei liefert git log Exit 128
+          # statt leerer Ausgabe — ohne das bricht `set -e` ab, bevor die
+          # Rückfallzeile unten überhaupt zum Zug kommt.
+          lastmod=$(git -C "$DST" log -1 --format=%cd --date=short -- "$file" 2>/dev/null || true)
+        fi ;;
     esac
     [ -z "$lastmod" ] && lastmod=$(date -u +%Y-%m-%d)
     echo "  <url>"
