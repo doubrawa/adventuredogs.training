@@ -111,6 +111,80 @@ for f in "$DST"/alltagstipps/*/index.html; do
 done
 [ "$SMT" -gt 0 ] && echo "  Artikel-Sprungmarken 90px → 100px: $SMT Seiten"
 
+# ─── Hero-Badge: WhatsApp-Kanal statt Kurs-Event ───
+# Der Badge im Hero ist ein einzelner Slot, den das Design mit dem jeweils
+# nächsten Kurstermin füllt (großes Datum, Ringtext, Ablaufdatum). Er bewirbt
+# stattdessen dauerhaft den WhatsApp-Kanal (Entscheidung Juergen, 06.08.2026).
+#
+# Statt eines Worts steht das WhatsApp-Logo im Kreis. Die große Zeile ist
+# gemessen auf 64px begrenzt (Telefon, Playfair 900) — das Wort "WhatsApp"
+# braucht dort 131px und passt nie hinein, am Desktop ebenso wenig (Budget 98).
+# Das Logo verbraucht keines der knappen Zeichen, dafür kann der Ring sagen,
+# was drin ist. Der Ring fasst 515 Einheiten Umfang; der neue Text füllt 58 %
+# davon (der alte 44 %). Über rund 65 % schließt sich die Lücke im Kreis.
+#
+# Farbe bleibt der Seiten-Akzent (Teal), nicht WhatsApp-Grün: das Logo trägt
+# die Wiedererkennung, ein zweites Grün würde die Palette brechen.
+#
+# aria-label ist nötig, weil der Ringtext aria-hidden ist und im Kreis kein
+# Text mehr steht — ohne das Label hieße der Link für Screenreader nur "Folgen".
+#
+# ACHTUNG: Der Block überschreibt JEDEN Badge aus dem Design. Bringt ein
+# künftiger Export ein neues Kurs-Event mit, geht es hier verloren. Deshalb die
+# Warnung unten, wenn der vorgefundene Link nicht der bekannte alte ist. Dann
+# ist zu entscheiden: Event oder Kanal — es gibt nur diesen einen Platz.
+BADGE_URL="https://whatsapp.com/channel/0029Vb6dtpM0LKZ9QcRCBj0V"
+BF="$DST/index.html"
+if grep -q 'class="hero-badge"' "$BF" && ! grep -q "$BADGE_URL" "$BF"; then
+    ALT=$(grep -o 'class="hero-badge"[^>]*' "$BF" | sed 's|.*href="||;s|".*||')
+    case "$ALT" in
+        *123hundeschule.de/kurse/139-jagen-nein-danke*) ;;
+        *) echo "  WARNUNG: Hero-Badge zeigte auf $ALT — nicht auf das bekannte"
+           echo "           Jagen-Nein-Danke-Event. Falls das ein neues Kurs-Event aus dem"
+           echo "           Design war, wurde es soeben durch den WhatsApp-Kanal ersetzt." ;;
+    esac
+
+    # Markup. Das Logo ist die Standard-Wortmarke (Hörer in der Sprechblase);
+    # sie auf den eigenen WhatsApp-Auftritt zu verlinken ist der vorgesehene
+    # Gebrauch. fill:currentColor, damit es das Weiß des Badges erbt.
+    NEWBADGE=$(cat <<'HTML'
+  <a class="hero-badge" data-expires="2026-12-31" href="https://whatsapp.com/channel/0029Vb6dtpM0LKZ9QcRCBj0V" target="_blank" rel="noopener" aria-label="Adventure Dogs Training auf WhatsApp folgen">
+    <svg class="badge-spin" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><path id="badgeTextPath" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs>
+      <text><textPath href="#badgeTextPath" startOffset="0">WhatsApp-Kanal&nbsp;&nbsp;·&nbsp;&nbsp;Tipps &amp; Termine&nbsp;&nbsp;&nbsp;&nbsp;</textPath></text>
+    </svg>
+    <svg class="badge-logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    <span class="badge-cta">Folgen <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>
+HTML
+)
+    # Kein \n im Muster und im Ersatz: frisch aus dem Design importiert hat die
+    # Datei LF, frisch aus git ausgecheckt dagegen CRLF (autocrlf). Ein Muster
+    # auf </a>\n trifft dann nur im ersten Fall und laeuft im zweiten still ins
+    # Leere. So bleibt das Zeilenende einfach unangetastet.
+    NEWBADGE="$NEWBADGE" perl -0777 -i -pe 's!^  <a class="hero-badge".*?</a>!$ENV{NEWBADGE}!sm' "$BF"
+
+    # CSS: .badge-date wird durch .badge-logo ersetzt statt ergänzt, sonst
+    # bliebe eine tote Regel stehen. Zwei Vorkommen, Basis zuerst, danach die
+    # 720px-Query — beide ohne /g, damit die zweite Ersetzung die Mobilregel
+    # trifft. cta-long entfällt: "Folgen" ist mit 53px auch auf dem Telefon
+    # kurz genug (Budget 64), es gibt also nichts mehr auszublenden.
+    #
+    # Delimiter ist !, nicht {}: perl zählt geschweifte Klammern als Delimiter
+    # paarweise durch und beendet das Suchmuster sonst am } in [^}].
+    CSS_BASE='.hero-badge .badge-logo { width: 34px; height: 34px; fill: currentColor; flex: none; }' \
+    CSS_MOBI='.hero-badge .badge-logo { width: 24px; height: 24px; }' \
+    perl -0777 -i -pe '
+        s!\.hero-badge \.badge-date \{[^}]*\}!$ENV{CSS_BASE}!s;
+        s!\.hero-badge \.badge-date \{[^}]*\}!$ENV{CSS_MOBI}!s;
+    ' "$BF"
+    sed -i '/^    \.hero-badge \.cta-long { display: none; }$/d' "$BF"
+
+    grep -q "$BADGE_URL" "$BF" || { echo "FEHLER: Hero-Badge nicht ersetzt — Markup im Export geaendert?"; exit 1; }
+    grep -q 'badge-date' "$BF" && { echo "FEHLER: .badge-date ist uebrig geblieben (tote Regel oder Markup)."; exit 1; }
+    echo "  Hero-Badge: WhatsApp-Kanal (sichtbar bis 31.12.2026)"
+fi
+
 # ─── Impressum: TMG → DDG ───
 # Das Telemediengesetz wurde im Mai 2024 vom Digitale-Dienste-Gesetz (DDG)
 # abgelöst. Das Impressum aus dem Design zitiert noch die alten Normen:
