@@ -116,12 +116,30 @@ done
 # nächsten Kurstermin füllt (großes Datum, Ringtext, Ablaufdatum). Er bewirbt
 # stattdessen dauerhaft den WhatsApp-Kanal (Entscheidung Juergen, 06.08.2026).
 #
-# Statt eines Worts steht das WhatsApp-Logo im Kreis. Die große Zeile ist
-# gemessen auf 64px begrenzt (Telefon, Playfair 900) — das Wort "WhatsApp"
-# braucht dort 131px und passt nie hinein, am Desktop ebenso wenig (Budget 98).
-# Das Logo verbraucht keines der knappen Zeichen, dafür kann der Ring sagen,
-# was drin ist. Der Ring fasst 515 Einheiten Umfang; der neue Text füllt 58 %
-# davon (der alte 44 %). Über rund 65 % schließt sich die Lücke im Kreis.
+# Im Kreis steht ausschließlich das WhatsApp-Logo — keine Textzeile, kein
+# Pfeil. Ein Wort wäre dort ohnehin nicht unterzubringen: die große Zeile des
+# Designs ist gemessen auf 64px begrenzt (Telefon, Playfair 900), "WhatsApp"
+# braucht 131px und passt auch am Desktop nicht (Budget 98).
+#
+# Weil die Textzeile entfällt, wird der Kreis deutlich kleiner: 130 → 88 px
+# am Desktop, 96 → 68 px auf dem Telefon (halbe Fläche). Das Logo wächst dabei
+# absolut mit (34 → 40 bzw. 24 → 32), weil es die Scheibe jetzt allein trägt;
+# unter rund 0,45 Durchmesseranteil wirkt sie leer.
+#
+# Der Ring wandert mit nach innen (200 → 156 bzw. 150 → 136 px SVG-Kasten).
+# Sein Schriftgrad steht in Nutzereinheiten des viewBox, schrumpft also
+# proportional mit — deshalb am Desktop 12 → 13, damit die Beschriftung
+# gerendert bei rund 10 px landet und nicht bei 9. Das ist die eigentliche
+# Untergrenze der Verkleinerung: der Ring trägt die Aussage jetzt allein,
+# im Kreis steht kein Wort mehr.
+#
+# Fünf Größen wurden über dem echten Hero-Foto gerendert und verglichen
+# (130/200, 100/178, 88/170, 88/156, 76/150, 68/140). Bei zu kleinem
+# SVG-Kasten löst sich der Ring sichtbar von der Scheibe und schwebt daneben;
+# 88/156 hält den Abstand von 20 px, der beim Original 17 px war.
+#
+# Der Ring fasst 515 Einheiten Umfang und ist zu 65 % gefüllt. Über rund 70 %
+# schließt sich die Lücke und der Kreis wirkt zugestopft.
 #
 # Farbe bleibt der Seiten-Akzent (Teal), nicht WhatsApp-Grün: das Logo trägt
 # die Wiedererkennung, ein zweites Grün würde die Palette brechen.
@@ -133,15 +151,23 @@ done
 # künftiger Export ein neues Kurs-Event mit, geht es hier verloren. Deshalb die
 # Warnung unten, wenn der vorgefundene Link nicht der bekannte alte ist. Dann
 # ist zu entscheiden: Event oder Kanal — es gibt nur diesen einen Platz.
+# Die Bedingung fragt nur, OB ein Badge da ist — nicht, ob er schon der
+# richtige ist. Jede Ersetzung unten sucht den Zustand aus dem Design und
+# laeuft ins Leere, wenn er schon ersetzt ist; der Block ist damit von sich aus
+# wiederholbar. Ein Schutz auf "Kanal-Link schon vorhanden" waere zu grob: er
+# wuerde auch jede spaetere AENDERUNG am Badge verhindern, weil die Datei den
+# Link ja bereits traegt.
 BADGE_URL="https://whatsapp.com/channel/0029Vb6dtpM0LKZ9QcRCBj0V"
 BF="$DST/index.html"
-if grep -q 'class="hero-badge"' "$BF" && ! grep -q "$BADGE_URL" "$BF"; then
+if grep -q 'class="hero-badge"' "$BF"; then
+    BADGE_VORHER=$(md5sum "$BF" | cut -d' ' -f1)
     ALT=$(grep -o 'class="hero-badge"[^>]*' "$BF" | sed 's|.*href="||;s|".*||')
     case "$ALT" in
         *123hundeschule.de/kurse/139-jagen-nein-danke*) ;;
-        *) echo "  WARNUNG: Hero-Badge zeigte auf $ALT — nicht auf das bekannte"
-           echo "           Jagen-Nein-Danke-Event. Falls das ein neues Kurs-Event aus dem"
-           echo "           Design war, wurde es soeben durch den WhatsApp-Kanal ersetzt." ;;
+        "$BADGE_URL") ;;
+        *) echo "  WARNUNG: Hero-Badge zeigte auf $ALT — weder auf das bekannte"
+           echo "           Jagen-Nein-Danke-Event noch auf den Kanal. Falls das ein neues"
+           echo "           Kurs-Event aus dem Design war, wurde es soeben ersetzt." ;;
     esac
 
     # Markup. Das Logo ist die Standard-Wortmarke (Hörer in der Sprechblase);
@@ -154,7 +180,6 @@ if grep -q 'class="hero-badge"' "$BF" && ! grep -q "$BADGE_URL" "$BF"; then
       <text><textPath href="#badgeTextPath" startOffset="0">WhatsApp-Kanal&nbsp;&nbsp;·&nbsp;&nbsp;Tipps &amp; Termine&nbsp;&nbsp;&nbsp;&nbsp;</textPath></text>
     </svg>
     <svg class="badge-logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-    <span class="badge-cta">Folgen <svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
   </a>
 HTML
 )
@@ -172,17 +197,91 @@ HTML
     #
     # Delimiter ist !, nicht {}: perl zählt geschweifte Klammern als Delimiter
     # paarweise durch und beendet das Suchmuster sonst am } in [^}].
-    CSS_BASE='.hero-badge .badge-logo { width: 34px; height: 34px; fill: currentColor; flex: none; }' \
-    CSS_MOBI='.hero-badge .badge-logo { width: 24px; height: 24px; }' \
+    #
+    # Das Muster trifft badge-date ODER badge-logo. Nur auf badge-date zu
+    # zielen hiesse: die Regel laesst sich genau einmal anwenden und danach nie
+    # wieder aendern, weil der Suchbegriff nach dem ersten Lauf verschwunden
+    # ist. Mit beiden Namen ist sie auch auf eine schon gepatchte Datei
+    # anwendbar — noetig, um spaeter die Groesse nachzuziehen.
+    #
+    # Logo 40 statt 34 (Telefon 32 statt 24): es traegt die Scheibe jetzt
+    # allein. 40 von 88 sind 0,45 Durchmesseranteil; darunter wirkt der Kreis
+    # leer, darueber draengt das Logo an den Rand.
+    # Beide Vorkommen in EINEM Durchlauf, per Zähler auseinandergehalten:
+    # erstes = Basisregel, zweites = 720px-Query. Zwei getrennte Ersetzungen
+    # ohne /g funktionieren hier nicht — die erste erzeugt selbst wieder ein
+    # `badge-logo`, das die zweite dann prompt noch einmal trifft, statt zur
+    # Mobilregel weiterzugehen.
+    CSS_ZAHL=$(grep -c '\.hero-badge \.badge-\(date\|logo\) {' "$BF")
+    [ "$CSS_ZAHL" = "2" ] || { echo "FEHLER: $CSS_ZAHL Badge-Groessenregeln statt 2 — CSS im Export geaendert?"; exit 1; }
+    CSS_BASE='.hero-badge .badge-logo { width: 40px; height: 40px; fill: currentColor; flex: none; }' \
+    CSS_MOBI='.hero-badge .badge-logo { width: 32px; height: 32px; }' \
     perl -0777 -i -pe '
-        s!\.hero-badge \.badge-date \{[^}]*\}!$ENV{CSS_BASE}!s;
-        s!\.hero-badge \.badge-date \{[^}]*\}!$ENV{CSS_MOBI}!s;
+        my $i = 0;
+        s!\.hero-badge \.badge-(?:date|logo) \{[^}]*\}!$i++ ? $ENV{CSS_MOBI} : $ENV{CSS_BASE}!ge;
     ' "$BF"
     sed -i '/^    \.hero-badge \.cta-long { display: none; }$/d' "$BF"
 
+    # Maße. Alle Suchwerte sind in index.html eindeutig (je einmal geprüft),
+    # trotzdem auf die jeweilige Regel eingegrenzt — `font-size: 12px` etwa ist
+    # ein Wert, den ein künftiger Export leicht anderswo verwendet.
+    # Reihenfolge Desktop vor Telefon: beide Ersetzungen laufen ohne /g, und
+    # die Desktop-Regel steht zuerst in der Datei.
+    perl -0777 -i -pe '
+        s!(\.hero-badge \{[^}]*?)width: 130px; height: 130px!${1}width: 88px; height: 88px!s;
+        s!(\.hero-badge \{[^}]*?)padding: 0 16px!${1}padding: 0!s;
+        s!(\.hero-badge \.badge-spin \{[^}]*?)width: 200px; height: 200px!${1}width: 156px; height: 156px!s;
+        s!(\.hero-badge \.badge-spin \{[^}]*?)margin: -100px 0 0 -100px!${1}margin: -78px 0 0 -78px!s;
+        s!(\.hero-badge \.badge-spin text \{[^}]*?)font-size: 12px!${1}font-size: 13px!s;
+        s!(\.hero-badge \{ right: 44px[^}]*?)width: 96px; height: 96px!${1}width: 68px; height: 68px!s;
+        s!(\.hero-badge \.badge-spin \{ )width: 150px; height: 150px; margin: -75px 0 0 -75px!${1}width: 136px; height: 136px; margin: -68px 0 0 -68px!s;
+    ' "$BF"
+
+    # padding: 0 statt 0 16px, weil im Kreis kein Text mehr steht: bei 68px
+    # Durchmesser blieben von den 16px Seitenpolster nur 36px Inhaltsbreite
+    # uebrig, das 32px-Logo stuende auf Kante.
+
+    # Textschatten fuer den Ring. Das Design gibt ihm keinen — auf dem Telefon
+    # steht der Badge oben rechts ueber dem hellen Himmel und die weisse
+    # Beschriftung kam dort auf 4,29:1 gegen die geforderten 4,5:1. Gemessen,
+    # nicht geschaetzt: drei Proben mit angehaltener Drehung (Ring unsichtbar /
+    # Glyphe transparent mit Schatten / Glyphe weiss), daraus der Abdunkel-
+    # faktor im 2px-Saum neben der Schrift, angewandt auf den schlechtesten
+    # Untergrundpunkt des gesamten Rings — der Badge dreht sich, jeder
+    # Buchstabe kommt dort einmal vorbei. Ergebnis: 5,00:1 im schwaechsten
+    # Zehntel des Saums, 5,81 im Median, 8,06 direkt an der Glyphe.
+    #
+    # Der enge 3px-Kern traegt die Arbeit, der 10px-Schein nimmt nur die harte
+    # Kante — dasselbe Muster wie beim Hero-Text der Seite. Am Desktop waeren
+    # es auch ohne Schatten 16,3:1 (dort ist der Schleier unten dunkel); die
+    # Regel steht trotzdem in der Basis, damit ein anderes Hero-Foto sie nicht
+    # aushebelt.
+    #
+    # `unless` statt eines eigenen Suchmusters, damit ein zweiter Lauf den
+    # Schatten nicht ein zweites Mal anhaengt.
+    RING_SCHATTEN=' text-shadow: 0 1px 3px oklch(0% 0 0 / 0.55), 0 0 10px oklch(0% 0 0 / 0.45);' \
+    perl -0777 -i -pe '
+        unless (m!\.hero-badge \.badge-spin text \{[^}]*text-shadow!s) {
+            s!(\.hero-badge \.badge-spin text \{[^}]*?)(\n?\s*\})!${1}$ENV{RING_SCHATTEN}${2}!s;
+        }
+    ' "$BF"
+
+    # Die .badge-cta-Regeln sind ohne die Textzeile tot (Basis, ihr svg-Kind
+    # und die Telefon-Variante). Das svg-Kind zuerst, damit die Reihenfolge
+    # auch dann stimmt, wenn ein Export die Regeln umsortiert.
+    perl -0777 -i -pe '
+        s!\n\s*\.hero-badge \.badge-cta svg \{[^}]*\}!!s;
+        s!\n\s*\.hero-badge \.badge-cta \{[^}]*\}!!sg;
+    ' "$BF"
+
     grep -q "$BADGE_URL" "$BF" || { echo "FEHLER: Hero-Badge nicht ersetzt — Markup im Export geaendert?"; exit 1; }
-    grep -q 'badge-date' "$BF" && { echo "FEHLER: .badge-date ist uebrig geblieben (tote Regel oder Markup)."; exit 1; }
-    echo "  Hero-Badge: WhatsApp-Kanal (sichtbar bis 31.12.2026)"
+    for tot in badge-date badge-cta cta-long; do
+        grep -q "$tot" "$BF" && { echo "FEHLER: '$tot' ist uebrig geblieben (tote Regel oder Markup)."; exit 1; }
+    done
+    grep -q 'width: 88px; height: 88px' "$BF" || { echo "FEHLER: Badge-Maße nicht angepasst — CSS im Export geaendert?"; exit 1; }
+    if [ "$BADGE_VORHER" != "$(md5sum "$BF" | cut -d' ' -f1)" ]; then
+        echo "  Hero-Badge: WhatsApp-Kanal, 88px (sichtbar bis 31.12.2026)"
+    fi
 fi
 
 # ─── Impressum: TMG → DDG ───
