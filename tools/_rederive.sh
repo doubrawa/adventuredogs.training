@@ -8,9 +8,16 @@
 #   4. Diff prüfen, committen — und Änderungen an der Kopie hierher
 #      zurückspiegeln, damit die Master-Kopie aktuell bleibt.
 #
+# Schritt 5 macht das Script am Ende selbst: ältere design-extract-vN
+# werden gelöscht, sobald ihre _rederive.sh-Kopie in einem Commit
+# steckt. Deshalb ist Schritt 4 keine Kür — wer nicht zurückspiegelt,
+# blockiert das Aufräumen (der Ordner bleibt dann mit Hinweis stehen).
+#
 # Historie: die per-Version-Kopien in design-extract-v2 … v44 wurden
-# Juli 2026 gelöscht (3,4 GB); Evolution der Patches steht in der
-# git-History dieser Datei bzw. vorher in den Commit-Messages.
+# Juli 2026 gelöscht (3,4 GB), v45 … v52 im August 2026 (840 MB).
+# Evolution der Patches steht in der git-History dieser Datei bzw.
+# vorher in den Commit-Messages. Einzige Ausnahme: die Kopie aus v45
+# lag in keinem Commit und liegt als C:/DATA/Claude/_rederive-v45.sh.archiv.
 set -e
 SRC="C:/DATA/Claude/design-extract-v53"
 DST="C:/DATA/Claude/adventuredogs.training"
@@ -281,3 +288,58 @@ powershell -ExecutionPolicy Bypass -File "$DST/tools/resize-assets.ps1" -AssetsD
 
 echo "=== Running post-import-fixes ==="
 bash "$DST/tools/post-import-fixes.sh"
+
+# ─── Alte Extrakte aufräumen ───────────────────────────────────────────
+# Jeder Import legt einen neuen design-extract-vN an (~110 MB). Bis v52
+# blieben die alten liegen und summierten sich auf mehrere Gigabyte.
+# Läuft bewusst ganz am Ende: `set -e` sorgt dafür, dass wir hier nur
+# ankommen, wenn der komplette Import durchgelaufen ist.
+#
+# Gelöscht wird nur, was nachweislich nirgends sonst existiert:
+# die HTML-Dateien stehen als Snapshot in .design/, die Assets im Repo —
+# einzig die mitkopierte _rederive.sh eines Extrakts könnte Änderungen
+# enthalten, die nie nach tools/ zurückgespiegelt wurden (Schritt 4).
+# Genau das ist bei v45 passiert. Also: Kopie gegen die git-History der
+# Master-Datei prüfen (SRC-Zeile normalisiert, die zeigt immer auf den
+# eigenen Ordner). Kein Treffer → Ordner bleibt stehen, mit Hinweis.
+#
+# Abschalten mit:  KEEP_EXTRACTS=1 bash _rederive.sh
+if [ "${KEEP_EXTRACTS:-0}" = "1" ]; then
+  echo "=== Aufräumen übersprungen (KEEP_EXTRACTS=1) ==="
+else
+  echo "=== Alte Extrakte aufräumen (behalte $(basename "$SRC")) ==="
+
+  # Ist der Inhalt dieser _rederive.sh-Kopie in der git-History verewigt?
+  copy_is_archived() {
+    local norm rev
+    norm="$(sed 's|^SRC=.*|SRC=X|' "$1")"
+    for rev in $(git -C "$DST" rev-list --all -- tools/_rederive.sh 2>/dev/null); do
+      if [ "$norm" = "$(git -C "$DST" show "$rev:tools/_rederive.sh" 2>/dev/null \
+                        | sed 's|^SRC=.*|SRC=X|')" ]; then
+        return 0
+      fi
+    done
+    return 1
+  }
+
+  CUR="$(basename "$SRC")"
+  RM_N=0
+  for d in "$(dirname "$SRC")"/design-extract-v*; do
+    [ -d "$d" ] || continue
+    b="$(basename "$d")"
+    case "$b" in design-extract-v[0-9]*) ;; *) continue ;; esac
+    [ "$b" = "$CUR" ] && continue
+
+    if [ -f "$d/_rederive.sh" ] && ! copy_is_archived "$d/_rederive.sh"; then
+      echo "  BEHALTEN: $b — _rederive.sh steht in keinem Commit."
+      echo "            Erst Schritt 4 nachholen (zurückspiegeln + committen),"
+      echo "            dann räumt der nächste Lauf den Ordner weg."
+      continue
+    fi
+
+    rm -rf "$d"
+    echo "  gelöscht: $b"
+    RM_N=$((RM_N + 1))
+  done
+  [ "$RM_N" -eq 0 ] && echo "  nichts zu löschen"
+fi
