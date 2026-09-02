@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adventure Dogs – Hundeschule Julia Doubrawa | Krumbach</title>
-<meta name="description" content="Adventure Dogs – Hundeschule Julia Doubrawa in Krumbach. Welpenkurse, Einzeltraining, Sozialkontakt und besondere Events. Entspannt, individuell und mit Humor.">
+<meta name="description" content="Hundeschule Julia Doubrawa in Krumbach: Welpenkurse, Einzeltraining, Sozialkontakt und Events – entspannt, individuell und mit Humor.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,7 +34,7 @@
     { "@type": "AdministrativeArea", "name": "Landkreis Günzburg" },
     { "@type": "AdministrativeArea", "name": "Schwaben, Bayern" }
   ],
-  "founder": { "@type": "Person", "name": "Julia Doubrawa" },
+  "founder": { "@type": "Person", "@id": "https://adventuredogs.training/ueber-mich/#julia", "name": "Julia Doubrawa" },
   "sameAs": [
     "https://www.instagram.com/adventuredogs.training"
   ]
@@ -44,7 +44,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Adventure Dogs">
 <meta property="og:title" content="Adventure Dogs – Hundeschule Julia Doubrawa | Krumbach">
-<meta property="og:description" content="Adventure Dogs – Hundeschule Julia Doubrawa in Krumbach. Welpenkurse, Einzeltraining, Sozialkontakt und besondere Events. Entspannt, individuell und mit Humor.">
+<meta property="og:description" content="Hundeschule Julia Doubrawa in Krumbach: Welpenkurse, Einzeltraining, Sozialkontakt und Events – entspannt, individuell und mit Humor.">
 <meta property="og:url" content="https://adventuredogs.training/">
 <meta property="og:image" content="https://adventuredogs.training/assets/hero-landing.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -155,7 +155,10 @@
   .hero-img {
     position: absolute;
     inset: 0;
-    background: url('assets/hero-landing.jpg') center 30% / cover no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
   }
   .hero-overlay {
     position: absolute;
@@ -183,7 +186,7 @@
     margin-bottom: 16px;
     text-shadow: 0 1px 12px oklch(0% 0 0 / 0.5);
   }
-  .hero h1 {
+  .hero-slogan {
     font-family: 'Playfair Display', serif;
     font-size: clamp(40px, 6vw, 78px);
     font-weight: 900;
@@ -193,7 +196,7 @@
     margin-bottom: 20px;
     text-shadow: 0 2px 24px oklch(0% 0 0 / 0.45);
   }
-  .hero h1 em {
+  .hero-slogan em {
     font-style: italic;
     color: oklch(90% 0.06 185);
   }
@@ -394,10 +397,10 @@
     margin: 0 auto;
   }
   .service-card {
+    position: relative;
     background: var(--white);
     border-radius: var(--r-lg);
     overflow: hidden;
-    text-decoration: none;
     color: inherit;
     box-shadow: 0 2px 16px oklch(0% 0 0 / 0.06);
     transition: transform 0.22s, box-shadow 0.22s;
@@ -411,9 +414,14 @@
   .service-card-img {
     height: 320px;
     background-color: var(--blue-lt);
-    background-size: cover;
-    background-position: center;
     position: relative;
+    overflow: hidden;
+  }
+  .service-card-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .service-card-tag {
     position: absolute;
@@ -442,6 +450,10 @@
     margin-bottom: 10px;
     line-height: 1.25;
   }
+  .service-card-body h3 a { color: inherit; text-decoration: none; }
+  /* Ganze Karte klickbar, ohne den Ankertext mit dem restlichen
+     Kartentext aufzublaehen (Linktext bleibt die Ueberschrift). */
+  .service-card-body h3 a::after { content: ''; position: absolute; inset: 0; }
   .service-card-body p {
     font-size: 14px;
     line-height: 1.65;
@@ -509,9 +521,13 @@
   }
   .julia-photo {
     width: min(320px, 100%);
+    /* height:auto noetig, sonst gewinnt das height-Attribut des <img>
+       als Presentational Hint gegen aspect-ratio. */
+    height: auto;
     aspect-ratio: 3/4;
     border-radius: var(--r-lg);
-    background: url('assets/julia-einstein-kuss.jpg') center 35% / cover no-repeat;
+    object-fit: cover;
+    object-position: center 35%;
     flex-shrink: 0;
     box-shadow: var(--shadow);
   }
@@ -649,7 +665,7 @@
   }
   @media (max-width: 720px) {
     section { padding: 64px 5%; }
-    .julia-photo { width: 100%; aspect-ratio: 4/5; background-position: center top; background-size: cover; }
+    .julia-photo { width: 100%; aspect-ratio: 4/5; object-position: center top; }
     .trust-bar {
       grid-template-columns: 1fr;
       gap: 14px;
@@ -666,7 +682,7 @@
         oklch(0% 0 0 / 0.85) 100%
       );
     }
-    .hero h1 { text-shadow: 0 2px 18px oklch(0% 0 0 / 0.7); }
+    .hero-slogan { text-shadow: 0 2px 18px oklch(0% 0 0 / 0.7); }
     .hero-eyebrow, .hero-sub { text-shadow: 0 1px 12px oklch(0% 0 0 / 0.7); }
     /* Badge oben rechts, damit es Headline/Buttons nicht verdeckt */
     .hero-badge { right: 44px; bottom: auto; top: 84px; width: 68px; height: 68px; }
@@ -714,13 +730,6 @@
     .nav-hamburger { display: flex; }
   }
 
-  /* ── SERVICE CARD IMAGES (placeholder gradients) ── */
-  .img-welpe     { background-image: url('assets/offer-welpenkurs.jpg'); }
-  .img-basis     { background-image: url('assets/offer-basis.jpg'); }
-  .img-einzel    { background-image: url('assets/service-einzeltraining.jpg'); }
-  .img-quality   { background-image: url('assets/service-events.jpg'); }
-  .img-sozial    { background-image: url('assets/service-sozialkontakt.jpg'); }
-
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
 </style>
@@ -729,7 +738,7 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo" href="#">
+  <a class="nav-logo" href="/">
     <img src="assets/logo.svg" alt="Adventure Dogs Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
@@ -756,11 +765,12 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-img"></div>
+  <img class="hero-img" src="assets/hero-landing.jpg" width="2400" height="1552" fetchpriority="high"
+       alt="Julia Doubrawa mit ihrem Australian Shepherd Einstein auf einer Holzbank vor Bergpanorama">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Hundeschule Krumbach & Umgebung</p>
-    <h1>Dein Hund.<br>Euer Abenteuer.<br><em>Bestes Leben.</em></h1>
+    <h1 class="hero-eyebrow">Hundeschule Krumbach &amp; Umgebung</h1>
+    <p class="hero-slogan">Dein Hund.<br>Euer Abenteuer.<br><em>Bestes Leben.</em></p>
     <p class="hero-sub">Individuelles Hundetraining, Welpenkurse und besondere Events – damit euer Alltag entspannter, leichter und voller Freude wird.</p>
     <div class="hero-actions">
       <a href="angebot/" class="btn-primary">
@@ -849,66 +859,76 @@
   </div>
   <div class="services-grid">
 
-    <a href="angebot/?cat=erziehung" class="service-card">
-      <div class="service-card-img img-welpe">
+    <div class="service-card">
+      <div class="service-card-img">
+        <img src="assets/offer-welpenkurs.jpg" width="1080" height="1080" loading="lazy"
+             alt="Golden-Retriever-Welpe sitzt vor einer blauen Holzwand">
         <div style="position:absolute;top:14px;left:14px;display:flex;gap:6px;">
           <span class="service-card-tag" style="position:static;">Welpenkurs</span>
           <span class="service-card-tag" style="position:static;">Junghundekurs</span>
         </div>
       </div>
       <div class="service-card-body">
-        <h3>Der perfekte Start für deinen Hund</h3>
+        <h3><a href="angebot/#erziehung">Der perfekte Start für deinen Hund</a></h3>
         <p>Alles für den Alltag mit Welpe und Junghund mit Fokus auf Lernen und Sozialisierung.</p>
-        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="service-card-link" aria-hidden="true">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </div>
 
-    <a href="angebot/?cat=begegnung" class="service-card">
-      <div class="service-card-img img-sozial">
+    <div class="service-card">
+      <div class="service-card-img">
+        <img src="assets/service-sozialkontakt.jpg" width="1080" height="1080" loading="lazy"
+             alt="Zwei Hunde begegnen sich entspannt auf einer Frühlingswiese">
         <span class="service-card-tag">Sozialkontakt</span>
       </div>
       <div class="service-card-body">
-        <h3>Entspannte Hundebegegnungen</h3>
+        <h3><a href="angebot/#begegnung">Entspannte Hundebegegnungen</a></h3>
         <p>Gemeinsam lernen, sich zu verstehen: Sozialkontakt und Kommunikation für Welpen und erwachsene Hunde.</p>
-        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="service-card-link" aria-hidden="true">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </div>
 
-    <a href="angebot/?cat=events" class="service-card">
-      <div class="service-card-img img-quality">
+    <div class="service-card">
+      <div class="service-card-img">
+        <img src="assets/service-events.jpg" width="1080" height="1080" loading="lazy"
+             alt="Frau sitzt mit ihrem Hund auf einem Steg am See">
         <div style="position:absolute;top:14px;left:14px;display:flex;gap:6px;">
           <span class="service-card-tag" style="position:static;">Events</span>
           <span class="service-card-tag" style="position:static;">Beschäftigung</span>
         </div>
       </div>
       <div class="service-card-body">
-        <h3>Quality Time & besondere Events</h3>
+        <h3><a href="angebot/#events">Quality Time &amp; besondere Events</a></h3>
         <p>Gemeinsame Abenteuer, die euren Alltag bereichern und euch als Team enger zusammenbringen.</p>
-        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="service-card-link" aria-hidden="true">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </div>
 
-    <a href="angebot/?cat=erziehung" class="service-card">
-      <div class="service-card-img img-basis">
+    <div class="service-card">
+      <div class="service-card-img">
+        <img src="assets/offer-basis.jpg" width="1080" height="1080" loading="lazy"
+             alt="Frau sitzt mit ihrem Hund auf einem Felsen vor Bergpanorama im Abendlicht">
         <span class="service-card-tag">Basiskurs</span>
       </div>
       <div class="service-card-body">
-        <h3>Gemeinsam starten</h3>
+        <h3><a href="angebot/#erziehung">Gemeinsam starten</a></h3>
         <p>Gemeinsam alles lernen, was euren Alltag mit eurem erwachsenen Hund leichter macht – egal ob Neustart oder Tierschutzhund.</p>
-        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="service-card-link" aria-hidden="true">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </div>
 
-    <a href="angebot/?cat=problem" class="service-card">
-      <div class="service-card-img img-einzel">
+    <div class="service-card">
+      <div class="service-card-img">
+        <img src="assets/service-einzeltraining.jpg" width="1080" height="1080" loading="lazy"
+             alt="Frau geht mit ihrem Hund an lockerer Leine spazieren">
         <span class="service-card-tag">Einzeltraining</span>
       </div>
       <div class="service-card-body">
-        <h3>Individuelle Lösung für euer Problem</h3>
+        <h3><a href="angebot/#problem">Individuelle Lösung für euer Problem</a></h3>
         <p>Leinenaggression, Alleinbleiben, Rückruf – maßgeschneidertes Training direkt bei euch zuhause oder im Alltag.</p>
-        <span class="service-card-link">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="service-card-link" aria-hidden="true">Mehr erfahren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </div>
 
   </div>
 </section>
@@ -945,7 +965,8 @@
 <!-- JULIA -->
 <section id="julia">
   <div class="julia-section">
-    <div class="julia-photo"></div>
+    <img class="julia-photo" src="assets/julia-einstein-kuss.jpg" width="1600" height="2133" loading="lazy"
+         alt="Julia Doubrawa kniet auf einer Wiese, ihr Australian Shepherd Einstein schmiegt sich an sie">
     <div class="julia-text">
       <div style="margin-bottom: 32px;">
         <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;">Mein Versprechen</p>
