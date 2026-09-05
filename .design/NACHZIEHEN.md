@@ -29,6 +29,7 @@ Logo"** (es gibt mehrere Varianten, nur diese zählt).
 | Hub-Karte hund-entlaufen (553) | fehlt im Design-Hub |
 | FAQ-Accordion (699) | `aria-expanded` für Screenreader |
 | rel-Attribute (711) | externe Empfehlungslinks |
+| 1320er-Deckel im Angebot (845) | `.services-header`/`.services-grid` zentriert auf 1320 px – als einzige Blöcke der Seite; ab 1535 px Fensterbreite kippt dadurch die linke Kante weg |
 
 Der Asset-Name-Block (22) bleibt in der Pipeline: das Design lädt das Foto
 selbst hoch und kann unseren optimierten Dateinamen nicht kennen.
@@ -37,7 +38,7 @@ selbst hoch und kann unseren optimierten Dateinamen nicht kennen.
 
 | Was | worum es geht |
 |---|---|
-| Intro-Block „Kurz vorweg“ (`index.html`, direkt vor `<!-- SERVICES -->`) | Fünfsätziger Erzählblock zwischen Trust-Bar und Angebot, am 05.09.2026 direkt im Repo gebaut. Kicker, Playfair-Einstieg, Haarlinie, zweispaltiger Fließtext mit Initial, kursive Schlusszeile. Zweistufiger Container (1320 px außen für die Kantenflucht, 1100 px innen für den Satzspiegel), unter 900 px einspaltig mit 620 px Zeilenlänge. |
+| Intro-Block „Kurz vorweg“ (`index.html`, direkt vor `<!-- SERVICES -->`) | Fünfsätziger Erzählblock zwischen Trust-Bar und Angebot, am 05.09.2026 direkt im Repo gebaut. Kicker, Playfair-Einstieg, Haarlinie, zweispaltiger Fließtext mit Initial, kursive Schlusszeile. Kein äußerer Container – der Block läuft wie jede Sektion in den 7 % Seitenrand; nur der Satzspiegel ist linksbündig auf 1100 px gekappt, unter 900 px einspaltig mit 620 px Zeilenlänge. |
 
 Anders als die Blöcke darüber setzt **kein** Skript das wieder auf: Der nächste Export aus
 claude.ai/design bringt die Landing Page ohne diesen Abschnitt zurück, und

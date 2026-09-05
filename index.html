@@ -378,10 +378,9 @@
 
   /* ── INTRO STORY ── */
   .intro-story { padding-bottom: 84px; }
-  /* Zwei Container mit je einer Aufgabe: aussen 1320 px wie jede andere Sektion,
-     damit die linke Kante auch auf breiten Monitoren mit „Das Angebot“ fluchtet;
-     innen 1100 px für den Satzspiegel, sonst laufen die zwei Spalten auf 74 Zeichen auf. */
-  .intro-story-inner { max-width: 1320px; margin: 0 auto; }
+  /* Kein Deckel auf der Blockbreite – die Sektion läuft wie alle anderen in den 7 %
+     Seitenrand, damit die linke Kante auf jeder Fensterbreite fluchtet. Gekappt wird nur
+     der Satzspiegel, sonst laufen die zwei Spalten auf 74 Zeichen auf. */
   .intro-story-text { max-width: 1100px; }
   .intro-story-kicker { margin-bottom: 18px; }
   .intro-story-lead {
@@ -446,16 +445,11 @@
     flex-wrap: wrap;
     gap: 24px;
     margin-bottom: 52px;
-    max-width: 1320px;
-    margin-left: auto;
-    margin-right: auto;
   }
   .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 24px;
-    max-width: 1320px;
-    margin: 0 auto;
   }
   .service-card {
     position: relative;
@@ -915,18 +909,16 @@
 
 <!-- INTRO STORY -->
 <section class="intro-story">
-  <div class="intro-story-inner">
-    <div class="intro-story-text">
-      <p class="section-label intro-story-kicker">Kurz vorweg</p>
-      <p class="intro-story-lead">Wenn ein Hund bei dir einzieht, hast du meistens schon ein ziemlich genaues Bild davon, wie euer gemeinsames Leben einmal aussehen soll.</p>
-      <div class="intro-story-rule"></div>
-      <div class="intro-story-cols">
-        <p>Und dann stellst du fest: Hundeerziehung ist manchmal ein ziemliches Abenteuer.</p>
-        <p>Man lernt dazu, arbeitet an sich selbst, verlässt immer wieder die eigene Komfortzone – und wächst gemeinsam.</p>
-        <p>Und genau dadurch entstehen oft die Erlebnisse, die man ohne diesen Hund vielleicht niemals gehabt hätte.</p>
-      </div>
-      <p class="intro-story-close">Denn das Leben mit Hund kann noch viel schöner sein, als du es dir vorgestellt hast.</p>
+  <div class="intro-story-text">
+    <p class="section-label intro-story-kicker">Kurz vorweg</p>
+    <p class="intro-story-lead">Wenn ein Hund bei dir einzieht, hast du meistens schon ein ziemlich genaues Bild davon, wie euer gemeinsames Leben einmal aussehen soll.</p>
+    <div class="intro-story-rule"></div>
+    <div class="intro-story-cols">
+      <p>Und dann stellst du fest: Hundeerziehung ist manchmal ein ziemliches Abenteuer.</p>
+      <p>Man lernt dazu, arbeitet an sich selbst, verlässt immer wieder die eigene Komfortzone – und wächst gemeinsam.</p>
+      <p>Und genau dadurch entstehen oft die Erlebnisse, die man ohne diesen Hund vielleicht niemals gehabt hätte.</p>
     </div>
+    <p class="intro-story-close">Denn das Leben mit Hund kann noch viel schöner sein, als du es dir vorgestellt hast.</p>
   </div>
 </section>
 

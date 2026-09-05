@@ -3,29 +3,33 @@
 Ergänzung zur [README.md](README.md), die Aufbau, Pipeline und Hosting beschreibt.
 Hier steht nur, was man beim Bearbeiten der Seiten leicht falsch macht.
 
-## Layout: zwei Container, nicht einer
+## Layout: nur der Seitenrand, kein Deckel
 
 Die Sektionen der Seite stehen in **7 % Seitenrand** (`section { padding: 90px 7% }`,
-bis einschließlich 720 px `64px 5%`), und ihr Inhalt läuft darin in einem **auf 1320 px gedeckelten,
-zentrierten Container** — siehe `.services-header` und `.services-grid` in `index.html`.
+bis einschließlich 720 px `64px 5%`) und laufen darin **über die volle Breite**. Einen
+zentrierten Maximalbreiten-Container gibt es nicht: `.method-grid`, `.julia-section`,
+`.testimonials-grid` und `.services-grid` beginnen alle bei 7 %.
 
-Ein neuer Block muss **denselben 1320er-Container** benutzen, sonst fluchtet seine linke
-Kante nicht mit den Nachbarabschnitten. Wer die Lesebreite begrenzen will, kappt sie in
-einem **zweiten, inneren** Container:
+Ein neuer Block braucht deshalb **gar keinen äußeren Container**. Wer die Lesebreite
+begrenzen will, kappt sie **linksbündig** – `max-width` ohne `margin: 0 auto`:
 
-```html
-<div class="intro-story-inner">   <!-- 1320 px zentriert: Flucht mit den Sektionen -->
-  <div class="intro-story-text">  <!-- 1100 px: Satzspiegel -->
+```css
+.intro-story-text { max-width: 1100px; }   /* Satzspiegel, linke Kante bleibt bei 7 % */
 ```
 
-**Die Falle:** Unterhalb von rund 1535 px Fensterbreite greift der 1320er-Deckel gar nicht,
-weil die 7 % Rand vorher aufgebraucht sind. Bei 1280 px liefern deshalb *alle* Deckelwerte
-zwischen 1100 und 1320 px exakt dasselbe Ergebnis — der Fehler ist dort unsichtbar.
-Er zeigt sich erst darüber: beim Intro-Block waren es 63 px Versatz bei 1440 px und
-110 px bei 1920 px.
+Ein `margin: 0 auto` auf so einem Block zentriert ihn und schiebt seine linke Kante nach
+innen, während die Nachbarabschnitte bei 7 % bleiben.
 
-**Also:** Layoutänderungen immer auch bei **1600 und 1920 px** ansehen, nicht nur bei 1280,
-und die linke Kante gegen den Abschnitt darüber oder darunter prüfen.
+**Die Falle:** Ein Deckel unter der Sektionsbreite fällt bei schmalen Fenstern nicht auf.
+Bei 1280 px ist der Inhaltsbereich nur 1100 px breit, ein 1320er-Deckel greift dort also
+gar nicht – alle Werte zwischen 1100 und 1320 liefern exakt dasselbe Bild. Sichtbar wird
+es erst darüber: ein zentrierter 1320er-Block stand bei 1920 px um 159 px, bei 3000 px
+um 623 px weiter innen als der Abschnitt darunter. Genau das hatten Intro und Angebot,
+bis es am 05.09.2026 herausgenommen wurde.
+
+**Also:** Layoutänderungen immer auch bei **1920 px und breiter** ansehen, nicht nur bei
+1280, und die linke Kante gegen den Abschnitt darüber und darunter prüfen – am besten
+gemessen (`getBoundingClientRect().left`) statt geschätzt.
 
 ## Schriften und Farben kommen aus dem Bestand
 

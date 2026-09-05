@@ -842,6 +842,21 @@ if ! grep -q '"@type": "LocalBusiness"' "$F"; then
     fi
 fi
 
+# ─── 1320er-Deckel im Angebot entfernen ───
+# Das Design deckelt .services-header und .services-grid auf max-width:1320px und
+# zentriert sie. Sonst tut das auf der Seite niemand: alle anderen Sektionen laufen
+# über die volle Breite in den 7 % Seitenrand. Unterhalb von rund 1535 px fällt das
+# nicht auf, weil der Rand die 1320 px vorher aufbraucht – darüber wandert die linke
+# Kante des Angebots nach innen, während die Nachbarabschnitte stehen bleiben
+# (gemessen 159 px Versatz bei 1920 px, 623 px bei 3000 px).
+for f in "$DST/index.html" "$DST"/*/index.html; do
+    [ -f "$f" ] || continue
+    grep -q 'max-width: 1320px' "$f" || continue
+    sed -i '/^  \.services-header {/,/^  }/{ /max-width: 1320px;/d; /margin-left: auto;/d; /margin-right: auto;/d; }' "$f"
+    sed -i '/^  \.services-grid {/,/^  }/{ /max-width: 1320px;/d; /margin: 0 auto;/d; }' "$f"
+    echo "  1320er-Deckel im Angebot entfernt: $(basename "$(dirname "$f")")/index.html"
+done
+
 # ─── Sitemap regenerieren (lastmod aus git) ───
 bash "$DST/tools/generate-sitemap.sh"
 
