@@ -376,6 +376,67 @@
     max-width: 560px;
   }
 
+  /* ── INTRO STORY ── */
+  .intro-story { padding-bottom: 84px; }
+  /* Zwei Container mit je einer Aufgabe: aussen 1320 px wie jede andere Sektion,
+     damit die linke Kante auch auf breiten Monitoren mit „Das Angebot“ fluchtet;
+     innen 1100 px für den Satzspiegel, sonst laufen die zwei Spalten auf 74 Zeichen auf. */
+  .intro-story-inner { max-width: 1320px; margin: 0 auto; }
+  .intro-story-text { max-width: 1100px; }
+  .intro-story-kicker { margin-bottom: 18px; }
+  .intro-story-lead {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 2.7vw, 31px);
+    font-weight: 600;
+    line-height: 1.42;
+    color: var(--blue);
+    max-width: 900px;
+    text-wrap: pretty;
+  }
+  .intro-story-rule {
+    height: 1px;
+    background: oklch(32% 0.07 240 / 0.15);
+    margin: 36px 0 32px;
+  }
+  .intro-story-cols { columns: 2; column-gap: 64px; }
+  .intro-story-cols p {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text-lt);
+    margin-bottom: 18px;
+    text-wrap: pretty;
+  }
+  .intro-story-cols p:last-child { margin-bottom: 0; }
+  /* Initial im Zeitschriftensatz: Playfair-Versal, die über zwei Zeilen hängt.
+     float+negative line-height statt fester Höhe, damit es mit der Schriftgröße mitskaliert. */
+  .intro-story-cols p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(54px, 5vw, 64px);
+    line-height: 0.82;
+    float: left;
+    padding: 6px 14px 0 0;
+    color: var(--blue);
+  }
+  .intro-story-close {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 27px);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--blue);
+    max-width: 780px;
+    margin: 48px auto 0;
+    text-align: center;
+    text-wrap: pretty;
+  }
+  /* Unter 900 px würden zwei Spalten auf unter 45 Zeichen fallen – dann lieber einspaltig,
+     aber mit gekappter Zeilenlänge, sonst laufen die Zeilen über die volle Sektionsbreite. */
+  @media (max-width: 900px) {
+    .intro-story-cols { columns: 1; max-width: 620px; }
+  }
+
   /* ── SERVICES ── */
   .services { background: var(--cream2); }
   .services-header {
@@ -665,6 +726,10 @@
   }
   @media (max-width: 720px) {
     section { padding: 64px 5%; }
+    .intro-story { padding-bottom: 56px; }
+    .intro-story-kicker { margin-bottom: 16px; }
+    .intro-story-rule { margin: 30px 0 26px; }
+    .intro-story-close { margin-top: 40px; }
     .julia-photo { width: 100%; aspect-ratio: 4/5; object-position: center top; }
     .trust-bar {
       grid-template-columns: 1fr;
@@ -847,6 +912,23 @@
     </div>
   </div>
 </div>
+
+<!-- INTRO STORY -->
+<section class="intro-story">
+  <div class="intro-story-inner">
+    <div class="intro-story-text">
+      <p class="section-label intro-story-kicker">Kurz vorweg</p>
+      <p class="intro-story-lead">Wenn ein Hund bei dir einzieht, hast du meistens schon ein ziemlich genaues Bild davon, wie euer gemeinsames Leben einmal aussehen soll.</p>
+      <div class="intro-story-rule"></div>
+      <div class="intro-story-cols">
+        <p>Und dann stellst du fest: Hundeerziehung ist manchmal ein ziemliches Abenteuer.</p>
+        <p>Man lernt dazu, arbeitet an sich selbst, verlässt immer wieder die eigene Komfortzone – und wächst gemeinsam.</p>
+        <p>Und genau dadurch entstehen oft die Erlebnisse, die man ohne diesen Hund vielleicht niemals gehabt hätte.</p>
+      </div>
+      <p class="intro-story-close">Denn das Leben mit Hund kann noch viel schöner sein, als du es dir vorgestellt hast.</p>
+    </div>
+  </div>
+</section>
 
 <!-- SERVICES -->
 <section class="services" id="angebote">
