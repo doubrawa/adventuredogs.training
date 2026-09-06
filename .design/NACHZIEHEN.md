@@ -38,9 +38,9 @@ selbst hoch und kann unseren optimierten Dateinamen nicht kennen.
 
 ### Ohne Netz — nur im Repo, nicht in der Pipeline
 
-Aus dem Code-Review vom 06.09.2026. Alle sieben sitzen in Design-Dateien, werden
-aber von keinem Pipeline-Block wieder aufgesetzt: ein Import bringt den alten
-Stand zurück.
+Aus dem Code-Review vom 06.09.2026 und späteren Änderungen direkt am Repo. Alle
+sitzen in Design-Dateien, werden aber von keinem Pipeline-Block wieder
+aufgesetzt: ein Import bringt den alten Stand zurück.
 
 | Stelle | worum es geht |
 |---|---|
@@ -51,6 +51,7 @@ Stand zurück.
 | alle Unterseiten, `<img>` | `width`/`height` nachgetragen. Betraf die Offer-Bilder und die Anfahrtsskizze wirklich (`height: auto`, kein reservierter Platz); bei Karten und Icons reserviert das CSS die Box schon, dort ist es Gleichmaß. Für die vom Skript erzeugten Karten steht es in `swap-card-svgs.ps1` |
 | alle Seiten, Nav | Klassen `nav-od` / `nav-od-mobile` raus — im Markup von 16 Seiten, ohne eine einzige CSS-Regel |
 | `kontakt/index.html` | leere Regel `.contact-form-wrap {}` raus |
+| `index.html` Trust-Bar | „60+ 5-Sterne Bewertungen“ → „70+“ (06.09.2026). Reine Zahlenpflege, das Design kennt weiter den alten Stand |
 
 Der Intro-Block „Kurz vorweg“ stand hier, bis er am 06.09.2026 ins
 Design-Projekt wanderte; seine Fassung von dort wurde von Hand übernommen
