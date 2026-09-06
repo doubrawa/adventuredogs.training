@@ -376,68 +376,63 @@
     max-width: 560px;
   }
 
-  /* ── INTRO STORY ── */
-  .intro-story { padding-bottom: 84px; }
-  /* Kein Deckel auf der Blockbreite – die Sektion läuft wie alle anderen in den 7 %
-     Seitenrand, damit die linke Kante auf jeder Fensterbreite fluchtet. Die Zeilenlänge
-     hält nicht ein Deckel in Schach, sondern die Spaltenzahl (siehe .intro-story-cols):
-     ein linksbündig gekappter Block ließe rechts ein Drittel der Sektion leer. */
-  .intro-story-kicker { margin-bottom: 18px; }
-  .intro-story-lead {
+  /* ── INTRO / KURZ VORWEG ── */
+  .intro-note { background: var(--cream); }
+  .intro-lead {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(24px, 2.7vw, 31px);
     font-weight: 600;
-    line-height: 1.42;
+    font-size: clamp(24px, 2.6vw, 38px);
+    line-height: 1.3;
     color: var(--blue);
     max-width: 1040px;
     text-wrap: pretty;
   }
-  .intro-story-rule {
-    height: 1px;
-    background: oklch(32% 0.07 240 / 0.15);
-    margin: 36px 0 32px;
+  .intro-rule { height: 1px; background: var(--blue); opacity: 0.15; margin: 44px 0 38px; }
+  .intro-cols {
+    column-count: 3;
+    column-gap: 72px;
   }
-  /* Drei kurze Absätze: ab 1500 px bekommt jeder eine eigene Spalte, darunter zwei.
-     Der Schriftgrad wächst mit der Spaltenbreite mit – sonst laufen die Zeilen auf
-     breiten Monitoren auf über 80 Zeichen auf. */
-  .intro-story-cols { columns: 2; column-gap: 72px; }
-  @media (min-width: 1500px) { .intro-story-cols { columns: 3; } }
-  .intro-story-cols p {
-    font-size: clamp(17px, 1.05vw, 22px);
+  .intro-cols p {
+    font-family: 'DM Sans', sans-serif;
     font-weight: 300;
+    font-size: clamp(17px, 1.05vw, 22px);
     line-height: 1.85;
     color: var(--text-lt);
-    margin-bottom: 18px;
     text-wrap: pretty;
+    break-inside: avoid;
   }
-  .intro-story-cols p:last-child { margin-bottom: 0; }
-  /* Initial im Zeitschriftensatz: Playfair-Versal, die über zwei Zeilen hängt.
-     float+negative line-height statt fester Höhe, damit es mit der Schriftgröße mitskaliert. */
-  .intro-story-cols p:first-child::first-letter {
+
+  .intro-cols p:first-child::first-letter {
     font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: clamp(54px, 5vw, 64px);
-    line-height: 0.82;
-    float: left;
-    padding: 6px 14px 0 0;
-    color: var(--blue);
-  }
-  .intro-story-close {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(22px, 2.4vw, 27px);
     font-weight: 600;
-    line-height: 1.5;
     color: var(--blue);
-    max-width: 860px;
-    margin: 48px auto 0;
+    float: left;
+    font-size: 3.1em;
+    line-height: 0.86;
+    padding: 0.06em 0.1em 0 0;
+  }
+  .intro-close {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: clamp(21px, 2.2vw, 32px);
+    line-height: 1.42;
+    color: var(--blue);
     text-align: center;
+    max-width: 860px;
+    margin: 58px auto 0;
     text-wrap: pretty;
   }
-  /* Unter 900 px würden zwei Spalten auf unter 45 Zeichen fallen – dann lieber einspaltig,
-     aber mit gekappter Zeilenlänge, sonst laufen die Zeilen über die volle Sektionsbreite. */
+  @media (min-width: 1500px) { .intro-cols p:not(:last-child) { break-after: column; } }
+  @media (max-width: 1500px) { .intro-cols { column-count: 2; } }
   @media (max-width: 900px) {
-    .intro-story-cols { columns: 1; max-width: 620px; }
+    .intro-cols { column-count: 1; }
+    .intro-cols p { max-width: 620px; }
+    .intro-cols p + p { margin-top: 1.85em; }
+    .intro-note { padding-bottom: 56px; }
+    .intro-note .section-label { margin-bottom: 16px; }
+    .intro-rule { margin: 30px 0 26px; }
+    .intro-close { margin-top: 40px; }
   }
 
   /* ── SERVICES ── */
@@ -724,10 +719,6 @@
   }
   @media (max-width: 720px) {
     section { padding: 64px 5%; }
-    .intro-story { padding-bottom: 56px; }
-    .intro-story-kicker { margin-bottom: 16px; }
-    .intro-story-rule { margin: 30px 0 26px; }
-    .intro-story-close { margin-top: 40px; }
     .julia-photo { width: 100%; aspect-ratio: 4/5; object-position: center top; }
     .trust-bar {
       grid-template-columns: 1fr;
@@ -911,19 +902,17 @@
   </div>
 </div>
 
-<!-- INTRO STORY -->
-<section class="intro-story">
-  <div class="intro-story-text">
-    <p class="section-label intro-story-kicker">Kurz vorweg</p>
-    <p class="intro-story-lead">Wenn ein Hund bei dir einzieht, hast du meistens schon ein ziemlich genaues Bild davon, wie euer gemeinsames Leben einmal aussehen soll.</p>
-    <div class="intro-story-rule"></div>
-    <div class="intro-story-cols">
-      <p>Und dann stellst du fest: Hundeerziehung ist manchmal ein ziemliches Abenteuer.</p>
-      <p>Man lernt dazu, arbeitet an sich selbst, verlässt immer wieder die eigene Komfortzone – und wächst gemeinsam.</p>
-      <p>Und genau dadurch entstehen oft die Erlebnisse, die man ohne diesen Hund vielleicht niemals gehabt hätte.</p>
-    </div>
-    <p class="intro-story-close">Denn das Leben mit Hund kann noch viel schöner sein, als du es dir vorgestellt hast.</p>
+<!-- KURZ VORWEG -->
+<section class="intro-note">
+  <p class="section-label">Kurz vorweg</p>
+  <p class="intro-lead">Wenn ein Hund bei dir einzieht, hast du meistens schon ein ziemlich genaues Bild davon, wie euer gemeinsames Leben einmal aussehen soll.</p>
+  <div class="intro-rule"></div>
+  <div class="intro-cols">
+    <p>Und dann stellst du fest: Hundeerziehung ist manchmal ein ziemliches Abenteuer.</p>
+    <p>Man lernt dazu, arbeitet an sich selbst, verlässt immer wieder die eigene Komfortzone – und wächst gemeinsam.</p>
+    <p>Und genau dadurch entstehen oft die Erlebnisse, die man ohne diesen Hund vielleicht niemals gehabt hätte.</p>
   </div>
+  <p class="intro-close">Denn das Leben mit Hund kann noch viel schöner sein, als du es dir vorgestellt hast.</p>
 </section>
 
 <!-- SERVICES -->

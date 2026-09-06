@@ -21,12 +21,14 @@ sieht das unfertig aus.
 
 **Lesbare Zeilen kommen deshalb nicht aus einem Deckel, sondern aus der Aufteilung:**
 mehr Spalten und ein mitwachsender Schriftgrad, damit der Block die Sektionsbreite füllt
-und die Zeile trotzdem unter 75 Zeichen bleibt – siehe `.intro-story-cols`:
+und die Zeile trotzdem unter 75 Zeichen bleibt – siehe `.intro-cols`:
 
 ```css
-.intro-story-cols { columns: 2; column-gap: 72px; }
-@media (min-width: 1500px) { .intro-story-cols { columns: 3; } }
-.intro-story-cols p { font-size: clamp(17px, 1.05vw, 22px); }
+.intro-cols { column-count: 3; column-gap: 72px; }
+@media (max-width: 1500px) { .intro-cols { column-count: 2; } }
+@media (max-width: 900px)  { .intro-cols { column-count: 1; } }
+.intro-cols p { font-size: clamp(17px, 1.05vw, 22px); break-inside: avoid; }
+@media (min-width: 1500px) { .intro-cols p:not(:last-child) { break-after: column; } }
 ```
 
 Gemessen läuft das von 375 bis 3000 px zwischen 40 und 73 Zeichen je Zeile.

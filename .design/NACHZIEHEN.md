@@ -36,15 +36,9 @@ selbst hoch und kann unseren optimierten Dateinamen nicht kennen.
 
 ### Ohne Netz — nur im Repo, nicht in der Pipeline
 
-| Was | worum es geht |
-|---|---|
-| Intro-Block „Kurz vorweg“ (`index.html`, direkt vor `<!-- SERVICES -->`) | Fünfsätziger Erzählblock zwischen Trust-Bar und Angebot, am 05.09.2026 direkt im Repo gebaut. Kicker, Playfair-Einstieg, Haarlinie, zweispaltiger Fließtext mit Initial, kursive Schlusszeile. Kein Container und kein Deckel – der Block füllt die Sektionsbreite wie die Nachbarabschnitte; die Zeilenlänge regeln Spaltenzahl (3 ab 1500 px, 2 darunter, 1 unter 900 px) und ein mitwachsender Schriftgrad. |
-
-Anders als die Blöcke darüber setzt **kein** Skript das wieder auf: Der nächste Export aus
-claude.ai/design bringt die Landing Page ohne diesen Abschnitt zurück, und
-`post-import-fixes.sh` merkt davon nichts. Entweder wandert der Block ins Design-Projekt
-(dann diese Zeile streichen) oder er braucht einen eigenen Block in `post-import-fixes.sh`,
-der ihn nach jedem Import wieder einsetzt.
+Aktuell nichts. Der Intro-Block „Kurz vorweg“ stand hier, bis er am 06.09.2026 ins
+Design-Projekt wanderte; seine Fassung von dort wurde von Hand übernommen
+(`.intro-note` / `.intro-cols` in `index.html`).
 
 ## officedogs.training — `tools/_rederive.sh`
 
