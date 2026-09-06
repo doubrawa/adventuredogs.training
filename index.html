@@ -379,9 +379,9 @@
   /* ── INTRO STORY ── */
   .intro-story { padding-bottom: 84px; }
   /* Kein Deckel auf der Blockbreite – die Sektion läuft wie alle anderen in den 7 %
-     Seitenrand, damit die linke Kante auf jeder Fensterbreite fluchtet. Gekappt wird nur
-     der Satzspiegel, sonst laufen die zwei Spalten auf 74 Zeichen auf. */
-  .intro-story-text { max-width: 1100px; }
+     Seitenrand, damit die linke Kante auf jeder Fensterbreite fluchtet. Die Zeilenlänge
+     hält nicht ein Deckel in Schach, sondern die Spaltenzahl (siehe .intro-story-cols):
+     ein linksbündig gekappter Block ließe rechts ein Drittel der Sektion leer. */
   .intro-story-kicker { margin-bottom: 18px; }
   .intro-story-lead {
     font-family: 'Playfair Display', serif;
@@ -389,7 +389,7 @@
     font-weight: 600;
     line-height: 1.42;
     color: var(--blue);
-    max-width: 900px;
+    max-width: 1040px;
     text-wrap: pretty;
   }
   .intro-story-rule {
@@ -397,9 +397,13 @@
     background: oklch(32% 0.07 240 / 0.15);
     margin: 36px 0 32px;
   }
-  .intro-story-cols { columns: 2; column-gap: 64px; }
+  /* Drei kurze Absätze: ab 1500 px bekommt jeder eine eigene Spalte, darunter zwei.
+     Der Schriftgrad wächst mit der Spaltenbreite mit – sonst laufen die Zeilen auf
+     breiten Monitoren auf über 80 Zeichen auf. */
+  .intro-story-cols { columns: 2; column-gap: 72px; }
+  @media (min-width: 1500px) { .intro-story-cols { columns: 3; } }
   .intro-story-cols p {
-    font-size: 17px;
+    font-size: clamp(17px, 1.05vw, 22px);
     font-weight: 300;
     line-height: 1.85;
     color: var(--text-lt);
@@ -425,7 +429,7 @@
     font-weight: 600;
     line-height: 1.5;
     color: var(--blue);
-    max-width: 780px;
+    max-width: 860px;
     margin: 48px auto 0;
     text-align: center;
     text-wrap: pretty;

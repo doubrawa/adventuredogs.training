@@ -38,7 +38,7 @@ selbst hoch und kann unseren optimierten Dateinamen nicht kennen.
 
 | Was | worum es geht |
 |---|---|
-| Intro-Block „Kurz vorweg“ (`index.html`, direkt vor `<!-- SERVICES -->`) | Fünfsätziger Erzählblock zwischen Trust-Bar und Angebot, am 05.09.2026 direkt im Repo gebaut. Kicker, Playfair-Einstieg, Haarlinie, zweispaltiger Fließtext mit Initial, kursive Schlusszeile. Kein äußerer Container – der Block läuft wie jede Sektion in den 7 % Seitenrand; nur der Satzspiegel ist linksbündig auf 1100 px gekappt, unter 900 px einspaltig mit 620 px Zeilenlänge. |
+| Intro-Block „Kurz vorweg“ (`index.html`, direkt vor `<!-- SERVICES -->`) | Fünfsätziger Erzählblock zwischen Trust-Bar und Angebot, am 05.09.2026 direkt im Repo gebaut. Kicker, Playfair-Einstieg, Haarlinie, zweispaltiger Fließtext mit Initial, kursive Schlusszeile. Kein Container und kein Deckel – der Block füllt die Sektionsbreite wie die Nachbarabschnitte; die Zeilenlänge regeln Spaltenzahl (3 ab 1500 px, 2 darunter, 1 unter 900 px) und ein mitwachsender Schriftgrad. |
 
 Anders als die Blöcke darüber setzt **kein** Skript das wieder auf: Der nächste Export aus
 claude.ai/design bringt die Landing Page ohne diesen Abschnitt zurück, und

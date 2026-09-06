@@ -10,15 +10,26 @@ bis einschließlich 720 px `64px 5%`) und laufen darin **über die volle Breite*
 zentrierten Maximalbreiten-Container gibt es nicht: `.method-grid`, `.julia-section`,
 `.testimonials-grid` und `.services-grid` beginnen alle bei 7 %.
 
-Ein neuer Block braucht deshalb **gar keinen äußeren Container**. Wer die Lesebreite
-begrenzen will, kappt sie **linksbündig** – `max-width` ohne `margin: 0 auto`:
+Ein neuer Block braucht deshalb **gar keinen äußeren Container**. Ein `margin: 0 auto`
+auf einem gedeckelten Block zentriert ihn und schiebt seine linke Kante nach innen,
+während die Nachbarabschnitte bei 7 % bleiben.
+
+**Und ein Deckel ohne `auto` löst es auch nicht.** Linksbündig gekappt fluchtet die Kante
+zwar, dafür bleibt rechts ein wachsender Streifen leer – beim Intro-Block waren das bei
+2000 px rund 620 px, ein Drittel der Sektion. Zwischen den vollbreiten Nachbarabschnitten
+sieht das unfertig aus.
+
+**Lesbare Zeilen kommen deshalb nicht aus einem Deckel, sondern aus der Aufteilung:**
+mehr Spalten und ein mitwachsender Schriftgrad, damit der Block die Sektionsbreite füllt
+und die Zeile trotzdem unter 75 Zeichen bleibt – siehe `.intro-story-cols`:
 
 ```css
-.intro-story-text { max-width: 1100px; }   /* Satzspiegel, linke Kante bleibt bei 7 % */
+.intro-story-cols { columns: 2; column-gap: 72px; }
+@media (min-width: 1500px) { .intro-story-cols { columns: 3; } }
+.intro-story-cols p { font-size: clamp(17px, 1.05vw, 22px); }
 ```
 
-Ein `margin: 0 auto` auf so einem Block zentriert ihn und schiebt seine linke Kante nach
-innen, während die Nachbarabschnitte bei 7 % bleiben.
+Gemessen läuft das von 375 bis 3000 px zwischen 40 und 73 Zeichen je Zeile.
 
 **Die Falle:** Ein Deckel unter der Sektionsbreite fällt bei schmalen Fenstern nicht auf.
 Bei 1280 px ist der Inhaltsbereich nur 1100 px breit, ein 1320er-Deckel greift dort also
