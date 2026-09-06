@@ -32,6 +32,24 @@ for f in "$DST/index.html" "$DST/angebot/index.html"; do
     fi
 done
 
+# ─── Preview-Banner des Design-Tools entfernen ───
+# Der Alltagstipps-Export bringt am Seitenende eine interne Notiz mit
+# (<div class="preview-note">Vorschau · …</div>). Fuer .preview-note gibt es
+# keine CSS-Regel, sie rendert also als normaler Fliesstext unter dem Footer —
+# auf der Live-Seite das Letzte, was ein Besucher liest.
+# strip_landing_scaffolding() in _rederive.sh raeumt so etwas nur auf der
+# Startseite weg; hier gilt es fuer alle Seiten. Der HTML-Kommentar davor geht
+# gleich mit, sonst bleibt ein "<!-- Preview-Banner -->" ohne Inhalt stehen.
+PVN=0
+for f in "$DST/index.html" "$DST"/*/index.html "$DST"/alltagstipps/*/index.html "$DST/404.html"; do
+    [ -f "$f" ] || continue
+    if grep -q 'class="preview-note"' "$f"; then
+        sed -i '/^<!-- Preview-Banner -->$/d; /<div class="preview-note">/d' "$f"
+        PVN=$((PVN + 1))
+    fi
+done
+if [ "$PVN" -gt 0 ]; then echo "  Preview-Banner entfernt: $PVN Seiten"; fi
+
 # ─── Nav-Media-Query: toter Bereich unterhalb des Hamburgers ───
 # Das Design bringt seit v53 eine Media-Query, die den fünften Nav-Eintrag
 # ("Office Dogs") bei mittleren Breiten enger setzt — deklariert ab 821px.
@@ -304,13 +322,48 @@ fi
 #   - PNG icon as fallback for older browsers
 #   - apple-touch-icon for iOS home-screen / Safari pinned tabs
 # Path is "assets/" on Landing, "../assets/" on subpages.
+# Maskiert die Zeichen, die sed im ERSATZ-String besonders behandelt: `&` steht
+# dort fuer den gesamten Treffer, `\` leitet Rueckverweise ein. Ohne das macht ein
+# Ampersand im Seitentitel — "Beschaeftigung & Events" etwa, auf dieser Site
+# durchaus ueblich — aus dem og:title ein `content="Beschaeftigung </title> …"`
+# und zerlegt den Kopfbereich.
+sed_ersatz_maskieren() {
+    printf '%s' "$1" | sed -e 's/[\\&]/\\&/g'
+}
+
+# Fuegt einen Block hinter dem ERSTEN </title> ein. Die Adresse `1,/<\/title>/`
+# begrenzt die Ersetzung auf die erste Trefferzeile — ohne sie wirkt das s-Kommando
+# auf jede Zeile, und eine Seite mit einem zweiten </title> (etwa in einem
+# Inline-SVG) bekaeme den Block doppelt.
+nach_title_einfuegen() {
+    local f="$1"
+    local block="$2"
+    local D=$(printf '\035')
+    sed -i "1,/<\/title>/ s${D}</title>${D}</title>\n${block}${D}" "$f"
+}
+
+# Fuegt den Block von stdin hinter Zeile N ein. Sechs Stellen im Skript haben das
+# Umkopieren (head / cat / tail / mv) vorher jede fuer sich buchstabiert; hier
+# steht es einmal, damit eine Aenderung an der Mechanik auch nur einmal noetig ist.
+#   nach_zeile_einfuegen "$f" "$n" < datei.html
+#   nach_zeile_einfuegen "$f" "$n" <<< "$string"
+nach_zeile_einfuegen() {
+    local f="$1"
+    local zeile="$2"
+    local tmp
+    tmp=$(mktemp)
+    head -n "$zeile" "$f"        >  "$tmp"
+    cat                          >> "$tmp"
+    tail -n +$((zeile + 1)) "$f" >> "$tmp"
+    mv "$tmp" "$f"
+}
+
 inject_favicon() {
     local f="$1"
     local prefix="$2"   # "" for root, "../" for subpages
     if grep -q 'rel="icon"' "$f"; then return; fi   # already has one
     local block="<link rel=\"icon\" type=\"image/svg+xml\" href=\"${prefix}assets/logo.svg\">\n<link rel=\"icon\" type=\"image/png\" href=\"${prefix}assets/logo.png\">\n<link rel=\"apple-touch-icon\" href=\"${prefix}assets/logo.png\">"
-    local D=$(printf '\035')
-    sed -i "s${D}</title>${D}</title>\n${block}${D}" "$f"
+    nach_title_einfuegen "$f" "$block"
     echo "  injected favicons: $f"
 }
 inject_favicon "$DST/index.html"               ""
@@ -334,15 +387,21 @@ done
 # on the 5 subpages.
 # Landing index.html at root is NOT touched — its assets/ refs are correct.
 PATTERN='(src|href)="assets/|url\(['"'"'"]?assets/|url\(assets/'
+# Eine Funktion fuer beide Tiefen: der Praefix ist der einzige Unterschied.
+asset_pfade_umbiegen() {
+    local F="$1"
+    local praefix="$2"   # "../" oder "../../"
+    grep -qE "$PATTERN" "$F" 2>/dev/null || return 1
+    sed -i "s|src=\"assets/|src=\"${praefix}assets/|g"   "$F"
+    sed -i "s|href=\"assets/|href=\"${praefix}assets/|g" "$F"
+    sed -i "s|url('assets/|url('${praefix}assets/|g"     "$F"
+    sed -i "s|url(\"assets/|url(\"${praefix}assets/|g"   "$F"
+    sed -i "s|url(assets/|url(${praefix}assets/|g"       "$F"
+}
 for p in kontakt angebot alltagstipps impressum ueber-mich gebucht; do
-    [ -f "$DST/$p/index.html" ] || continue
     F="$DST/$p/index.html"
-    if grep -qE "$PATTERN" "$F" 2>/dev/null; then
-        sed -i 's|src="assets/|src="../assets/|g'   "$F"
-        sed -i 's|href="assets/|href="../assets/|g' "$F"
-        sed -i "s|url('assets/|url('../assets/|g"   "$F"
-        sed -i 's|url("assets/|url("../assets/|g'   "$F"
-        sed -i 's|url(assets/|url(../assets/|g'     "$F"
+    [ -f "$F" ] || continue
+    if asset_pfade_umbiegen "$F" "../"; then
         echo "  fixed subpage asset paths: $p"
     fi
 done
@@ -350,12 +409,7 @@ done
 for topic in welpenzeit silvester urlaub winter alleinbleiben tierphysiotherapie ernaehrung hund-entlaufen; do
     F="$DST/alltagstipps/$topic/index.html"
     [ -f "$F" ] || continue
-    if grep -qE "$PATTERN" "$F" 2>/dev/null; then
-        sed -i 's|src="assets/|src="../../assets/|g'   "$F"
-        sed -i 's|href="assets/|href="../../assets/|g' "$F"
-        sed -i "s|url('assets/|url('../../assets/|g"   "$F"
-        sed -i 's|url("assets/|url("../../assets/|g'   "$F"
-        sed -i 's|url(assets/|url(../../assets/|g'     "$F"
+    if asset_pfade_umbiegen "$F" "../../"; then
         echo "  fixed detail-page asset paths: alltagstipps/$topic"
     fi
 done
@@ -405,6 +459,10 @@ inject_seo() {
     local has_desc=0
     grep -q '<meta name="description"' "$f" && has_desc=1
 
+    # Titel und Beschreibung landen im sed-Ersatz und muessen dort maskiert sein.
+    title=$(sed_ersatz_maskieren "$title")
+    desc=$(sed_ersatz_maskieren "$desc")
+
     local desc_line=""
     if [ "$has_desc" = "0" ]; then
         desc_line="<meta name=\"description\" content=\"${desc}\">\n"
@@ -412,10 +470,7 @@ inject_seo() {
 
     local block="${desc_line}<link rel=\"canonical\" href=\"${url}\">\n<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:site_name\" content=\"Adventure Dogs\">\n<meta property=\"og:title\" content=\"${title}\">\n<meta property=\"og:description\" content=\"${desc}\">\n<meta property=\"og:url\" content=\"${url}\">\n<meta property=\"og:image\" content=\"${img}\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">"
 
-    # Insert after the <title> closing tag.
-    # Use ASCII GS (0x1d) as sed delimiter — won't ever appear in HTML/text/URLs.
-    local D=$(printf '\035')
-    sed -i "s${D}</title>${D}</title>\n${block}${D}" "$f"
+    nach_title_einfuegen "$f" "$block"
     echo "  injected SEO/OG: $f"
 }
 
@@ -508,6 +563,30 @@ if [ -f "$DST/gebucht/index.html" ]; then
     fi
 fi
 
+# ─── Hero-Preload auf den Unterseiten ───
+# Die Startseite laedt ihr Hero als <img fetchpriority="high"> — der Preload-Scanner
+# findet es sofort im Markup. Auf allen Unterseiten ist das Hero dagegen ein
+# CSS-Hintergrund (.hero-bg { background: url('…') }), und den entdeckt der Browser
+# erst, wenn fonts.css geladen und das Stylesheet angewandt ist. Lokal gemessen:
+# hero-landing.jpg startet bei 9 ms (initiatorType img), hero-silvester.jpg erst
+# bei 18 ms (initiatorType css) — ueber Mobilfunk ist das die volle
+# CSS-Roundtrip-Zeit, direkt auf dem LCP der Unterseiten.
+#
+# Ziel ist das erste assets/-Bild im CSS der Seite, also genau das Hero. Der Pfad
+# wird woertlich aus dem url() uebernommen; CSS und Markup stehen in derselben
+# Datei, das ../-Praefix stimmt also schon. Seiten ohne Hero-Foto (Impressum)
+# ueberspringt die Schleife von selbst.
+PRE=0
+for f in "$DST"/*/index.html "$DST"/alltagstipps/*/index.html; do
+    [ -f "$f" ] || continue
+    grep -q 'rel="preload"' "$f" && continue
+    hero=$(grep -oE "url\('[^']*assets/[^']*\.(jpg|jpeg|png|webp)'\)" "$f" | head -1 | sed "s|^url('||;s|')$||")
+    [ -n "$hero" ] || continue
+    nach_title_einfuegen "$f" "<link rel=\"preload\" as=\"image\" href=\"${hero}\" fetchpriority=\"high\">"
+    PRE=$((PRE + 1))
+done
+if [ "$PRE" -gt 0 ]; then echo "  Hero-Preload gesetzt: $PRE Seiten"; fi
+
 # ─── Kontakt FAQ: 5 extra Q&A pairs for SEO ───
 # claude.ai/design ships 5 FAQs on the Kontakt page (logistics-heavy:
 # Wo, Wer, Antwortzeit, Erstanfrage, Formate). We extend with 5 questions
@@ -521,14 +600,18 @@ fi
 F="$DST/kontakt/index.html"
 if [ -f "$F" ] && ! grep -q 'Was kostet das Training' "$F"; then
     LAST_Q=$(grep -n 'Welche Trainingsformate bietest du an?' "$F" | head -1 | cut -d: -f1)
+    # Ende des faq-item = erstes </div> auf Item-Einrueckung ab der Frage.
+    # Vorher stand hier ein festes LAST_Q + 4: das stimmt nur, solange das
+    # Markup des Items genau vier Zeilen lang bleibt — formatiert der Export
+    # die Antwort einmal anders, spleisst der Block mitten ins Item hinein,
+    # und zwar lautlos.
+    ITEM_END=""
     if [ -n "$LAST_Q" ]; then
-        # The closing </div> of that faq-item is 4 lines below the question.
-        INSERT_LINE=$((LAST_Q + 4))
-        tmp=$(mktemp)
-        head -n "$INSERT_LINE" "$F"            > "$tmp"
-        cat "$DST/tools/faq-extra.html"        >> "$tmp"
-        tail -n +$((INSERT_LINE + 1)) "$F"     >> "$tmp"
-        mv "$tmp" "$F"
+        REL=$(tail -n +"$LAST_Q" "$F" | grep -n '^      </div>$' | head -1 | cut -d: -f1)
+        [ -n "$REL" ] && ITEM_END=$((LAST_Q + REL - 1))
+    fi
+    if [ -n "$ITEM_END" ]; then
+        nach_zeile_einfuegen "$F" "$ITEM_END" < "$DST/tools/faq-extra.html"
         echo "  injected 5 extra FAQs on Kontakt"
     else
         echo "  WARN: FAQ anchor not found on Kontakt — extra FAQs not injected"
@@ -566,11 +649,7 @@ if [ -f "$HUB" ] && ! grep -q 'href="hund-entlaufen/"' "$HUB"; then
         # Ende der Ernährungs-Karte = erstes </a> ab der Teaser-Zeile
         endrel=$(tail -n +"$line" "$HUB" | grep -n '</a>' | head -1 | cut -d: -f1)
         endline=$((line + endrel - 1))
-        tmp=$(mktemp)
-        head -n "$endline" "$HUB"          > "$tmp"
-        cat "$DST/tools/hub-card-hund-entlaufen.html" >> "$tmp"
-        tail -n +$((endline + 1)) "$HUB"   >> "$tmp"
-        mv "$tmp" "$HUB"
+        nach_zeile_einfuegen "$HUB" "$endline" < "$DST/tools/hub-card-hund-entlaufen.html"
         echo "  injected hub card: hund-entlaufen"
     fi
 fi
@@ -621,11 +700,7 @@ inject_breadcrumb_schema() {
     # andere Schema-Injections).
     local desc_line=$(grep -n '<meta name="description"' "$f" | head -1 | cut -d: -f1)
     if [ -n "$desc_line" ]; then
-        local tmp=$(mktemp)
-        head -n "$desc_line" "$f"          > "$tmp"
-        echo "$schema"                     >> "$tmp"
-        tail -n +$((desc_line + 1)) "$f"   >> "$tmp"
-        mv "$tmp" "$f"
+        nach_zeile_einfuegen "$f" "$desc_line" <<< "$schema"
         echo "  injected Breadcrumb JSON-LD: $(echo "$url" | sed 's|'"$SITE_BASE"'||')"
     fi
 }
@@ -700,8 +775,15 @@ done
 # Die Buttons togglen nur eine CSS-Klasse — Screenreader erfahren nicht,
 # ob ein Panel offen ist. Wir setzen initial aria-expanded="false" und
 # patchen das Toggle-JS, damit es das Attribut mitführt.
+#
+# Die Wache fragt nach dem ungepatchten FAQ-Button, nicht dateiweit nach
+# "aria-expanded": bringt ein kuenftiger Export das Attribut irgendwo anders mit
+# — am naheliegendsten am Hamburger-Button, wo es hingehoert —, liefe der ganze
+# Block sonst ins Leere und die FAQ-Buttons blieben stumm. Nach dem Patch heissen
+# sie <button class="faq-question" aria-expanded="false">, der Suchbegriff trifft
+# also nicht mehr und ein zweiter Lauf bleibt folgenlos.
 F="$DST/kontakt/index.html"
-if [ -f "$F" ] && ! grep -q 'aria-expanded' "$F"; then
+if [ -f "$F" ] && grep -q '<button class="faq-question">' "$F"; then
     sed -i 's|<button class="faq-question">|<button class="faq-question" aria-expanded="false">|g' "$F"
     sed -i "s|document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));|document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));\n      document.querySelectorAll('.faq-question').forEach(b => b.setAttribute('aria-expanded', 'false'));|" "$F"
     sed -i "s|if (!isOpen) item.classList.add('open');|if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }|" "$F"
@@ -790,11 +872,7 @@ inject_article_schema() {
     # wie bei LocalBusiness/FAQPage Schemata).
     local desc_line=$(grep -n '<meta name="description"' "$f" | head -1 | cut -d: -f1)
     if [ -n "$desc_line" ]; then
-        local tmp=$(mktemp)
-        head -n "$desc_line" "$f"          > "$tmp"
-        echo "$schema"                     >> "$tmp"
-        tail -n +$((desc_line + 1)) "$f"   >> "$tmp"
-        mv "$tmp" "$f"
+        nach_zeile_einfuegen "$f" "$desc_line" <<< "$schema"
         echo "  injected Article JSON-LD: alltagstipps/$(basename $(dirname "$f"))/"
     fi
 }
@@ -814,11 +892,7 @@ FAQ_SCHEMA="$DST/tools/faqpage-schema.json.html"
 if [ -f "$F" ] && [ -f "$FAQ_SCHEMA" ] && ! grep -q '"@type": "FAQPage"' "$F"; then
     desc_line=$(grep -n '<meta name="description"' "$F" | head -1 | cut -d: -f1)
     if [ -n "$desc_line" ]; then
-        tmp=$(mktemp)
-        head -n "$desc_line" "$F"          > "$tmp"
-        cat "$FAQ_SCHEMA"                  >> "$tmp"
-        tail -n +$((desc_line + 1)) "$F"   >> "$tmp"
-        mv "$tmp" "$F"
+        nach_zeile_einfuegen "$F" "$desc_line" < "$FAQ_SCHEMA"
         echo "  injected FAQPage JSON-LD on Kontakt"
     fi
 fi
@@ -833,11 +907,7 @@ if ! grep -q '"@type": "LocalBusiness"' "$F"; then
     # Insert just after the meta name="description" line on Landing.
     desc_line=$(grep -n '<meta name="description"' "$F" | head -1 | cut -d: -f1)
     if [ -n "$desc_line" ]; then
-        tmp=$(mktemp)
-        head -n "$desc_line" "$F"          > "$tmp"
-        cat "$SCHEMA"                      >> "$tmp"
-        tail -n +$((desc_line + 1)) "$F"   >> "$tmp"
-        mv "$tmp" "$F"
+        nach_zeile_einfuegen "$F" "$desc_line" < "$SCHEMA"
         echo "  injected LocalBusiness JSON-LD on Landing"
     fi
 fi

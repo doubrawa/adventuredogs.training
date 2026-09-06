@@ -38,7 +38,18 @@ function Get-MaxWidth($name) {
     # Heroes are full-bleed photos at the top of pages — they want
     # ~2400px to look crisp on retina monitors. Everything else
     # (portraits, offer cards, etc.) gets the 1600px default.
-    if ($name -match '^(hero-|kontakt-hero|strand)') { return $HeroMaxWidth }
+    #
+    # `kontakt-hero` ist raus: die Datei heisst hero-kontakt.jpg, das Muster lief
+    # ins Leere. `strand` bleibt stehen, damit die vorhandene 2400er-Datei nicht
+    # bei naechster Gelegenheit neu und kleiner kodiert wird.
+    #
+    # Achtung bei Quell- oder Archivbildern: was hier nicht als Hero erkannt wird,
+    # schrumpft die Pipeline auf 1600 px — und zwar in der Datei selbst. Genau so
+    # ist grafitiwand_HQ.jpg (das Quellbild von hero-gebucht.jpg) unter die
+    # Aufloesung seines eigenen Derivats gerutscht, bevor es am 06.09.2026
+    # geloescht wurde. Ein neues Archivbild gehoert also entweder in dieses
+    # Muster oder gar nicht nach assets/.
+    if ($name -match '^(hero-|strand)') { return $HeroMaxWidth }
     return $DefaultMaxWidth
 }
 

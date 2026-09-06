@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kontakt – Adventure Dogs | Julia Doubrawa</title>
+<link rel="preload" as="image" href="../assets/hero-kontakt.jpg" fetchpriority="high">
 <meta name="description" content="Kontakt zur Hundeschule Adventure Dogs in Krumbach – Telefon, E-Mail, WhatsApp, Kontaktformular und FAQ. Schreib Julia Doubrawa direkt.">
 <script type="application/ld+json">
 {
@@ -281,7 +282,6 @@
   .info-download-arrow svg { width: 18px; height: 18px; stroke: var(--white); fill: none; }
 
   /* ── FORM ── */
-  .contact-form-wrap {}
   .form-card {
     background: var(--white); border-radius: var(--r-lg);
     padding: 40px 36px; box-shadow: var(--shadow);
@@ -529,14 +529,14 @@
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="../">
-    <img src="../assets/logo.svg" alt="Logo">
+    <img src="../assets/logo.svg" width="46" height="46" alt="Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
     <li><a href="../ueber-mich/">Über mich</a></li>
     <li><a href="../kontakt/" class="active">Kontakt</a></li>
     <li><a href="../alltagstipps/">Alltagstipps</a></li>
-    <li><a href="https://officedogs.training/" class="nav-od">Office Dogs</a></li>
+    <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
@@ -549,7 +549,7 @@
   <a href="../ueber-mich/">Über mich</a>
   <a href="../kontakt/">Kontakt</a>
   <a href="../alltagstipps/">Alltagstipps</a>
-  <a href="https://officedogs.training/" class="nav-od-mobile">Office Dogs</a>
+  <a href="https://officedogs.training/">Office Dogs</a>
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
@@ -650,7 +650,10 @@
       <h2 class="form-title">Ich freu mich auf deine Nachricht</h2>
       <p class="form-subtitle">Schreib mir, was dich beschäftigt – ich melde mich so schnell ich kann.</p>
 
-      <form id="contactForm" action="https://formspree.io/f/xaqvnvzq" method="POST" novalidate>
+      <!-- Kein novalidate: sonst ist die Browser-Validierung abgeschaltet und der
+           Handler unten bricht bei leeren Feldern still ab — der Besucher klickt
+           "Nachricht senden" und es passiert sichtbar gar nichts. -->
+      <form id="contactForm" action="https://formspree.io/f/xaqvnvzq" method="POST">
 
         <!-- Honeypot – für Bots unsichtbar -->
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
@@ -713,7 +716,7 @@
 
   <div class="anfahrt-block">
     <div class="anfahrt-map">
-      <img src="../assets/anfahrt.gif" alt="Anfahrtsskizze zum Adventure Dogs Hundeplatz Krumbach – Parkplatz am Kreislehrgarten, Fußweg zum Trainingsplatz" loading="lazy">
+      <img src="../assets/anfahrt.gif" width="800" height="565" alt="Anfahrtsskizze zum Adventure Dogs Hundeplatz Krumbach – Parkplatz am Kreislehrgarten, Fußweg zum Trainingsplatz" loading="lazy">
     </div>
 
     <div class="anfahrt-info">
@@ -867,7 +870,15 @@
       const privacy = form.privacy.checked;
 
       if (!name || !email || !message || !privacy) {
-        // Einfache Browser-Validierung greift automatisch durch required-Attribute
+        // Ohne novalidate haelt die Browser-Validierung leere Pflichtfelder schon
+        // vor dem submit auf. Bleibt nur der Fall, den required nicht kennt:
+        // Eingaben aus reinen Leerzeichen bestehen required, scheitern aber am
+        // trim() oben. Also leeren und die Meldung anfordern, statt still
+        // abzubrechen — sonst passiert beim Klick sichtbar gar nichts.
+        [form.name, form.email, form.message].forEach(el => {
+          if (!el.value.trim()) el.value = '';
+        });
+        form.reportValidity();
         return;
       }
 

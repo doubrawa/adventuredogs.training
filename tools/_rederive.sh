@@ -62,14 +62,6 @@ clean_page() {
   sed -i "s|https://adventuredogs.training/julia/|${p}ueber-mich/|g" "$f"
 }
 
-inject_head() {
-  # Historically used to bolt on icon + Google-Fonts preconnect lines.
-  # Since v21 the design tool ships local fonts and post-import-fixes.sh
-  # injects favicons after </title>, so this is now a no-op kept for
-  # backwards compatibility with earlier callers.
-  return 0
-}
-
 strip_landing_scaffolding() {
   local f="$1"
   sed -i '/<meta name="ext-resource-dependency"/d' "$f"
@@ -229,8 +221,8 @@ F="$DST/gebucht/index.html"
 cp "$SRC/gebucht/index.html" "$F"
 clean_page "$F" "../"
 # Hero-Foto: Design liefert strand.jpg; wir tauschen es gegen die Graffiti-Wand
-# (aus assets/grafitiwand_HQ.jpg -> assets/hero-gebucht.jpg optimiert). strand.jpg
-# kommt nur hier vor, daher ersetzt ein sed beide Vorkommen (CSS-Hintergrund + og:image).
+# (assets/hero-gebucht.jpg). strand.jpg kommt nur hier vor, daher ersetzt ein sed
+# beide Vorkommen (CSS-Hintergrund + og:image).
 sed -i 's#assets/strand\.jpg#assets/hero-gebucht.jpg#g' "$F"
 # Mobile-Framing: Design ankert das Hero rechts (fuer altes strand.jpg); die
 # Graffiti-Wand hat Hund+Trainerin im linken Drittel -> mobil links ankern.
@@ -261,7 +253,10 @@ sed -i 's|src="assets/|src="/assets/|g'   "$F"
 if ! grep -q 'rel="icon"' "$F"; then
   D=$(printf '\035')
   BLOCK='<meta name="robots" content="noindex">\n<link rel="icon" type="image/svg+xml" href="/assets/logo.svg">\n<link rel="icon" type="image/png" href="/assets/logo.png">\n<link rel="apple-touch-icon" href="/assets/logo.png">'
-  sed -i "s${D}</title>${D}</title>\n${BLOCK}${D}" "$F"
+  # `1,/<\/title>/` begrenzt auf die erste Trefferzeile — sonst wirkt das
+  # s-Kommando auf jede Zeile und ein zweites </title> (Inline-SVG) bekaeme
+  # den Block noch einmal.
+  sed -i "1,/<\/title>/ s${D}</title>${D}</title>\n${BLOCK}${D}" "$F"
 fi
 echo "OK 404.html"
 
@@ -341,5 +336,9 @@ else
     echo "  gelöscht: $b"
     RM_N=$((RM_N + 1))
   done
-  [ "$RM_N" -eq 0 ] && echo "  nichts zu löschen"
+  # Als `[ … ] && echo` waere das der letzte Befehl des Skripts: hat der Lauf
+  # etwas geloescht, schlaegt der Test fehl und _rederive.sh endet mit Status 1,
+  # obwohl der Import komplett durchgelaufen ist — `bash _rederive.sh && git add -A`
+  # (Schritt 5 in der README) ueberspraenge dann still den Commit.
+  if [ "$RM_N" -eq 0 ]; then echo "  nichts zu löschen"; fi
 fi

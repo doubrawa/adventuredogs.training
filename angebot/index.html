@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Angebot – Adventure Dogs | Hundeschule Julia Doubrawa Krumbach</title>
+<link rel="preload" as="image" href="../assets/hero-angebot.jpg" fetchpriority="high">
 <meta name="description" content="Trainingsangebote der Hundeschule Adventure Dogs in Krumbach: Welpenkurs, Basiskurs, Sozialkontakt, Trickdog, Jagdkontrolle und Einzeltraining.">
 <link rel="canonical" href="https://adventuredogs.training/angebot/">
 <script type="application/ld+json">
@@ -482,20 +483,38 @@
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
 
   /* ── TERMINLISTE ── */
+  /* Karte wie das CTA-Banner und die Angebotskarten: gleiche linke Kante,
+     gleiche Rundung. Ein vollbreites Band waere die Alternative gewesen (so
+     macht es die Startseite mit .services und .method), aber dann muessten die
+     Ecken eckig bleiben — an der Fensterkante zeigt eine Rundung nur ein Stueck
+     Seitenhintergrund. Die 7 % Innenabstand sind damit Kartenpolster, kein
+     Versatz: sie halten den Text von der abgerundeten Kante weg. */
   .termine-section {
     background: var(--cream2);
     padding: 64px 7% 72px;
     margin-top: 64px;
+    border-radius: var(--r-lg);
   }
-  .termine-inner { max-width: 900px; margin: 0 auto; }
+  /* Kein Deckel mit `margin: 0 auto`: der zentriert den Block und schiebt seine
+     linke Kante nach innen, waehrend die Nachbarabschnitte bei 7 % stehen bleiben
+     — gemessen 370 px Versatz bei 1920 px, rund 840 px bei 3000 px. Die
+     Zeilenlaenge haelt der eigene max-width des Absatzes weiter unten in Schach,
+     nicht ein Deckel auf dem ganzen Block (siehe CLAUDE.md, "nur der Seitenrand,
+     kein Deckel"). */
   .termine-eyebrow {
     font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--accent) !important; margin-bottom: 12px;
     font-style: italic;
   }
+  /* Gewicht und Groesse wie .filter-question ("Wobei brauchst du
+     Unterstuetzung?") — beide sind Abschnittsueberschriften derselben Ebene und
+     sollen gleich auftreten. Die 800 hier waren doppelt daneben: es gibt gar
+     keinen 800er-Schnitt, der Browser greift bei dem Wunsch zum naechsthoeheren
+     — also zu Playfair 900. Die Zeile stand damit zwei Stufen fetter und
+     6 px groesser als ihr Gegenstueck weiter oben. */
   .termine-section h2 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(24px, 3vw, 34px); font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 28px); font-weight: 700;
     color: var(--blue); line-height: 1.15; margin-bottom: 10px;
   }
   .termine-section > .termine-inner > p {
@@ -537,9 +556,11 @@
     margin-bottom: 20px;
   }
   .termine-consent .consent-icon svg { width: 26px; height: 26px; stroke: var(--accent); }
+  /* Ebenfalls 700 statt 800 — gleicher Grund wie bei .termine-section h2:
+     einen 800er-Playfair gibt es nicht, der Browser nimmt dafuer die 900. */
   .termine-consent h3 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(20px, 2.4vw, 26px); font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 26px); font-weight: 700;
     color: var(--blue); line-height: 1.2; margin-bottom: 14px;
   }
   .termine-consent p {
@@ -668,14 +689,14 @@
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="../">
-    <img src="../assets/logo.svg" alt="Logo">
+    <img src="../assets/logo.svg" width="46" height="46" alt="Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
     <li><a href="../ueber-mich/">Über mich</a></li>
     <li><a href="../kontakt/">Kontakt</a></li>
     <li><a href="../alltagstipps/">Alltagstipps</a></li>
-    <li><a href="https://officedogs.training/" class="nav-od">Office Dogs</a></li>
+    <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="#" class="nav-cta active">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
@@ -687,7 +708,7 @@
   <a href="../ueber-mich/">Über mich</a>
   <a href="../kontakt/">Kontakt</a>
   <a href="../alltagstipps/">Alltagstipps</a>
-  <a href="https://officedogs.training/" class="nav-od-mobile">Office Dogs</a>
+  <a href="https://officedogs.training/">Office Dogs</a>
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
@@ -707,43 +728,43 @@
   <div class="filter-nav">
     <button class="filter-btn active" onclick="filterCards('all', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-ueberall.png" alt="">
-        <img class="icon-active"  src="../assets/icon-ueberall-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-ueberall.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-ueberall-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Alle Angebote</span>
     </button>
     <button class="filter-btn" onclick="filterCards('erziehung', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-erziehung.png" alt="">
-        <img class="icon-active"  src="../assets/icon-erziehung-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-erziehung.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-erziehung-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Erziehung</span>
     </button>
     <button class="filter-btn" onclick="filterCards('alltag', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-alltag.png" alt="">
-        <img class="icon-active"  src="../assets/icon-alltag-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-alltag.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-alltag-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Alltagstraining</span>
     </button>
     <button class="filter-btn" onclick="filterCards('begegnung', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-begegnung.png" alt="">
-        <img class="icon-active"  src="../assets/icon-begegnung-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-begegnung.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-begegnung-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Hundebegegnungen</span>
     </button>
     <button class="filter-btn" onclick="filterCards('events', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-events.png" alt="">
-        <img class="icon-active"  src="../assets/icon-events-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-events.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-events-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Beschäftigung &amp; Events</span>
     </button>
     <button class="filter-btn" onclick="filterCards('problem', this)">
       <span class="filter-icon">
-        <img class="icon-default" src="../assets/icon-problem.png" alt="">
-        <img class="icon-active"  src="../assets/icon-problem-white.png" alt="">
+        <img class="icon-default" src="../assets/icon-problem.png" width="256" height="256" alt="">
+        <img class="icon-active"  src="../assets/icon-problem-white.png" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Problemverhalten</span>
     </button>
@@ -756,7 +777,7 @@
   <div class="offers-grid">
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="../assets/offer-welpenkurs.jpg" alt="Welpe im Welpenkurs der Hundeschule Adventure Dogs Krumbach" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-welpenkurs.jpg" width="1080" height="1080" alt="Welpe im Welpenkurs der Hundeschule Adventure Dogs Krumbach" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Welpenkurs</span>
@@ -776,7 +797,7 @@
     </div>
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="../assets/offer-basis.jpg" alt="Hund im Basiskurs lernt entspanntes Laufen an der Leine" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-basis.jpg" width="1080" height="1080" alt="Hund im Basiskurs lernt entspanntes Laufen an der Leine" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Erziehung</span><span class="offer-tag">Junghundekurs</span></div>
       </div>
@@ -800,7 +821,7 @@
     </div>
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="../assets/offer-jagdkontrolle.jpg" alt="Hund beim Jagdkontroll-Training im Wald" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-jagdkontrolle.jpg" width="400" height="400" alt="Hund beim Jagdkontroll-Training im Wald" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Jagdkontrolle</span></div>
       </div>
@@ -818,7 +839,7 @@
     </div>
 
     <div class="offer-card" data-cat="begegnung">
-      <div class="offer-img"><img src="../assets/service-sozialkontakt.jpg" alt="Hunde-Sozialkontakt-Training in kleiner Gruppe" loading="lazy">
+      <div class="offer-img"><img src="../assets/service-sozialkontakt.jpg" width="1080" height="1080" alt="Hunde-Sozialkontakt-Training in kleiner Gruppe" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Sozialkontakt</span></div>
       </div>
@@ -836,7 +857,7 @@
     </div>
 
     <div class="offer-card" data-cat="begegnung">
-      <div class="offer-img"><img src="../assets/offer-social-walk.jpg" alt="Geführter Social Walk – Spaziergang mit mehreren Hunden" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-social-walk.jpg" width="1080" height="1080" alt="Geführter Social Walk – Spaziergang mit mehreren Hunden" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Social Walk</span></div>
       </div>
@@ -854,7 +875,7 @@
     </div>
 
     <div class="offer-card" data-cat="alltag">
-      <div class="offer-img"><img src="../assets/offer-training-events.jpg" alt="Trainingsveranstaltung im Alltag der Hundeschule Adventure Dogs" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-training-events.jpg" width="1080" height="1080" alt="Trainingsveranstaltung im Alltag der Hundeschule Adventure Dogs" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Training</span></div>
       </div>
@@ -877,7 +898,7 @@
     </div>
 
     <div class="offer-card" data-cat="events alltag">
-      <div class="offer-img"><img src="../assets/offer-quality-time.jpg" alt="Quality-Time-Event mit Hund" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-quality-time.jpg" width="1080" height="1080" alt="Quality-Time-Event mit Hund" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Quality Time</span>
@@ -903,7 +924,7 @@
     </div>
 
     <div class="offer-card" data-cat="events">
-      <div class="offer-img"><img src="../assets/offer-trickdog.jpg" alt="Hund beim Trickdog-Training" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-trickdog.jpg" width="1080" height="1080" alt="Hund beim Trickdog-Training" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Trickdog</span></div>
       </div>
@@ -921,7 +942,7 @@
     </div>
 
     <div class="offer-card highlight" data-cat="problem">
-      <div class="offer-img"><img src="../assets/service-einzeltraining.jpg" alt="Einzeltraining mit Julia Doubrawa und Hund" loading="lazy">
+      <div class="offer-img"><img src="../assets/service-einzeltraining.jpg" width="1080" height="1080" alt="Einzeltraining mit Julia Doubrawa und Hund" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Einzeltraining</span></div>
       </div>
@@ -941,7 +962,7 @@
     </div>
 
     <div class="offer-card highlight" data-cat="problem">
-      <div class="offer-img"><img src="../assets/offer-intensivcoaching.jpg" alt="Intensivcoaching für Hunde mit Problemverhalten" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-intensivcoaching.jpg" width="1080" height="1350" alt="Intensivcoaching für Hunde mit Problemverhalten" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Intensivcoaching</span></div>
       </div>

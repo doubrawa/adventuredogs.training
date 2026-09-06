@@ -68,3 +68,15 @@
   font-display: swap;
   src: url('fonts/playfair-700-italic.woff2') format('woff2');
 }
+/* 900 kursiv wird auf jeder Seite verlangt: das Akzentwort in den Hero-Zeilen
+   (.hero-slogan em, h1 em) und die Initiale der Artikel
+   (article .lede-paragraph::first-letter). Ohne diesen Schnitt griff der Browser
+   auf 700 kursiv zurueck — ohne synthetische Fettung, das Wort stand also zwei
+   Gewichtsstufen leichter neben dem Rest der Zeile. */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url('fonts/playfair-900-italic.woff2') format('woff2');
+}

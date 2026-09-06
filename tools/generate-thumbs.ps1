@@ -42,8 +42,6 @@ $encoderParams.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter(
 $assetsDir = (Resolve-Path $AssetsDir -ErrorAction Stop).Path
 $builtCount = 0
 $skipCount = 0
-$totalBefore = 0
-$totalAfter = 0
 
 foreach ($t in $thumbs) {
     $srcPath = Join-Path $assetsDir $t.source
@@ -60,7 +58,6 @@ foreach ($t in $thumbs) {
         $dstTime = (Get-Item $dstPath).LastWriteTime
         if ($dstTime -ge $srcTime) {
             $skipCount++
-            $totalAfter += (Get-Item $dstPath).Length
             continue
         }
     }
@@ -95,8 +92,6 @@ foreach ($t in $thumbs) {
 
         $srcSize = (Get-Item $srcPath).Length
         $dstSize = (Get-Item $dstPath).Length
-        $totalBefore += $srcSize
-        $totalAfter += $dstSize
         $builtCount++
         Write-Host ("  OK   thumb-{0}.jpg : {1}KB ({2}x{3}) from {4} ({5}KB)" -f `
             $t.slug, [int]($dstSize/1024), $newW, $newH, $t.source, [int]($srcSize/1024))

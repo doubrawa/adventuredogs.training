@@ -411,10 +411,15 @@
     line-height: 0.86;
     padding: 0.06em 0.1em 0 0;
   }
+  /* Aufrecht, nicht kursiv: der grosse kursive Playfair-Satz gehoert Julias
+     Versprechen in #julia ("Dein Leben mit Hund kann schoener werden, als du es
+     dir vorgestellt hast."). Dieser Schlusssatz sagt fast dasselbe und stand in
+     derselben Schrift, demselben Schnitt, derselben Farbe und bis auf 2px in
+     derselben Groesse — zwei kursive Playfair-Bloecke auf einer Seite nehmen dem
+     Versprechen die Wirkung (siehe CLAUDE.md, "Playfair-Kursiv ist reserviert"). */
   .intro-close {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
-    font-style: italic;
     font-size: clamp(21px, 2.2vw, 32px);
     line-height: 1.42;
     color: var(--blue);
@@ -423,8 +428,13 @@
     margin: 58px auto 0;
     text-wrap: pretty;
   }
+  /* Die beiden Queries muessen sich luecken- UND ueberschneidungsfrei ergaenzen:
+     bei exakt 1500px trafen "min-width: 1500px" und "max-width: 1500px" beide zu,
+     dann verlangten die erzwungenen Umbrueche drei Spalten in einem zweispaltigen
+     Raster und der dritte Absatz landete ausserhalb des Kastens (570px Ueberlauf,
+     von overflow-x: hidden abgeschnitten). Darum unten 1499.98px. */
   @media (min-width: 1500px) { .intro-cols p:not(:last-child) { break-after: column; } }
-  @media (max-width: 1500px) { .intro-cols { column-count: 2; } }
+  @media (max-width: 1499.98px) { .intro-cols { column-count: 2; } }
   @media (max-width: 900px) {
     .intro-cols { column-count: 1; }
     .intro-cols p { max-width: 620px; }
@@ -793,14 +803,14 @@
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="/">
-    <img src="assets/logo.svg" alt="Adventure Dogs Logo">
+    <img src="assets/logo.svg" width="46" height="46" alt="Adventure Dogs Logo">
     <span class="nav-logo-text">Adventure Dogs</span>
   </a>
   <ul class="nav-links">
     <li><a href="ueber-mich/">Über mich</a></li>
     <li><a href="kontakt/">Kontakt</a></li>
     <li><a href="alltagstipps/">Alltagstipps</a></li>
-    <li><a href="https://officedogs.training/" class="nav-od">Office Dogs</a></li>
+    <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
@@ -813,7 +823,7 @@
   <a href="ueber-mich/">Über mich</a>
   <a href="kontakt/">Kontakt</a>
   <a href="alltagstipps/">Alltagstipps</a>
-  <a href="https://officedogs.training/" class="nav-od-mobile">Office Dogs</a>
+  <a href="https://officedogs.training/">Office Dogs</a>
   <a href="angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 

@@ -23,15 +23,20 @@ param(
 # pure ASCII so PowerShell 5.1 (which parses .ps1 as CP1252 unless
 # the file has a UTF-8 BOM) doesn''t mojibake them. Browsers and screen
 # readers decode the entities transparently.
+#
+# w/h sind die echten Masse der Thumbs (Breite immer 800, siehe
+# generate-thumbs.ps1; die Hoehe folgt dem Seitenverhaeltnis des Heros). Sie
+# gehen als width/height ins Markup, damit der Browser den Platz reserviert,
+# bevor das Bild da ist. Neuer Slug: Hoehe aus dem erzeugten Thumb ablesen.
 $topics = @(
-    @{ slug='welpenzeit';         thumb='thumb-welpenzeit.jpg';         alt='Welpe schl&auml;ft in einem Kissen' }
-    @{ slug='silvester';          thumb='thumb-silvester.jpg';          alt='Ruhige Stimmung am Silvesterabend' }
-    @{ slug='urlaub';             thumb='thumb-urlaub.jpg';             alt='Mit Hund auf Reisen' }
-    @{ slug='winter';             thumb='thumb-winter.jpg';             alt='Hund im verschneiten Wald' }
-    @{ slug='alleinbleiben';      thumb='thumb-alleinbleiben.jpg';      alt='Beagle schaut allein aus dem Fenster' }
-    @{ slug='tierphysiotherapie'; thumb='thumb-tierphysiotherapie.jpg'; alt='Hund auf Balance-Kissen in der Physio' }
-    @{ slug='ernaehrung';         thumb='thumb-ernaehrung.jpg';         alt='Labrador mit Futternapf' }
-    @{ slug='hund-entlaufen';     thumb='thumb-hund-entlaufen.jpg';     alt='Junger Hund sitzt allein auf Bahngleisen' }
+    @{ slug='welpenzeit';         thumb='thumb-welpenzeit.jpg';         w=800; h=800; alt='Welpe schl&auml;ft in einem Kissen' }
+    @{ slug='silvester';          thumb='thumb-silvester.jpg';          w=800; h=450; alt='Ruhige Stimmung am Silvesterabend' }
+    @{ slug='urlaub';             thumb='thumb-urlaub.jpg';             w=800; h=450; alt='Mit Hund auf Reisen' }
+    @{ slug='winter';             thumb='thumb-winter.jpg';             w=800; h=534; alt='Hund im verschneiten Wald' }
+    @{ slug='alleinbleiben';      thumb='thumb-alleinbleiben.jpg';      w=800; h=667; alt='Beagle schaut allein aus dem Fenster' }
+    @{ slug='tierphysiotherapie'; thumb='thumb-tierphysiotherapie.jpg'; w=800; h=358; alt='Hund auf Balance-Kissen in der Physio' }
+    @{ slug='ernaehrung';         thumb='thumb-ernaehrung.jpg';         w=800; h=625; alt='Labrador mit Futternapf' }
+    @{ slug='hund-entlaufen';     thumb='thumb-hund-entlaufen.jpg';     w=800; h=534; alt='Junger Hund sitzt allein auf Bahngleisen' }
 )
 
 $rxOpt = [System.Text.RegularExpressions.RegexOptions]::Singleline
@@ -59,7 +64,7 @@ function Replace-HubCards($file) {
         # Surgical replace: keep everything up through <span class="card-num">..</span>
         # then swap the <svg class="art card-img" ...> ... </svg> for an <img>.
         $pattern = "(<a class=""card"" href=""$href"">.*?<span class=""card-num"">[^<]*</span>\s*)<svg class=""art card-img""[^>]*>.*?</svg>"
-        $repl    = "`$1<img class=""card-img"" src=""../assets/$($t.thumb)"" alt=""$($t.alt)"" loading=""$loading"">"
+        $repl    = "`$1<img class=""card-img"" src=""../assets/$($t.thumb)"" width=""$($t.w)"" height=""$($t.h)"" alt=""$($t.alt)"" loading=""$loading"">"
         $content = [regex]::Replace($content, $pattern, $repl, $rxOpt)
     }
 
@@ -91,7 +96,7 @@ function Replace-MoreCards($file) {
         if ([regex]::IsMatch($content, $done, $rxOpt)) { continue }
 
         $pattern = "(<a class=""more-card"" href=""$hrefRx"">\s*<div class=""more-card-img"">\s*)<svg [^>]*>.*?</svg>"
-        $repl    = "`$1<img src=""../../assets/$($t.thumb)"" alt=""$($t.alt)"" loading=""lazy"">"
+        $repl    = "`$1<img src=""../../assets/$($t.thumb)"" width=""$($t.w)"" height=""$($t.h)"" alt=""$($t.alt)"" loading=""lazy"">"
         $content = [regex]::Replace($content, $pattern, $repl, $rxOpt)
     }
 

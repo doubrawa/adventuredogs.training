@@ -5,6 +5,10 @@ Thumbs.db
 *.swo
 .vscode/
 .idea/
+# Lokale Claude-Code-Einstellungen (launch.json, settings.local.json …) —
+# Werkzeugkram, nicht Teil der Seite. Ohne diese Zeile nimmt das im README
+# beschriebene `git add -A` den Ordner beim naechsten Import mit.
+.claude/
 
 # Logs
 *.log

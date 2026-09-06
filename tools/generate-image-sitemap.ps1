@@ -55,7 +55,8 @@ foreach ($u in $urls) {
     foreach ($m in $srcMatches) {
         $name = $m.Groups[1].Value
         # Logo + favicons ausblenden — sind nicht primärer Bildkontent
-        if ($name -match '^logo\.' -or $name -eq 'logo.png' -or $name -eq 'logo.svg') { continue }
+        # ('^logo\.' deckt logo.png und logo.svg bereits ab)
+        if ($name -match '^logo\.') { continue }
         $assets[$name] = $true
     }
     $urlMatches = [regex]::Matches($html, "url\([`"']?[^)]*assets/([^)`"']+)[`"']?\)")
