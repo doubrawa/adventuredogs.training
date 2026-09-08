@@ -75,16 +75,19 @@ foreach ($u in $urls) {
     $srcMatches = [regex]::Matches($html, 'src="[^"]*assets/([^"]+)"')
     foreach ($m in $srcMatches) {
         $name = $m.Groups[1].Value
-        # Logo + favicons ausblenden — sind nicht primärer Bildkontent
-        # ('^logo\.' deckt logo.png und logo.svg bereits ab)
-        if ($name -match '^logo\.') { continue }
+        # Logo, Favicons und Apple-Touch-Icon ausblenden — sind nicht primärer Bildkontent
+        # Das Muster hiess bis zum 08.09.2026 '^logo\.' und deckte damit nur
+        # logo.png und logo.svg ab. Seit das Nav-Logo logo-144.webp heisst,
+        # rutschte es in die Bild-Sitemap - Bedienelemente gehoeren dort aber
+        # nicht hin, die Bildersuche will Inhaltsbilder.
+        if ($name -match '^(logo|favicon|apple-touch)') { continue }
         $assets[$name] = $true
     }
     $urlMatches = [regex]::Matches($html, "url\([`"']?[^)]*assets/([^)`"']+)[`"']?\)")
     foreach ($m in $urlMatches) {
         $name = $m.Groups[1].Value
         if ($name -match '\.css$' -or $name -match '\.woff') { continue }
-        if ($name -match '^logo\.') { continue }
+        if ($name -match '^(logo|favicon|apple-touch)') { continue }
         $assets[$name] = $true
     }
 

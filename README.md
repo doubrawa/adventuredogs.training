@@ -51,7 +51,10 @@ Vergleichen und keine Skripte, die einen Export ins Repo überführen.
 ├── assets/
 │   ├── *.webp               alles, was im Browser gerendert wird
 │   ├── hero-*.jpg           dieselben Heroes als JPEG — nur für og:image
-│   ├── logo.svg / logo.png  Site-Logo
+│   ├── logo-144.webp        Nav-Logo (46 px bei bis zu 3× Pixeldichte)
+│   ├── favicon-32/64.png    Tab-Icon, apple-touch-icon.png fürs Homescreen
+│   ├── logo.png             360 px — publisher.logo im JSON-LD, Druckvorlage
+│   ├── logo.svg             Vektorvorlage, wird nicht ausgeliefert
 │   ├── fonts.css            @font-face-Deklarationen (selbst gehostet)
 │   └── fonts/*.woff2        DM Sans + Playfair Display, drei variable Fonts
 │
@@ -134,6 +137,14 @@ kann jeder Browser seit Safari 14 (2020).
 Ein neues Bild kommt also als JPEG nach `assets/`, wird mit `resize-assets.ps1`
 auf Maß gebracht und dann nach WebP gewandelt; im HTML steht die `.webp`, im
 `og:image` die `.jpg`. `check-site.py` merkt es, wenn eins von beidem fehlt.
+
+**Das Logo hat dieselbe Trennung.** Bis zum 08.09.2026 diente `logo.svg` als
+Nav-Logo *und* Favicon — 137 KB Vektorgrafik mit 327 Pfaden für eine Darstellung
+bei 46 px, mehr Gewicht als das Hero-Bild. Größer als 180 px wird das Logo
+nirgends gezeigt, also übernehmen das jetzt `logo-144.webp` (13 KB) und die
+PNG-Favicons; zusammen sind es **13 KB statt 137**. Die Vektorvorlage bleibt
+liegen, damit man daraus jede Größe neu rastern kann — `check-site.py` weiß
+über sie Bescheid und mahnt sie nicht als verwaist an.
 
 ### `resize-assets.ps1` (PowerShell)
 Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst

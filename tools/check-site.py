@@ -33,6 +33,15 @@ IGNORIERT = {'.git', 'tools', 'assets', 'willkommensmappe', 'available_images'}
 # Seiten, die absichtlich in keiner Sitemap stehen.
 AUSNAHMEN = {'404.html', 'gebucht/index.html'}
 
+# Dateien in assets/, auf die bewusst keine Seite zeigt.
+#
+# logo.svg ist die Vektorvorlage der Bildmarke. Bis zum 08.09.2026 wurde sie
+# als Nav-Logo und als Favicon ausgeliefert - 137 KB fuer eine Darstellung bei
+# hoechstens 46 px. Seither kommen dafuer logo-144.webp und die PNG-Favicons
+# zum Einsatz. Die Vorlage bleibt liegen, weil man aus ihr jede Groesse neu
+# rastern kann; ausgeliefert wird sie nicht mehr.
+VORLAGEN = {'logo.svg'}
+
 # Was im <head> jeder gelisteten Seite stehen muss.
 PFLICHT_TAGS = [
     ('title',       r'<title>[^<]{10,}</title>'),
@@ -309,7 +318,7 @@ def pruefe_bilder():
 
     verwaist = sorted(n for n in os.listdir(ordner)
                       if os.path.isfile(os.path.join(ordner, n))
-                      and n not in irgendwo)
+                      and n not in irgendwo and n not in VORLAGEN)
     for name in verwaist:
         melde_warnung('Bilder', '%s wird von keiner Seite referenziert' % name)
 
