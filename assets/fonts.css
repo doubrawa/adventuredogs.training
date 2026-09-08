@@ -1,82 +1,42 @@
 /* Lokale Schriftarten – keine Übertragung an externe Anbieter.
    Die woff2-Dateien liegen unter assets/fonts/ und werden vom eigenen Server ausgeliefert.
-   Quelle der Schriften: google-webfonts-helper (gwfh.mranftl.com) – Apache/SIL OFL Lizenz. */
+   Quelle der Schriften: Google Fonts (Apache 2.0 / SIL OFL), geholt von tools/download-fonts.sh.
 
-/* DM Sans 300 / 400 / 500 / 600 – normal */
+   Beide Familien kommen als VARIABLE FONTS: eine Datei deckt die ganze
+   Gewichtsachse ab. Deshalb steht hier je Familie und Stil genau ein
+   @font-face mit einem Gewichtsbereich statt eines Blocks je Schnitt.
+
+   Vorher lagen zehn Dateien unter zehn Namen im Ordner — dieselben drei
+   Dateien, siebenmal doppelt. Der Browser lud jede einzeln: 370 KB, von
+   denen 259 KB reine Wiederholung waren. Wer hier wieder je Schnitt eine
+   Datei einträgt, holt sich das zurück. */
+
+/* DM Sans – Fließtext, Gewichte 300 bis 600 */
 @font-face {
   font-family: 'DM Sans';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 300 600;
   font-display: swap;
-  src: url('fonts/dm-sans-300.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('fonts/dm-sans-400.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('fonts/dm-sans-500.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('fonts/dm-sans-600.woff2') format('woff2');
+  src: url('fonts/dm-sans.woff2') format('woff2-variations'),
+       url('fonts/dm-sans.woff2') format('woff2');
 }
 
-/* Playfair Display 600 / 700 / 900 – normal & italic */
+/* Playfair Display – Überschriften, Gewichte 600 bis 900 */
 @font-face {
   font-family: 'Playfair Display';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 600 900;
   font-display: swap;
-  src: url('fonts/playfair-600.woff2') format('woff2');
+  src: url('fonts/playfair.woff2') format('woff2-variations'),
+       url('fonts/playfair.woff2') format('woff2');
 }
-@font-face {
-  font-family: 'Playfair Display';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('fonts/playfair-700.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Playfair Display';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('fonts/playfair-900.woff2') format('woff2');
-}
+
+/* Playfair Display kursiv – Julias Versprechen in der #julia-Sektion */
 @font-face {
   font-family: 'Playfair Display';
   font-style: italic;
-  font-weight: 600;
+  font-weight: 600 900;
   font-display: swap;
-  src: url('fonts/playfair-600-italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Playfair Display';
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
-  src: url('fonts/playfair-700-italic.woff2') format('woff2');
-}
-/* 900 kursiv wird auf jeder Seite verlangt: das Akzentwort in den Hero-Zeilen
-   (.hero-slogan em, h1 em) und die Initiale der Artikel
-   (article .lede-paragraph::first-letter). Ohne diesen Schnitt griff der Browser
-   auf 700 kursiv zurueck — ohne synthetische Fettung, das Wort stand also zwei
-   Gewichtsstufen leichter neben dem Rest der Zeile. */
-@font-face {
-  font-family: 'Playfair Display';
-  font-style: italic;
-  font-weight: 900;
-  font-display: swap;
-  src: url('fonts/playfair-900-italic.woff2') format('woff2');
+  src: url('fonts/playfair-italic.woff2') format('woff2-variations'),
+       url('fonts/playfair-italic.woff2') format('woff2');
 }

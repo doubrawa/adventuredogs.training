@@ -13,7 +13,7 @@
 
 [CmdletBinding()]
 param(
-    [string]$AssetsDir = "$PSScriptRoot\..\assets",
+    [string]$AssetsDir,
     [int]$MaxWidth = 800,
     [int]$Quality = 80,
     [switch]$Force
@@ -39,6 +39,14 @@ $encoderParams = New-Object System.Drawing.Imaging.EncoderParameters(1)
 $encoderParams.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter(
     [System.Drawing.Imaging.Encoder]::Quality, [long]$Quality)
 
+# ACHTUNG, in PowerShell 5.1 nachgemessen: sobald [CmdletBinding()] gesetzt
+# ist, ist $PSScriptRoot in den Vorgabewerten des param()-Blocks LEER. Der
+# Vorgabewert fiel dadurch auf einen Pfad ohne Laufwerk zurueck und loeste
+# zum Laufwerksstamm auf (C:\assets statt <repo>\assets); das Skript brach mit
+# "Pfad kann nicht gefunden werden" ab, sobald man es ohne expliziten Pfad
+# aufrief. Deshalb steht der Vorgabewert jetzt hier im Rumpf, wo
+# $PSScriptRoot gefuellt ist.
+if (-not $AssetsDir) { $AssetsDir = Join-Path $PSScriptRoot '..\assets' }
 $assetsDir = (Resolve-Path $AssetsDir -ErrorAction Stop).Path
 $builtCount = 0
 $skipCount = 0

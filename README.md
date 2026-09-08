@@ -53,9 +53,11 @@ Vergleichen und keine Skripte, die einen Export ins Repo überführen.
 │   ├── icon-*.png           12 Filter-Icons (PNG, light + white-Variante)
 │   ├── logo.png             Site-Logo
 │   ├── fonts.css            @font-face-Deklarationen (selbst gehostet)
-│   └── fonts/*.woff2        DM Sans + Playfair Display, 10 Schnitte, latin subset
+│   └── fonts/*.woff2        DM Sans + Playfair Display, drei variable Fonts
 │
-├── tools/                   Hilfsskripte (siehe unten) — kein Build, alle optional
+├── tools/                   Hilfsskripte (siehe unten)
+│   ├── pages.tsv            die Seitenliste — einzige Quelle für beide Sitemaps
+│   └── hooks/pre-commit     erzeugt die Sitemaps neu und prüft die Seite
 │
 ├── CNAME                    "adventuredogs.training" — von GitHub auto-verwaltet
 ├── .nojekyll                Schaltet den Jekyll-Build aus (wir liefern fertiges HTML)
@@ -73,14 +75,38 @@ ohne es zu veröffentlichen. Was nicht online gehört, gehört in `.gitignore`.
 
 ## Werkzeuge (in `tools/`)
 
-Keins davon läuft automatisch. Alle sind idempotent und werden bei Bedarf von Hand
-aufgerufen.
+Alle sind idempotent. Die ersten drei ruft der `pre-commit`-Hook selbst auf, der Rest
+wird bei Bedarf von Hand gestartet.
+
+### `pages.tsv` — die Seitenliste
+Keine Skriptdatei, sondern **die einzige Quelle**, welche Seiten es gibt: URL, Datei,
+`changefreq`, Priorität, woher `lastmod` kommt, und ob die Seite in die Bild-Sitemap
+gehört. `generate-sitemap.sh`, `generate-image-sitemap.ps1` und `check-site.py` lesen
+alle daraus. **Eine neue Seite wird hier eingetragen** — sonst fehlt sie in den
+Sitemaps, und `check-site.py` sagt genau das.
+
+### `check-site.py`
+Prüft, was sonst niemand prüft, und endet bei Fehlern mit Exit 1:
+
+| Prüfung | worauf |
+|---|---|
+| Seitenliste | deckt sich `pages.tsv` mit den HTML-Dateien auf der Platte? |
+| SEO | hat jede Seite `title`, `description`, `canonical`, `og:title`, `og:image`, `viewport` — und zeigt das canonical auf die eigene URL? |
+| Verweise | lösen alle internen `href`/`src` auf existierende Dateien auf? |
+| Sitemaps | wohlgeformtes XML, deckungsgleich mit `pages.tsv`, keine toten Bild-URLs |
+| Bilder | nichts breiter als 2400 px, nichts schwerer als 700 KB |
+| Seitengewicht | Summe aus HTML, Schriften und allen referenzierten Bildern je Seite |
+
+```bash
+py tools/check-site.py
+```
 
 ### `generate-sitemap.sh`
-Schreibt `sitemap.xml` neu. `lastmod` kommt aus dem letzten Commit der jeweiligen
-Datei; hat sich eine Datei seit `HEAD` geändert, zählt das heutige Datum — das Skript
-kann also **vor** dem Commit laufen. Artikel-Detailseiten behalten bewusst ihr
-Erstelldatum, damit spätere Korrekturen es nicht verschieben.
+Schreibt `sitemap.xml` aus `pages.tsv`. `lastmod` kommt aus dem letzten Commit der
+jeweiligen Datei; hat sich eine Datei seit `HEAD` geändert, zählt das heutige Datum —
+das Skript kann also **vor** dem Commit laufen. Artikel-Detailseiten behalten bewusst
+ihr Erstelldatum (Spalte `lastmod = anlage`), damit spätere Korrekturen es nicht
+verschieben.
 
 ```bash
 bash tools/generate-sitemap.sh
@@ -88,7 +114,7 @@ bash tools/generate-sitemap.sh
 
 ### `generate-image-sitemap.ps1` (PowerShell)
 Schreibt `sitemap-images.xml` neu — alle eindeutigen `/assets/`-Bilder je Seite,
-für die Google-Bildersuche.
+für die Google-Bildersuche. Nimmt die Seiten mit `bilder = ja` aus `pages.tsv`.
 
 ### `resize-assets.ps1` (PowerShell)
 Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst
@@ -113,14 +139,39 @@ Holt die WOFF2-Dateien von Google Fonts nach `assets/fonts/`. Nötig für
 DSGVO-konformes Self-Hosting (LG München 2022) — die Seiten binden nie direkt bei
 Google ein.
 
+Beide Familien kommen als **variable Fonts**: eine Datei deckt die ganze
+Gewichtsachse ab. Deshalb liegen dort nur drei Dateien statt zehn. Bis zum
+08.09.2026 lagen dieselben drei Dateien unter zehn Namen im Ordner, und der Browser
+lud jede einzeln — 370 KB, von denen 259 KB reine Wiederholung waren. Das Skript
+prüft die Annahme bei jedem Lauf: fällt eine Familie nicht mehr auf genau eine
+Prüfsumme zusammen, bricht es ab, statt still ein Gewicht für alle auszuliefern.
+
 ---
 
 ## Änderungen veröffentlichen
 
-1. Dateien im Repo bearbeiten.
-2. Betrifft es Seiteninhalte: `bash tools/generate-sitemap.sh` laufen lassen.
-3. `git add -A && git commit && git push`
-4. GitHub Pages veröffentlicht in ein bis drei Minuten.
+Einmalig je Arbeitskopie den Hook aktivieren — `.git/hooks` ist nicht versioniert,
+`tools/hooks` schon:
+
+```bash
+git config core.hooksPath tools/hooks
+```
+
+Danach:
+
+1. Dateien im Repo bearbeiten. Neue Seite? Dann in `tools/pages.tsv` eintragen.
+2. Neue oder ausgetauschte Bilder: `powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1`
+3. `git status` — schauen, was wirklich mitgeht.
+4. `git add <pfade>` (gezielt; `git add -A` nimmt auch mit, was nur zufällig im Baum liegt)
+5. `git commit` — der Hook erzeugt beide Sitemaps neu und lässt `check-site.py` laufen.
+   Bricht er ab, sagt er warum. Im Notfall: `git commit --no-verify`.
+6. `git push` — GitHub Pages veröffentlicht in ein bis drei Minuten.
+
+Ohne Hook (oder zur Kontrolle zwischendurch) sind es dieselben drei Aufrufe von Hand:
+
+```bash
+bash tools/generate-sitemap.sh && powershell -ExecutionPolicy Bypass -File tools/generate-image-sitemap.ps1 && py tools/check-site.py
+```
 
 Kommt etwas aus claude.ai/design dazu, wird der betreffende Ausschnitt von Hand
 übernommen — Farben aus den `:root`-Variablen, Schriften aus `assets/fonts.css`,

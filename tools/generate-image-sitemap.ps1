@@ -1,3 +1,8 @@
+# ACHTUNG: keine Sonderzeichen in Zeichenketten. Die .ps1-Dateien haben
+# kein BOM, PowerShell 5.1 liest sie als ANSI, und ein UTF-8-Geviertstrich
+# zerfaellt dabei in ein typografisches Anfuehrungszeichen, das das String-
+# Literal vorzeitig beendet. In Kommentaren ist es harmlos.
+#
 # Generate a separate image sitemap (sitemap-images.xml) that lists
 # all unique /assets/ image references per page. Google uses this for
 # Image Search indexing — separate from the regular URL sitemap so
@@ -11,30 +16,41 @@
 
 [CmdletBinding()]
 param(
-    [string]$RepoRoot = $PSScriptRoot + '\..',
+    [string]$RepoRoot,
     [string]$SiteBase = 'https://adventuredogs.training',
     [string]$OutFile  = $null
 )
 
+
+# ACHTUNG, in PowerShell 5.1 nachgemessen: sobald [CmdletBinding()] gesetzt
+# ist, ist $PSScriptRoot in den Vorgabewerten des param()-Blocks LEER. Der
+# Vorgabewert fiel dadurch auf einen Pfad ohne Laufwerk zurueck und loeste
+# zum Laufwerksstamm auf (C:\assets statt <repo>\assets); das Skript brach mit
+# "Pfad kann nicht gefunden werden" ab, sobald man es ohne expliziten Pfad
+# aufrief. Deshalb steht der Vorgabewert jetzt hier im Rumpf, wo
+# $PSScriptRoot gefuellt ist.
+if (-not $RepoRoot) { $RepoRoot = Join-Path $PSScriptRoot '..' }
 $RepoRoot = (Resolve-Path $RepoRoot -ErrorAction Stop).Path
 if (-not $OutFile) { $OutFile = Join-Path $RepoRoot 'sitemap-images.xml' }
 
-# URL -> relative HTML path mapping. Mirrors the URL list in sitemap.xml.
-$urls = @(
-    @{ url='/';                                  file='index.html' }
-    @{ url='/angebot/';                          file='angebot/index.html' }
-    @{ url='/ueber-mich/';                       file='ueber-mich/index.html' }
-    @{ url='/alltagstipps/';                     file='alltagstipps/index.html' }
-    @{ url='/alltagstipps/welpenzeit/';          file='alltagstipps/welpenzeit/index.html' }
-    @{ url='/alltagstipps/silvester/';           file='alltagstipps/silvester/index.html' }
-    @{ url='/alltagstipps/urlaub/';              file='alltagstipps/urlaub/index.html' }
-    @{ url='/alltagstipps/winter/';              file='alltagstipps/winter/index.html' }
-    @{ url='/alltagstipps/alleinbleiben/';       file='alltagstipps/alleinbleiben/index.html' }
-    @{ url='/alltagstipps/tierphysiotherapie/';  file='alltagstipps/tierphysiotherapie/index.html' }
-    @{ url='/alltagstipps/ernaehrung/';          file='alltagstipps/ernaehrung/index.html' }
-    @{ url='/alltagstipps/hund-entlaufen/';      file='alltagstipps/hund-entlaufen/index.html' }
-    @{ url='/kontakt/';                          file='kontakt/index.html' }
-)
+# Die Seitenliste kommt aus tools/pages.tsv — derselben Quelle, aus der auch
+# generate-sitemap.sh und check-site.sh lesen. Frueher stand sie hier ein
+# zweites Mal, von Hand gepflegt und in einer anderen Sprache; wer eine neue
+# Seite nur in einem der beiden Skripte eintrug, verlor sie stillschweigend
+# in der jeweils anderen Sitemap.
+$pagesFile = Join-Path $RepoRoot 'tools/pages.tsv'
+if (-not (Test-Path $pagesFile)) { throw "tools/pages.tsv fehlt - ohne die Seitenliste laeuft hier nichts." }
+
+$urls = @()
+foreach ($line in [System.IO.File]::ReadAllLines($pagesFile)) {
+    if ($line -match '^\s*#' -or $line -match '^\s*$') { continue }
+    $c = $line -split "`t"
+    if ($c.Count -lt 6) { throw "pages.tsv: Zeile hat $($c.Count) statt 6 Tab-Spalten: $line" }
+    # Spalte 6 sagt, ob die Seite in die Bild-Sitemap gehoert.
+    if ($c[5].Trim() -ne 'ja') { continue }
+    $urls += @{ url = $c[0]; file = $c[1] }
+}
+if ($urls.Count -eq 0) { throw "pages.tsv enthaelt keine Seite mit bilder=ja." }
 
 $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine('<?xml version="1.0" encoding="UTF-8"?>')
@@ -46,7 +62,12 @@ $pagesWithImages = 0
 
 foreach ($u in $urls) {
     $path = Join-Path $RepoRoot $u.file
-    if (-not (Test-Path $path)) { continue }
+    if (-not (Test-Path $path)) {
+        # Frueher: stilles `continue`. Eine umbenannte Seite fiel damit
+        # lautlos aus der Bild-Sitemap, waehrend die Schlusszeile weiter
+        # "N Seiten, M Bilder" meldete und gesund aussah.
+        throw "$($u.file) aus pages.tsv existiert nicht - sitemap-images.xml nicht angefasst."
+    }
     $html = [System.IO.File]::ReadAllText($path)
 
     # Sammle alle Asset-Refs auf dieser Seite
@@ -85,5 +106,5 @@ foreach ($u in $urls) {
 
 [System.IO.File]::WriteAllText($OutFile, $sb.ToString(), [System.Text.UTF8Encoding]::new($false))
 
-Write-Host ("Image sitemap: {0} images across {1} pages → {2}" -f `
+Write-Host ("Image sitemap: {0} images across {1} pages -> {2}" -f `
     $totalImages, $pagesWithImages, (Split-Path -Leaf $OutFile))

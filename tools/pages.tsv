@@ -1,0 +1,36 @@
+# Die Seitenliste der Website — einzige Quelle.
+#
+# Gelesen von tools/generate-sitemap.sh, tools/generate-image-sitemap.ps1 und
+# tools/check-site.sh. Frueher stand dieselbe Liste doppelt in den beiden
+# Generatoren, in zwei Sprachen; wer eine neue Seite nur an einer Stelle
+# eintrug, verlor sie stillschweigend in der anderen Sitemap.
+#
+# Spalten, durch TABS getrennt:
+#   url         Pfad auf der Website
+#   datei       Pfad im Repo
+#   changefreq  Angabe fuer sitemap.xml
+#   prioritaet  Angabe fuer sitemap.xml
+#   lastmod     git    = letztes Commit-Datum (Seiten, die sich real aendern)
+#               anlage = Datum des ersten Commits (fertige Artikel; spaetere
+#                        Korrekturen sollen das Datum NICHT hochbumpen)
+#   bilder      ja/nein — kommt die Seite in sitemap-images.xml vor?
+#
+# Nicht gelistet und das mit Absicht: 404.html und /gebucht/ (noindex).
+# Wer eine Seite hinzufuegt, traegt sie hier ein — check-site.sh vergleicht
+# diese Liste mit den index.html auf der Platte und meldet Abweichungen.
+#
+# url	datei	changefreq	prioritaet	lastmod	bilder
+/	index.html	monthly	1.0	git	ja
+/angebot/	angebot/index.html	monthly	0.9	git	ja
+/ueber-mich/	ueber-mich/index.html	monthly	0.8	git	ja
+/alltagstipps/	alltagstipps/index.html	monthly	0.8	git	ja
+/alltagstipps/welpenzeit/	alltagstipps/welpenzeit/index.html	monthly	0.7	anlage	ja
+/alltagstipps/silvester/	alltagstipps/silvester/index.html	monthly	0.7	anlage	ja
+/alltagstipps/urlaub/	alltagstipps/urlaub/index.html	monthly	0.7	anlage	ja
+/alltagstipps/winter/	alltagstipps/winter/index.html	monthly	0.7	anlage	ja
+/alltagstipps/alleinbleiben/	alltagstipps/alleinbleiben/index.html	monthly	0.7	anlage	ja
+/alltagstipps/tierphysiotherapie/	alltagstipps/tierphysiotherapie/index.html	monthly	0.7	anlage	ja
+/alltagstipps/ernaehrung/	alltagstipps/ernaehrung/index.html	monthly	0.7	anlage	ja
+/alltagstipps/hund-entlaufen/	alltagstipps/hund-entlaufen/index.html	monthly	0.7	anlage	ja
+/kontakt/	kontakt/index.html	monthly	0.7	git	ja
+/impressum/	impressum/index.html	yearly	0.3	git	nein

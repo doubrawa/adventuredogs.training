@@ -80,22 +80,54 @@ fi
 
 echo
 echo "Downloading..."
+# Google liefert beide Familien als VARIABLE FONTS: alle Gewichts-URLs einer
+# Familie zeigen auf dieselbe Datei. Frueher landeten sie hier unter zehn
+# Namen im Ordner — dieselben drei Dateien, siebenmal doppelt, und der
+# Browser lud jede einzeln (370 KB statt 111 KB).
+#
+# Deshalb wird pro Gruppe (dm-sans / playfair / playfair-italic) nur EINE
+# Datei behalten. Damit das ehrlich bleibt, laedt das Skript trotzdem alle
+# Schnitte und prueft, dass jede Gruppe wirklich auf eine einzige Pruefsumme
+# zusammenfaellt. Stellt Google je wieder auf statische Schnitte um, bricht
+# es hier ab — statt still ein Gewicht fuer alle auszuliefern.
+STAGE="$(mktemp -d)"
+trap 'rm -f "$MAPPING"; rm -rf "$STAGE"' EXIT
+
 while IFS=$'\t' read -r name url; do
     [ -z "$name" ] && continue
-    dst="$FONTS_DIR/$name"
-    tmp="$dst.part"
+    tmp="$STAGE/$name"
     # --fail statt stiller Erfolg: sonst landet eine HTML-Fehlerseite unveraendert
     # in der .woff2 und die Seite faellt im Browser auf Systemschriften zurueck.
-    # Erst in .part laden und pruefen, damit ein Fehlschlag die bestehende Datei
-    # nicht kaputtmacht.
     curl -sSL --fail --max-time 30 "$url" -o "$tmp"
     if [ "$(head -c 4 "$tmp")" != "wOF2" ]; then
-        rm -f "$tmp"
         echo "FEHLER: $name ist keine WOFF2-Datei (falsche Magic Number)."
         exit 1
     fi
-    mv "$tmp" "$dst"
-    echo "  $name ($(stat -c%s "$dst") bytes)"
 done < "$MAPPING"
+
+# Gruppe -> Dateimuster. Der Name links ist der, der in fonts.css steht.
+# Die Muster muessen disjunkt sein: "playfair-[0-9]*" wuerde auch
+# playfair-600-italic.woff2 fangen und die Gruppe unecht aufspalten.
+for gruppe in "dm-sans:dm-sans-[0-9][0-9][0-9].woff2" "playfair:playfair-[0-9][0-9][0-9].woff2" "playfair-italic:playfair-[0-9][0-9][0-9]-italic.woff2"; do
+    ziel="${gruppe%%:*}"
+    muster="${gruppe#*:}"
+    # shellcheck disable=SC2086
+    dateien=$(cd "$STAGE" && ls $muster 2>/dev/null || true)
+    [ -z "$dateien" ] && { echo "FEHLER: kein Treffer fuer $muster."; exit 1; }
+    summen=$(cd "$STAGE" && md5sum $dateien | awk '{print $1}' | sort -u)
+    anzahl=$(echo "$summen" | grep -c .)
+    if [ "$anzahl" -ne 1 ]; then
+        echo "FEHLER: $ziel zerfaellt in $anzahl verschiedene Dateien."
+        echo "        Google liefert offenbar keine variable Schrift mehr — dann"
+        echo "        braucht fonts.css wieder ein @font-face je Schnitt."
+        exit 1
+    fi
+    erste=$(echo "$dateien" | head -1)
+    mv "$STAGE/$erste" "$FONTS_DIR/$ziel.woff2"
+    echo "  $ziel.woff2 ($(stat -c%s "$FONTS_DIR/$ziel.woff2") bytes, deckt $(echo "$dateien" | grep -c .) Schnitte ab)"
+done
+
+# Altbestand aus der Zeit vor der Zusammenlegung wegraeumen.
+find "$FONTS_DIR" -name '*-[0-9][0-9][0-9]*.woff2' -delete
 
 echo "done."

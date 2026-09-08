@@ -1,0 +1,83 @@
+#!/bin/bash
+# Laeuft vor jedem Commit. Aktiviert mit:
+#
+#   git config core.hooksPath tools/hooks
+#
+# (einmalig je Arbeitskopie; .git/hooks ist nicht versioniert, tools/hooks
+# schon — deshalb dieser Umweg.)
+#
+# Warum es den Hook gibt: GitHub Pages veroeffentlicht jeden Push binnen ein
+# bis drei Minuten, und wegen .nojekyll ungefiltert. Zwischen "committet" und
+# "steht im Netz" liegt also nichts. Vorher hing jede Kontrolle daran, dass
+# jemand daran dachte — die Sitemap neu zu erzeugen, die SEO-Bloecke zu
+# setzen, kein Riesenbild einzuchecken. Das hier denkt daran.
+#
+# Umgehen im Notfall:  git commit --no-verify
+set -u
+
+WURZEL="$(git rev-parse --show-toplevel)"
+cd "$WURZEL" || exit 1
+
+echo "pre-commit: Website pruefen"
+
+# ── 1. Sitemaps neu erzeugen ──────────────────────────────────────────
+# Beide Generatoren sind idempotent. Aendert sich dabei etwas, war die
+# Sitemap veraltet — dann bricht der Hook ab, statt sie stillschweigend
+# ausserhalb des Commits liegen zu lassen.
+vorher_url=$(git hash-object sitemap.xml 2>/dev/null || echo -)
+vorher_bild=$(git hash-object sitemap-images.xml 2>/dev/null || echo -)
+
+bash tools/generate-sitemap.sh || {
+    echo "  ABBRUCH: generate-sitemap.sh ist gescheitert."
+    exit 1
+}
+
+# PowerShell gibt es nur auf Windows. Fehlt es, wird gewarnt statt blockiert:
+# die Bild-Sitemap ist wichtig, aber kein Grund, einen Commit auf einem
+# anderen System unmoeglich zu machen.
+if command -v powershell.exe >/dev/null 2>&1; then
+    powershell.exe -ExecutionPolicy Bypass -File tools/generate-image-sitemap.ps1 || {
+        echo "  ABBRUCH: generate-image-sitemap.ps1 ist gescheitert."
+        exit 1
+    }
+else
+    echo "  HINWEIS: kein PowerShell gefunden, sitemap-images.xml nicht neu erzeugt."
+fi
+
+nachher_url=$(git hash-object sitemap.xml 2>/dev/null || echo -)
+nachher_bild=$(git hash-object sitemap-images.xml 2>/dev/null || echo -)
+
+geaendert=""
+[ "$vorher_url" != "$nachher_url" ] && geaendert="$geaendert sitemap.xml"
+[ "$vorher_bild" != "$nachher_bild" ] && geaendert="$geaendert sitemap-images.xml"
+
+if [ -n "$geaendert" ]; then
+    echo
+    echo "  ABBRUCH: die Sitemap war nicht aktuell und wurde gerade neu erzeugt:"
+    echo "          $geaendert"
+    echo
+    echo "  Bitte mit aufnehmen und erneut committen:"
+    echo "          git add$geaendert"
+    exit 1
+fi
+
+# ── 2. Website pruefen ────────────────────────────────────────────────
+if command -v py >/dev/null 2>&1; then
+    PY=py
+elif command -v python3 >/dev/null 2>&1; then
+    PY=python3
+elif command -v python >/dev/null 2>&1; then
+    PY=python
+else
+    echo "  HINWEIS: kein Python gefunden, check-site.py uebersprungen."
+    exit 0
+fi
+
+"$PY" tools/check-site.py || {
+    echo
+    echo "  ABBRUCH: check-site.py meldet Fehler (siehe oben)."
+    echo "  Wenn es wirklich so committet werden soll: git commit --no-verify"
+    exit 1
+}
+
+echo "pre-commit: in Ordnung"

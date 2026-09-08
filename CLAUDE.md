@@ -65,11 +65,19 @@ inhaltlich dasselbe sagt.
 ## Nicht ungefragt committen oder pushen
 
 GitHub Pages veröffentlicht jeden Push innerhalb von ein bis drei Minuten live.
-Änderungen erst zeigen, dann auf Zuruf committen. Vor dem Commit mitziehen:
+Änderungen erst zeigen, dann auf Zuruf committen.
 
-- Bei Seiteninhalten `bash tools/generate-sitemap.sh` laufen lassen. Das Skript holt
-  `lastmod` aus git und erkennt noch nicht committete Änderungen selbst — `sitemap.xml`
-  also nicht von Hand anfassen.
+Den Rest erledigt der `pre-commit`-Hook (`git config core.hooksPath tools/hooks`):
+er erzeugt beide Sitemaps neu und lässt `tools/check-site.py` laufen — Seitenliste,
+SEO-Blöcke, interne Verweise, Bildmaße, Seitengewicht. Bricht er ab, ist etwas
+wirklich kaputt; `--no-verify` ist für Notfälle, nicht für Bequemlichkeit.
+
+Von Hand nur zwei Dinge:
+
+- **Neue Seite?** In `tools/pages.tsv` eintragen. Das ist die einzige Quelle für
+  beide Sitemaps; wer sie vergisst, wird vom Hook daran erinnert.
+- **Neue Bilder?** `resize-assets.ps1` laufen lassen. `sitemap.xml` dagegen nie von
+  Hand anfassen — sie wird erzeugt.
 
 Und weil `.nojekyll` gesetzt ist, liefert Pages das Repo ungefiltert aus: **alles auf
 `main` ist öffentlich erreichbar**, Punkt-Ordner eingeschlossen. Etwas committen und
