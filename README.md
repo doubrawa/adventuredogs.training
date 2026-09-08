@@ -49,9 +49,9 @@ Vergleichen und keine Skripte, die einen Export ins Repo überführen.
 ├── 404.html                 Fehlerseite
 │
 ├── assets/
-│   ├── *.jpg                Hero-Bilder, Offer-Card-Bilder, Portraits, Thumbs
-│   ├── icon-*.png           12 Filter-Icons (PNG, light + white-Variante)
-│   ├── logo.png             Site-Logo
+│   ├── *.webp               alles, was im Browser gerendert wird
+│   ├── hero-*.jpg           dieselben Heroes als JPEG — nur für og:image
+│   ├── logo.svg / logo.png  Site-Logo
 │   ├── fonts.css            @font-face-Deklarationen (selbst gehostet)
 │   └── fonts/*.woff2        DM Sans + Playfair Display, drei variable Fonts
 │
@@ -94,7 +94,7 @@ Prüft, was sonst niemand prüft, und endet bei Fehlern mit Exit 1:
 | SEO | hat jede Seite `title`, `description`, `canonical`, `og:title`, `og:image`, `viewport` — und zeigt das canonical auf die eigene URL? |
 | Verweise | lösen alle internen `href`/`src` auf existierende Dateien auf? |
 | Sitemaps | wohlgeformtes XML, deckungsgleich mit `pages.tsv`, keine toten Bild-URLs |
-| Bilder | nichts breiter als 2400 px, nichts schwerer als 700 KB |
+| Bilder | nichts breiter als 2400 px; nichts, das ein Besucher lädt, schwerer als 700 KB; keine Datei in `assets/`, auf die niemand zeigt |
 | Seitengewicht | Summe aus HTML, Schriften und allen referenzierten Bildern je Seite |
 
 ```bash
@@ -116,6 +116,25 @@ bash tools/generate-sitemap.sh
 Schreibt `sitemap-images.xml` neu — alle eindeutigen `/assets/`-Bilder je Seite,
 für die Google-Bildersuche. Nimmt die Seiten mit `bilder = ja` aus `pages.tsv`.
 
+### Bildformate: WebP für Besucher, JPEG für Crawler
+
+Seit dem 08.09.2026 ist **alles, was der Browser rendert, WebP** — `<img src>`,
+CSS-Hintergründe und Preloads. Das spart rund ein Drittel: 2,7 MB über alle Bilder,
+auf der Startseite 285 → 131 KB allein für den Hero.
+
+Die Heroes liegen zusätzlich als **JPEG** daneben, weil `og:image`, `twitter:image`
+und das `image`-Feld im JSON-LD darauf zeigen: Social-Crawler gehen mit WebP
+unzuverlässig um, und eine fehlende Vorschau beim Teilen wiegt schwerer als ein
+paar Kilobyte, die ohnehin kein Besucher lädt.
+
+Bewusst **kein `<picture>`-Fallback**: das würde jedes `<img>` in ein zusätzliches
+Element hüllen und CSS-Regeln brechen, die auf direkte Kindelemente zielen. WebP
+kann jeder Browser seit Safari 14 (2020).
+
+Ein neues Bild kommt also als JPEG nach `assets/`, wird mit `resize-assets.ps1`
+auf Maß gebracht und dann nach WebP gewandelt; im HTML steht die `.webp`, im
+`og:image` die `.jpg`. `check-site.py` merkt es, wenn eins von beidem fehlt.
+
 ### `resize-assets.ps1` (PowerShell)
 Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst
 **1600 px**, Qualität 82, EXIF gestrippt. Bereits passende Bilder bleiben unangetastet.
@@ -124,10 +143,14 @@ Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst
 powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1 -AssetsDir "C:/DATA/Claude/adventuredogs.training/assets"
 ```
 
-### `generate-thumbs.ps1` (PowerShell)
-Erzeugt `thumb-<slug>.jpg` in 800 px Breite aus den Alltagstipps-Heroes. Die Karten
+### `generate-thumbs.py`
+Erzeugt `thumb-<slug>.webp` in 800 px Breite aus den Alltagstipps-Heroes. Die Karten
 auf der Hub-Seite und die „Weiterlesen"-Karten rendern bei rund 400 px — der volle
-Hero wäre Verschwendung.
+Hero wäre Verschwendung. Baut nur neu, was älter ist als seine Quelle; `--force`
+erzwingt alles.
+
+Löste am 08.09.2026 `generate-thumbs.ps1` ab: System.Drawing, das die
+PowerShell-Fassung benutzte, kann kein WebP schreiben.
 
 ### `crop-hero.ps1` / `resize-png.ps1` (PowerShell)
 Einzelbild-Helfer. `crop-hero.ps1` beschneidet ein JPEG auf ein Seitenverhältnis und

@@ -110,13 +110,31 @@ def html_dateien():
     return sorted(gefunden)
 
 
+def webp_masse(kopf):
+    """(Breite, Hoehe) aus einem WebP-Kopf. Drei Varianten, drei Ablagen."""
+    art = kopf[12:16]
+    if art == b'VP8X':                       # erweitert: Leinwandgroesse, je 24 Bit, minus 1
+        b = int.from_bytes(kopf[24:27], 'little') + 1
+        h = int.from_bytes(kopf[27:30], 'little') + 1
+        return b, h
+    if art == b'VP8 ':                       # verlustbehaftet: je 14 Bit
+        b, h = struct.unpack('<HH', kopf[26:30])
+        return b & 0x3FFF, h & 0x3FFF
+    if art == b'VP8L':                       # verlustfrei: 14 Bit gepackt ab Bit 0
+        n = int.from_bytes(kopf[21:25], 'little')
+        return (n & 0x3FFF) + 1, ((n >> 14) & 0x3FFF) + 1
+    return None
+
+
 def bildmasse(pfad):
-    """(Breite, Hoehe) fuer JPEG und PNG, sonst None."""
+    """(Breite, Hoehe) fuer JPEG, PNG und WebP, sonst None."""
     try:
         with open(pfad, 'rb') as f:
             kopf = f.read(32)
             if kopf[:8] == b'\x89PNG\r\n\x1a\n':
                 return struct.unpack('>II', kopf[16:24])
+            if kopf[:4] == b'RIFF' and kopf[8:12] == b'WEBP':
+                return webp_masse(kopf)
             if kopf[:2] != b'\xff\xd8':
                 return None
             f.seek(2)
@@ -240,23 +258,60 @@ def pruefe_sitemaps(pages):
 
 
 # ---------------------------------------------------------------------- 5. Bilder
+def bildverwendung():
+    """Trennt die Assets danach, wer sie laedt.
+
+    Seit der WebP-Umstellung am 08.09.2026 gibt es zwei Sorten: die WebP-
+    Dateien, die im Browser gerendert werden, und die JPEG-Originale, die nur
+    noch als og:image im Quelltext stehen. Letztere holt kein Besucher - sie
+    werden einmal von einem Social-Crawler geholt, wenn jemand den Link teilt.
+    Die Gewichtsschwelle auf beide anzuwenden hiesse, ein 721-KB-Hero
+    anzumahnen, das niemand herunterlaedt.
+    """
+    gerendert, irgendwo = set(), set()
+    for rel in html_dateien():
+        text = open(os.path.join(WURZEL, rel.replace('/', os.sep)),
+                    encoding='utf-8', errors='ignore').read()
+        for muster in (r'<img[^>]*?src="[^"]*assets/([^"]+)"',
+                       r'url\(\s*[\'"]?[^)\'"]*assets/([^)\'"]+)',
+                       r'<link[^>]*?rel="preload"[^>]*?href="[^"]*assets/([^"]+)"'):
+            gerendert.update(m.group(1) for m in re.finditer(muster, text, re.I))
+        # Fuer die Verwaisungsfrage zaehlt jede Erwaehnung, egal in welcher
+        # Rolle: og:image, JSON-LD, <link rel="icon">, ein <a href> auf das
+        # PDF. Eng gefasste Muster wuerden hier zuverlaessig danebengreifen.
+        irgendwo.update(m.group(1) for m in re.finditer(r'assets/([A-Za-z0-9._%-]+)', text))
+    return gerendert, irgendwo
+
+
 def pruefe_bilder():
     ordner = os.path.join(WURZEL, 'assets')
+    gerendert, irgendwo = bildverwendung()
     for name in sorted(os.listdir(ordner)):
         pfad = os.path.join(ordner, name)
-        if not os.path.isfile(pfad) or not name.lower().endswith(('.jpg', '.jpeg', '.png')):
+        if not os.path.isfile(pfad) or not name.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
             continue
         masse = bildmasse(pfad)
         if not masse:
             continue
-        breite, hoehe = masse
+        breite, _hoehe = masse
         groesse = os.path.getsize(pfad)
+
+        # Die Breite gilt fuer alle: ein 4000-px-Bild ist auch als og:image
+        # falsch, und es zeigt, dass jemand ein Original ungeprueft abgelegt hat.
         if breite > BILD_MAX_BREITE:
             melde_fehler('Bilder', '%s ist %d px breit (max %d) - resize-assets.ps1 laufen lassen'
                          % (name, breite, BILD_MAX_BREITE))
-        if groesse / 1024 > BILD_MAX_KB:
+
+        # Das Gewicht nur da, wo es ein Besucher bezahlt.
+        if name in gerendert and groesse / 1024 > BILD_MAX_KB:
             melde_warnung('Bilder', '%s wiegt %d KB (Schwelle %d) - resize-assets.ps1 pruefen'
                           % (name, groesse / 1024, BILD_MAX_KB))
+
+    verwaist = sorted(n for n in os.listdir(ordner)
+                      if os.path.isfile(os.path.join(ordner, n))
+                      and n not in irgendwo)
+    for name in verwaist:
+        melde_warnung('Bilder', '%s wird von keiner Seite referenziert' % name)
 
 
 # --------------------------------------------------------------- 6. Seitengewicht
@@ -271,7 +326,7 @@ def pruefe_gewicht(pages):
         if not os.path.exists(pfad):
             continue
         text = open(pfad, encoding='utf-8', errors='ignore').read()
-        assets = set(re.findall(r'assets/([A-Za-z0-9._%-]+\.(?:jpg|jpeg|png|svg|gif))', text, re.I))
+        assets = set(re.findall(r'assets/([A-Za-z0-9._%-]+\.(?:jpg|jpeg|png|webp|svg|gif))', text, re.I))
         gewicht = os.path.getsize(pfad) + schriften
         for a in assets:
             ap = os.path.join(WURZEL, 'assets', a)
@@ -299,7 +354,7 @@ def main():
     print('  %d Seiten, %d interne Verweise, %d Bilder in assets/'
           % (len(pages), verweise,
              len([n for n in os.listdir(os.path.join(WURZEL, 'assets'))
-                  if n.lower().endswith(('.jpg', '.jpeg', '.png'))])))
+                  if n.lower().endswith(('.jpg', '.jpeg', '.png', '.webp'))])))
     if gewichte:
         kb, url, n = gewichte[0]
         print('  schwerste Seite: %s mit %d KB an Bildern insgesamt (%d Stueck);'

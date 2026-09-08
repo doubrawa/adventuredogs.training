@@ -76,8 +76,11 @@ Von Hand nur zwei Dinge:
 
 - **Neue Seite?** In `tools/pages.tsv` eintragen. Das ist die einzige Quelle für
   beide Sitemaps; wer sie vergisst, wird vom Hook daran erinnert.
-- **Neue Bilder?** `resize-assets.ps1` laufen lassen. `sitemap.xml` dagegen nie von
-  Hand anfassen — sie wird erzeugt.
+- **Neue Bilder?** `resize-assets.ps1` laufen lassen, dann nach WebP wandeln.
+  Im HTML steht die `.webp`, im `og:image` bleibt die `.jpg` — Social-Crawler
+  kommen mit WebP nicht zuverlässig zurecht. Kein `<picture>`: der zusätzliche
+  Wrapper bricht CSS-Regeln, die auf direkte Kindelemente zielen.
+  `sitemap.xml` dagegen nie von Hand anfassen — sie wird erzeugt.
 
 Und weil `.nojekyll` gesetzt ist, liefert Pages das Repo ungefiltert aus: **alles auf
 `main` ist öffentlich erreichbar**, Punkt-Ordner eingeschlossen. Etwas committen und
