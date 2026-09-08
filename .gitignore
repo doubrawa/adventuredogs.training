@@ -17,3 +17,11 @@ Thumbs.db
 
 # Stray scratch folders dropped here by tooling — not part of the site
 available_images/
+
+# Willkommensmappe Welpenkurs — Druckstueck fuer Kursteilnehmer, nicht Teil
+# der Website. Wegen .nojekyll liefert GitHub Pages dieses Repo ungefiltert
+# aus: alles auf main ist unter adventuredogs.training/<pfad> oeffentlich
+# erreichbar, Punkt-Ordner eingeschlossen (getestet an .design/ — liefert 200).
+# Die Mappe ist auf feste A4-Blaetter gebaut, hat kein viewport-Meta und keine
+# Fusszeile mit Impressum/Datenschutz. Sie bleibt deshalb bewusst lokal.
+willkommensmappe/
