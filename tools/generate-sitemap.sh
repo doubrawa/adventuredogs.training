@@ -1,8 +1,8 @@
 #!/bin/bash
 # Regenerates sitemap.xml with lastmod derived from each page's last
 # git commit. Keeps priorities/changefreq as a static policy table.
-# Runs at the end of post-import-fixes.sh — sitemap dates can never
-# go stale again.
+# Run it by hand before committing a content change, then commit the
+# refreshed sitemap along with it — see README.md.
 #
 # Note: /gebucht/ is deliberately absent (noindex page).
 set -e
@@ -44,15 +44,14 @@ TABLE="
         # Dynamische Seiten (Start, Angebot, Kontakt, Hub, …): lastmod =
         # letztes Commit-Datum, die ändern sich real über die Zeit.
         #
-        # Hat DIESER Lauf die Datei verändert, zählt allerdings das heutige
-        # Datum. Grund: die Sitemap entsteht MITTEN im Import, also bevor die
-        # soeben erzeugten Änderungen committet sind. `git log` liefert dann
+        # Ist die Datei gegenüber HEAD geändert, zählt allerdings das heutige
+        # Datum. Grund: das Skript läuft vor dem Commit, die Änderung steckt
+        # also noch nicht in der Historie. `git log` liefert dann
         # den Stand von vorher, und die Sitemap meldet für eine gerade
         # geänderte Seite hartnäckig das Datum der vorherigen Runde. Das fällt
         # nicht auf, solange Umbau und Commit auf denselben Tag fallen — läuft
         # der Import an einem anderen Tag als der letzte Commit, steht dort
-        # ein Datum zu früh. (Gleiche Korrektur wie in officedogs/_rederive.sh,
-        # Funktion lastmod_of.)
+        # ein Datum zu früh.
         #
         # `diff HEAD` deckt Arbeitsverzeichnis UND Index ab, egal ob schon
         # `git add` gelaufen ist. Im frisch initialisierten Repo (noch kein

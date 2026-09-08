@@ -11,22 +11,26 @@ adventuredogs.training/   ← Domain (eigentliche Webseite)
 
 ---
 
-## Wer ist wofür zuständig?
+## Wer pflegt was?
 
-Die Inhalte und das visuelle Design entstehen in **[claude.ai/design](https://claude.ai/design)** —
-einem KI-Design-Tool. Dort werden Texte, Layouts, Bilder bearbeitet. Bei jeder Änderung
-wird ein ZIP-Bundle exportiert, durch eine **Pipeline** in dieses Repo importiert, und
-die Live-Seite aktualisiert sich automatisch über GitHub Pages.
+**Alles in diesem Repo.** Texte, Layout, Bilder, SEO-Infrastruktur — die Dateien hier
+sind die Quelle, es gibt keine zweite Fassung woanders.
 
-Aufteilung der Verantwortlichkeiten:
+claude.ai/design wird nur noch **gelegentlich für einzelne Stücke** benutzt. Was daraus
+ins Repo übernommen wird, wird im Einzelfall ausdrücklich benannt und von Hand
+übertragen. Es gibt **keinen automatisierten Import mehr**, keinen Snapshot zum
+Vergleichen und keine Skripte, die einen Export ins Repo überführen.
+
+> Die frühere Pipeline (`.design/`-Snapshots, `_rederive.sh`, `post-import-fixes.sh`,
+> `sync-design-icons.sh`, `swap-card-svgs.ps1`) wurde am 08.09.2026 entfernt. Alles,
+> was sie nach jedem Import neu aufgesetzt hat, steht längst fest in den Seiten.
+> Wer nachsehen will, was sie getan hat: `git log -- tools/post-import-fixes.sh`.
 
 | Bereich | Wo gepflegt? |
 |---|---|
-| Texte, Layout, Bilder, Design | **claude.ai/design** |
-| Schriften (`assets/fonts.css` + Naming-Konvention) | claude.ai/design |
-| Filter-Logik, Mobile-Nav, etc. | claude.ai/design |
-| Pipeline-Scripts (URL-Substitution, Bild-Resize, Icons-Sync) | dieses Repo |
-| SEO-Infrastruktur (Meta, OpenGraph, JSON-LD, sitemap, robots.txt) | dieses Repo |
+| Texte, Layout, Bilder | dieses Repo, direkt in den HTML-Dateien |
+| Schriften (`assets/fonts.css` + `assets/fonts/`) | dieses Repo, selbst gehostet |
+| SEO (Meta, OpenGraph, JSON-LD, sitemap, robots.txt) | dieses Repo, direkt im `<head>` |
 | Hosting / Domain / SSL | GitHub Pages + IONOS (DNS) |
 
 ---
@@ -36,93 +40,91 @@ Aufteilung der Verantwortlichkeiten:
 ```
 .                            Repo-Root = Site-Root (was unter / serviert wird)
 ├── index.html               Landing Page
-├── kontakt/index.html       Kontakt + FAQ + Formspree-Formular
 ├── angebot/index.html       Angebot (mit Filter via ?cat=…)
-├── alltagstipps/index.html  Tipps zu Welpe / Silvester / Urlaub / etc.
-├── impressum/index.html     Impressum + Datenschutzerklärung
 ├── ueber-mich/index.html    Julias Geschichte + Fortbildungen
+├── alltagstipps/index.html  Hub, dazu 8 Artikel in Unterordnern
+├── kontakt/index.html       Kontakt + FAQ + Formspree-Formular
+├── impressum/index.html     Impressum + Datenschutzerklärung
+├── gebucht/index.html       Danke-Seite nach dem Formular (noindex, nicht in der Sitemap)
+├── 404.html                 Fehlerseite
 │
 ├── assets/
-│   ├── *.jpg                Hero-Bilder, Offer-Card-Bilder, Portraits
+│   ├── *.jpg                Hero-Bilder, Offer-Card-Bilder, Portraits, Thumbs
 │   ├── icon-*.png           12 Filter-Icons (PNG, light + white-Variante)
 │   ├── logo.png             Site-Logo
-│   ├── fonts.css            @font-face-Deklarationen (selbst-gehostet)
-│   └── fonts/*.woff2        DM Sans + Playfair Display, latin subset
+│   ├── fonts.css            @font-face-Deklarationen (selbst gehostet)
+│   └── fonts/*.woff2        DM Sans + Playfair Display, 10 Schnitte, latin subset
 │
-├── .design/                 Snapshots der jeweils letzten claude.ai/design-Exporte
-│   └── *.html               (Referenz für Diff-basierte Re-Imports — nicht serviert)
-│
-├── tools/                   Pipeline-Skripte (siehe unten)
+├── tools/                   Hilfsskripte (siehe unten) — kein Build, alle optional
 │
 ├── CNAME                    "adventuredogs.training" — von GitHub auto-verwaltet
-├── .nojekyll                Schaltet Jekyll-Build aus (wir haben fertige HTML-Files)
-├── robots.txt               Erlaubt Crawling, verweist auf Sitemap
-└── sitemap.xml              6 URLs für Google/Bing-Crawler
+├── .nojekyll                Schaltet den Jekyll-Build aus (wir liefern fertiges HTML)
+├── robots.txt               Erlaubt Crawling, verweist auf beide Sitemaps
+├── sitemap.xml              14 URLs für Google/Bing
+└── sitemap-images.xml       13 Einträge für die Google-Bildersuche
 ```
+
+**Achtung:** Wegen `.nojekyll` liefert GitHub Pages das Repo ungefiltert aus. Alles,
+was auf `main` landet, ist unter `adventuredogs.training/<pfad>` öffentlich erreichbar —
+auch Ordner, die mit einem Punkt beginnen. Es gibt keinen Weg, etwas zu committen,
+ohne es zu veröffentlichen. Was nicht online gehört, gehört in `.gitignore`.
 
 ---
 
-## Pipeline-Skripte (in `tools/`)
+## Werkzeuge (in `tools/`)
+
+Keins davon läuft automatisch. Alle sind idempotent und werden bei Bedarf von Hand
+aufgerufen.
+
+### `generate-sitemap.sh`
+Schreibt `sitemap.xml` neu. `lastmod` kommt aus dem letzten Commit der jeweiligen
+Datei; hat sich eine Datei seit `HEAD` geändert, zählt das heutige Datum — das Skript
+kann also **vor** dem Commit laufen. Artikel-Detailseiten behalten bewusst ihr
+Erstelldatum, damit spätere Korrekturen es nicht verschieben.
+
+```bash
+bash tools/generate-sitemap.sh
+```
+
+### `generate-image-sitemap.ps1` (PowerShell)
+Schreibt `sitemap-images.xml` neu — alle eindeutigen `/assets/`-Bilder je Seite,
+für die Google-Bildersuche.
 
 ### `resize-assets.ps1` (PowerShell)
-Schrumpft JPEG-Bilder auf web-vernünftige Maße. Hero-Bilder max **2400 px** Breite,
-andere max **1600 px**, JPEG-Qualität 82, EXIF gestrippt. **Idempotent** — bereits
-passende Bilder bleiben unangetastet.
+Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst
+**1600 px**, Qualität 82, EXIF gestrippt. Bereits passende Bilder bleiben unangetastet.
 
 ```bash
-powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1 \
-  -AssetsDir "C:/DATA/Claude/adventuredogs.training/assets"
+powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1 -AssetsDir "C:/DATA/Claude/adventuredogs.training/assets"
 ```
 
-### `sync-design-icons.sh`
-Synchronisiert die 12 Filter-Icon-PNGs aus einem Design-Export ins Repo.
-Diff-basiert — kopiert nur was sich geändert hat.
+### `generate-thumbs.ps1` (PowerShell)
+Erzeugt `thumb-<slug>.jpg` in 800 px Breite aus den Alltagstipps-Heroes. Die Karten
+auf der Hub-Seite und die „Weiterlesen"-Karten rendern bei rund 400 px — der volle
+Hero wäre Verschwendung.
 
-```bash
-bash tools/sync-design-icons.sh /path/to/design-extract-vN
-```
+### `crop-hero.ps1` / `resize-png.ps1` (PowerShell)
+Einzelbild-Helfer. `crop-hero.ps1` beschneidet ein JPEG auf ein Seitenverhältnis und
+skaliert es; `resize-png.ps1` verkleinert PNGs unter Erhalt des Alphakanals
+(Logos, Icons).
 
 ### `download-fonts.sh`
-Lädt Google-Fonts-WOFF2-Dateien (DM Sans + Playfair Display, latin subset) lokal
-nach `assets/fonts/`. Notwendig für GDPR-konformes Self-Hosting (LG München 2022).
-Naming-Konvention passt zu dem was claude.ai/design's `fonts.css` erwartet.
-
-```bash
-bash tools/download-fonts.sh
-```
-
-### `post-import-fixes.sh`
-**Wird nach jedem Re-Import automatisch aufgerufen.** Macht zwei Sachen die
-claude.ai/design selbst nicht erledigt:
-
-1. **Subpage-Pfad-Fix** für `<link href="assets/fonts.css">` — Subpages brauchen `../assets/fonts.css`
-2. **SEO/OG/Twitter/JSON-LD-Injection** in den `<head>` jeder Seite (per-page meta description, canonical, og:tags, LocalBusiness-JSON-LD auf der Landing)
-
-Bei Domain-Umzug: `SITE_BASE`-Variable im Skript ändern, einmal laufen lassen — alle
-absoluten URLs flippen automatisch.
-
-```bash
-bash tools/post-import-fixes.sh
-```
-
-### `localbusiness-schema.json.html`
-Das LocalBusiness-Schema-Snippet, das `post-import-fixes.sh` in die Landing einfügt.
-Einzelne Datei damit man's als JSON reviewen kann statt als escaped Shell-String.
+Holt die WOFF2-Dateien von Google Fonts nach `assets/fonts/`. Nötig für
+DSGVO-konformes Self-Hosting (LG München 2022) — die Seiten binden nie direkt bei
+Google ein.
 
 ---
 
-## Workflow: Re-Import nach Änderung in claude.ai/design
+## Änderungen veröffentlichen
 
-1. In claude.ai/design die Anpassungen machen
-2. Bundle als ZIP herunterladen → liegt typischerweise in `~/Downloads/Adventure Dogs Training (N).zip`
-3. ZIP entpacken in `C:/DATA/Claude/design-extract-vN/`
-4. Per-Version-Skript `_rederive.sh` ausführen (kopiert HTMLs, macht URL-Substitutionen, Resize, Icons-Sync, Post-Import-Fixes)
-5. `git add -A && git commit -m "Sync design vN — …" && git push`
-6. GitHub Pages baut automatisch (~1-3 Min) — fertig.
+1. Dateien im Repo bearbeiten.
+2. Betrifft es Seiteninhalte: `bash tools/generate-sitemap.sh` laufen lassen.
+3. `git add -A && git commit && git push`
+4. GitHub Pages veröffentlicht in ein bis drei Minuten.
 
-Die Per-Version-`_rederive.sh`-Skripte werden bei jedem neuen Re-Import durch
-Kopieren-und-Anpassen vom vorigen erstellt. Sie liegen außerhalb des Repos, in den
-`design-extract-vN/`-Ordnern.
+Kommt etwas aus claude.ai/design dazu, wird der betreffende Ausschnitt von Hand
+übernommen — Farben aus den `:root`-Variablen, Schriften aus `assets/fonts.css`,
+Klassen aus dem Bestand. Details dazu in [CLAUDE.md](CLAUDE.md).
 
 ---
 
@@ -144,14 +146,14 @@ die im Formspree-Dashboard hinterlegte E-Mail weitergeleitet.
 
 Free-Tier: 50 Einreichungen/Monat. Bot-Schutz via Honeypot-Field (`_gotcha`).
 
-Bei Form-ID-Wechsel: in `kontakt/index.html` (oder direkt in claude.ai/design) ändern.
+Bei Form-ID-Wechsel: in `kontakt/index.html` ändern.
 
 ---
 
 ## Was Search Engines erfahren
 
-- `robots.txt` erlaubt alles, verweist auf Sitemap.
-- `sitemap.xml` listet alle 6 Seiten mit Prioritäten.
+- `robots.txt` erlaubt alles, verweist auf beide Sitemaps.
+- `sitemap.xml` listet 14 URLs mit Prioritäten, `sitemap-images.xml` 13 Bildeinträge.
 - LocalBusiness-JSON-LD auf der Landing → Geo + Telefon + E-Mail + Service-Area
   (Krumbach, Landkreis Günzburg, Schwaben/Bayern).
 - Bei Inhalts-Updates: in Google Search Console URL-Inspection → „Indexierung
@@ -165,7 +167,8 @@ Bei Form-ID-Wechsel: in `kontakt/index.html` (oder direkt in claude.ai/design) �
 |---|---|
 | Seite zeigt alte WordPress-Inhalte | Lokaler DNS-Cache. `ipconfig /flushdns` oder Mobilfunk-Test. |
 | HTTPS-Fehler nach Domain-Änderung | Let's-Encrypt-Provisioning kann 5-30 Min dauern; in GitHub Pages Settings „Remove + Re-Add" der Custom Domain triggert frisch. |
-| Bilder oder Icons fehlen nach Re-Import | `_rederive.sh` evtl. Substitution für neuen Asset-Namen ergänzen. |
+| Bild fehlt oder ist riesig | Liegt es in `assets/`? Ist der Pfad relativ korrekt (Unterseiten brauchen `../assets/…`)? Danach `resize-assets.ps1`. |
+| Sitemap-Datum stimmt nicht | `bash tools/generate-sitemap.sh` — es leitet `lastmod` aus git ab. |
 | Form-Mails kommen nicht an | Erste Formspree-Verifizierungs-Mail evtl. übersehen → Formspree-Dashboard prüfen. |
 | Google indexiert eine Seite nicht | URL-Inspection in Search Console → „Live test" + „Indexierung beantragen". Kann 1-3 Tage dauern. |
 

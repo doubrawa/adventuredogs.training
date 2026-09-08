@@ -65,8 +65,25 @@ inhaltlich dasselbe sagt.
 ## Nicht ungefragt committen oder pushen
 
 GitHub Pages veröffentlicht jeden Push innerhalb von ein bis drei Minuten live.
-Änderungen erst zeigen, dann auf Zuruf committen. Beim Push mitziehen:
+Änderungen erst zeigen, dann auf Zuruf committen. Vor dem Commit mitziehen:
 
-- `<lastmod>` der betroffenen URL in `sitemap.xml` auf das Datum der Änderung
-- Direkt am Repo geänderte Inhalte in `.design/NACHZIEHEN.md` eintragen, sonst sind sie
-  beim nächsten Import aus claude.ai/design wieder weg (siehe `.design/README.md`)
+- Bei Seiteninhalten `bash tools/generate-sitemap.sh` laufen lassen. Das Skript holt
+  `lastmod` aus git und erkennt noch nicht committete Änderungen selbst — `sitemap.xml`
+  also nicht von Hand anfassen.
+
+Und weil `.nojekyll` gesetzt ist, liefert Pages das Repo ungefiltert aus: **alles auf
+`main` ist öffentlich erreichbar**, Punkt-Ordner eingeschlossen. Etwas committen und
+zugleich nicht veröffentlichen geht nicht — was nicht online gehört, gehört in
+`.gitignore` (so wie `willkommensmappe/`).
+
+## Es gibt keinen Design-Import mehr
+
+claude.ai/design ist nicht mehr die Quelle dieser Seite; die Dateien im Repo sind es.
+Das Tool wird nur noch gelegentlich für einzelne Stücke benutzt, und was daraus
+übernommen wird, sagt Jürgen ausdrücklich — übertragen wird von Hand, mit den
+Farben, Schriften und Klassen aus dem Bestand.
+
+Die alte Pipeline (`.design/`-Snapshots, `_rederive.sh`, `post-import-fixes.sh`,
+`sync-design-icons.sh`, `swap-card-svgs.ps1`, dazu `NACHZIEHEN.md`) ist am 08.09.2026
+entfernt worden. Keinen Diff gegen einen Export bauen, keine Snapshots pflegen, keine
+Fixes „nachziehen" — alles, was diese Skripte taten, steht fest in den Seiten.
