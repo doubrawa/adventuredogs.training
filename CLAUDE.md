@@ -68,7 +68,8 @@ GitHub Pages veröffentlicht jeden Push innerhalb von ein bis drei Minuten live.
 Änderungen erst zeigen, dann auf Zuruf committen.
 
 Den Rest erledigt der `pre-commit`-Hook (`git config core.hooksPath tools/hooks`):
-er erzeugt beide Sitemaps neu und lässt `tools/check-site.py` laufen — Seitenliste,
+er erzeugt beide Sitemaps neu — und nimmt sie gleich mit in den Commit, falls sie
+nicht aktuell waren — und lässt `tools/check-site.py` laufen: Seitenliste,
 SEO-Blöcke, interne Verweise, Bildmaße, Seitengewicht. Bricht er ab, ist etwas
 wirklich kaputt; `--no-verify` ist für Notfälle, nicht für Bequemlichkeit.
 

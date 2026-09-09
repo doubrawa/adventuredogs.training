@@ -197,7 +197,8 @@ Danach:
 2. Neue oder ausgetauschte Bilder: `powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1`
 3. `git status` — schauen, was wirklich mitgeht.
 4. `git add <pfade>` (gezielt; `git add -A` nimmt auch mit, was nur zufällig im Baum liegt)
-5. `git commit` — der Hook erzeugt beide Sitemaps neu und lässt `check-site.py` laufen.
+5. `git commit` — der Hook erzeugt beide Sitemaps neu (waren sie nicht aktuell,
+   nimmt er sie mit in den Commit) und lässt `check-site.py` laufen.
    Bricht er ab, sagt er warum. Im Notfall: `git commit --no-verify`.
 6. `git push` — GitHub Pages veröffentlicht in ein bis drei Minuten.
 

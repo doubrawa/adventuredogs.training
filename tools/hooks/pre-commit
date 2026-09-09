@@ -21,12 +21,12 @@ cd "$WURZEL" || exit 1
 echo "pre-commit: Website pruefen"
 
 # ── 1. Sitemaps neu erzeugen ──────────────────────────────────────────
-# Beide Generatoren sind idempotent. Aendert sich dabei etwas, war die
-# Sitemap veraltet — dann bricht der Hook ab, statt sie stillschweigend
-# ausserhalb des Commits liegen zu lassen.
-vorher_url=$(git hash-object sitemap.xml 2>/dev/null || echo -)
-vorher_bild=$(git hash-object sitemap-images.xml 2>/dev/null || echo -)
-
+# Beide Generatoren sind idempotent. Weichen sie danach von dem ab, was
+# gestaget ist, war die Sitemap veraltet — dann nimmt der Hook sie gleich mit
+# in den Commit. Bis zum 09.09.2026 brach er stattdessen ab und bat um ein
+# `git add`; das kostete bei jeder Textaenderung einen zweiten Anlauf, ohne
+# dass je eine andere Entscheidung dabei herausgekommen waere. Beide Dateien
+# werden erzeugt und nie von Hand bearbeitet, es geht also nichts verloren.
 bash tools/generate-sitemap.sh || {
     echo "  ABBRUCH: generate-sitemap.sh ist gescheitert."
     exit 1
@@ -44,22 +44,25 @@ else
     echo "  HINWEIS: kein PowerShell gefunden, sitemap-images.xml nicht neu erzeugt."
 fi
 
-nachher_url=$(git hash-object sitemap.xml 2>/dev/null || echo -)
-nachher_bild=$(git hash-object sitemap-images.xml 2>/dev/null || echo -)
+# Vergleich gegen den Index, nicht gegen den Stand vor dem Lauf: so faellt
+# auch der Fall auf, dass jemand die Sitemap vorher von Hand erzeugt und das
+# `git add` vergessen hat.
+mitgenommen=""
+for datei in sitemap.xml sitemap-images.xml; do
+    if ! git diff --quiet -- "$datei"; then
+        git add "$datei"
+        mitgenommen="$mitgenommen $datei"
+    fi
+done
 
-geaendert=""
-[ "$vorher_url" != "$nachher_url" ] && geaendert="$geaendert sitemap.xml"
-[ "$vorher_bild" != "$nachher_bild" ] && geaendert="$geaendert sitemap-images.xml"
-
-if [ -n "$geaendert" ]; then
-    echo
-    echo "  ABBRUCH: die Sitemap war nicht aktuell und wurde gerade neu erzeugt:"
-    echo "          $geaendert"
-    echo
-    echo "  Bitte mit aufnehmen und erneut committen:"
-    echo "          git add$geaendert"
-    exit 1
+if [ -n "$mitgenommen" ]; then
+    echo "  nicht aktuell, neu erzeugt und in den Commit genommen:$mitgenommen"
 fi
+
+# Ausnahme Teil-Commit (`git commit -- pfad`): git baut dafuer einen
+# temporaeren Index. Nachgemessen — die Sitemap landet trotzdem im Commit,
+# aber der echte Index bleibt auf dem alten Stand, `git status` zeigt sie
+# danach als geaendert. Einmal `git add` raeumt das auf.
 
 # ── 2. Website pruefen ────────────────────────────────────────────────
 if command -v py >/dev/null 2>&1; then
