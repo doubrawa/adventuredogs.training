@@ -99,3 +99,22 @@ Die alte Pipeline (`.design/`-Snapshots, `_rederive.sh`, `post-import-fixes.sh`,
 `sync-design-icons.sh`, `swap-card-svgs.ps1`, dazu `NACHZIEHEN.md`) ist am 08.09.2026
 entfernt worden. Keinen Diff gegen einen Export bauen, keine Snapshots pflegen, keine
 Fixes „nachziehen" — alles, was diese Skripte taten, steht fest in den Seiten.
+
+### Das Design System liegt woanders
+
+Seit dem 11.09.2026 gibt es ein eigenes privates Repo
+[`doubrawa/adventuredogs.training-design-system`](https://github.com/doubrawa/adventuredogs.training-design-system)
+(lokal `C:\DATA\Claude\adventuredogs.training-design-system`). Darin liegt der
+Claude-Design-Export für **beide** Marken: Tokens, 41 Komponenten, 20 Specimen-Karten
+und je ein UI-Kit für Adventure Dogs und Office Dogs.
+
+Das ist **kein Wiedergänger der entfernten Pipeline.** Die Richtung ist andersherum:
+diese Seite ist die Quelle, das Design-System-Repo das Ziel. Es dokumentiert, was hier
+schon steht — es speist nichts zurück. Also weiterhin keinen Diff dagegen bauen und
+nichts von dort „nachziehen"; eine Änderung am Aussehen passiert hier in den Seiten,
+und der Export zieht beim nächsten Lauf von selbst nach.
+
+Nützlich ist es als Nachschlagewerk: sein `readme.md` schreibt die Regeln zu Farben,
+Typo, Karten, Zuständen und Tonfall aus, die sonst nur als Kommentar im CSS stehen.
+Es ist zugleich als Skill eingehängt (`adventure-dogs-design`) und damit direkt
+aufrufbar.
