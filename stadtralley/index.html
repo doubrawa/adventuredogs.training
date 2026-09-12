@@ -39,6 +39,18 @@
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
 
+  /* Der Fuss gehoert an den unteren Rand, auch wenn der Inhalt den Schirm
+     nicht fuellt. Eine Seite mit einem Knopf ist kurz: bei 1280 x 1400
+     endete der Fuss bei 969 px und darunter standen 431 px leere Creme.
+     Die Sektion dazwischen dehnt sich (flex: 1) und schiebt ihn nach
+     unten; ihr align-items: center haelt Text und Karte dabei mittig.
+     dvh vor vh, damit die eingefahrene Adressleiste am Handy nicht
+     mitrechnet — vh liefert dort die Hoehe MIT Leiste und damit einen
+     Rest, der unter den Bildschirmrand faellt.
+     Kein position: fixed am Fuss: er wuerde die kurze Seite verdecken. */
+  body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+  .audio-hero, footer { flex: 0 0 auto; }
+
   /* ── NAV (identisch zu den anderen Seiten) ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -114,6 +126,7 @@
   .audio-section {
     padding: 90px 7%;
     display: grid; grid-template-columns: 1.05fr 1fr; gap: 76px; align-items: center;
+    flex: 1 1 auto;   /* nimmt den Platz, den der Fuss nicht braucht */
   }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
   .btn-ghost {
