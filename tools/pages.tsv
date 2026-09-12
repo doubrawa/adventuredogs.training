@@ -15,7 +15,8 @@
 #                        Korrekturen sollen das Datum NICHT hochbumpen)
 #   bilder      ja/nein — kommt die Seite in sitemap-images.xml vor?
 #
-# Nicht gelistet und das mit Absicht: 404.html und /gebucht/ (noindex).
+# Nicht gelistet und das mit Absicht: 404.html, /gebucht/ und
+# /stadtralley/ (alle noindex, nur per Direktlink oder QR-Code erreichbar).
 # Wer eine Seite hinzufuegt, traegt sie hier ein — check-site.sh vergleicht
 # diese Liste mit den index.html auf der Platte und meldet Abweichungen.
 #

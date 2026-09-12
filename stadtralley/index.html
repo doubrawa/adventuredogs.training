@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stadtrallye – Audio 1 | Adventure Dogs</title>
+<meta name="description" content="Audio 1 zur Stadtrallye der Hundeschule Adventure Dogs in Krumbach – direkt im Browser anhören, ohne App und ohne Anmeldung.">
+<link rel="canonical" href="https://adventuredogs.training/stadtralley/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adventure Dogs">
+<meta property="og:title" content="Stadtrallye – Audio 1 | Adventure Dogs">
+<meta property="og:description" content="Audio 1 zur Stadtrallye der Hundeschule Adventure Dogs in Krumbach – direkt im Browser anhören.">
+<meta property="og:url" content="https://adventuredogs.training/stadtralley/">
+<meta property="og:image" content="https://adventuredogs.training/assets/hero-landing.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon-64.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="robots" content="noindex, nofollow">
+<link href="../assets/fonts.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV (identisch zu den anderen Seiten) ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 clamp(22px, 4vw, 52px); display: flex; align-items: center; justify-content: space-between;
+    height: 80px; background: transparent;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 46px; height: 46px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--white); white-space: nowrap; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
+  .nav-links { display: flex; gap: 30px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 13.5px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  nav.scrolled .nav-links a { color: var(--text); }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  nav.scrolled .nav-links a:hover { color: var(--text); font-weight: 700; }
+  .nav-cta {
+    background: var(--white); color: var(--blue) !important;
+    padding: 12px 22px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── KOPF ──
+     Kein Hero-Bild: die Seite ist eine Station der Rallye, die am Handy und
+     oft im Sonnenlicht aufgerufen wird. Statt eines Fotos steht hier derselbe
+     Blauverlauf, den die Hero-Flaechen der anderen Seiten unter ihrem Bild
+     tragen — damit die weisse Nav lesbar bleibt und nichts zu laden ist. */
+  .audio-hero {
+    background: linear-gradient(135deg,
+      oklch(45% 0.09 225) 0%, oklch(32% 0.07 240) 62%, oklch(28% 0.06 240) 100%);
+    padding: 148px 7% 86px; color: var(--white);
+  }
+  .audio-hero .section-label { color: oklch(90% 0.06 185); }
+  .audio-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 4.4vw, 62px); font-weight: 900;
+    line-height: 1.06; text-wrap: balance;
+  }
+  .audio-hero p {
+    margin-top: 16px; max-width: 62ch;
+    font-size: clamp(16px, 1.05vw, 20px); font-weight: 300; line-height: 1.62;
+    color: oklch(100% 0 0 / 0.85);
+  }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.2vw, 42px); font-weight: 700;
+    color: var(--blue); line-height: 1.14; text-wrap: pretty;
+  }
+  .section-sub {
+    margin-top: 20px; font-size: clamp(16px, 1.05vw, 20px);
+    line-height: 1.72; color: var(--text-lt); font-weight: 300;
+  }
+
+  /* ── ABSPIELEN ──
+     Zwei Spalten ueber die volle Sektionsbreite: links der Text, rechts die
+     Karte. Kein zentrierter Deckel — sonst rutscht die linke Kante bei
+     breiten Fenstern nach innen, waehrend Kopf und Fuss bei 7 % bleiben. */
+  .audio-section {
+    padding: 90px 7%;
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 76px; align-items: center;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px; border-radius: 40px;
+    text-decoration: none; font-size: 14px; font-weight: 600;
+    background: transparent; color: var(--blue); border: 1.5px solid oklch(32% 0.07 240 / 0.25);
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { background: var(--white); border-color: var(--blue); transform: translateY(-1px); }
+  .btn-ghost svg { width: 15px; height: 15px; stroke: currentColor; fill: none; }
+
+  .player {
+    background: var(--white); border-radius: var(--r-lg); box-shadow: var(--shadow);
+    padding: 34px 32px; position: relative; overflow: hidden;
+    display: flex; align-items: center; gap: 26px;
+  }
+  .player::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--blue-mid) 100%);
+  }
+  /* Ohne JavaScript bleibt der Browser-Player stehen — dann ist er das
+     einzige sichtbare Kind der Karte und nimmt die ganze Breite. */
+  .player audio { width: 100%; }
+
+  .play-btn {
+    flex: 0 0 auto; width: 78px; height: 78px; border-radius: 50%; border: none; cursor: pointer;
+    background: var(--accent); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.32);
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.42); }
+  .play-btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .play-btn svg { width: 27px; height: 27px; fill: currentColor; }
+  .play-btn .icon-play { margin-left: 3px; }   /* Dreieck optisch mittig */
+  .player.playing .icon-play { display: none; }
+  .player:not(.playing) .icon-pause { display: none; }
+
+  .player-body { flex: 1 1 auto; min-width: 0; }
+  .player-label { font-size: 15px; font-weight: 600; color: var(--blue); margin-bottom: 14px; }
+  .seek { width: 100%; height: 20px; cursor: pointer; accent-color: var(--accent); }
+  .seek:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .player-times {
+    display: flex; justify-content: space-between; margin-top: 4px;
+    font-size: 12.5px; color: var(--text-lt); font-variant-numeric: tabular-nums;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none; position: fixed; top: 80px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98); backdrop-filter: blur(16px);
+    padding: 20px clamp(22px, 4vw, 52px) 28px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10); z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .audio-section { grid-template-columns: 1fr; gap: 44px; }
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+  @media (max-width: 720px) {
+    .audio-hero { padding: 124px 5% 64px; }
+    .audio-section { padding: 64px 5%; }
+    footer { padding: 40px 5%; }
+    .player { padding: 28px 22px; gap: 20px; }
+    .play-btn { width: 68px; height: 68px; }
+    .play-btn svg { width: 24px; height: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    nav, .play-btn, .btn-ghost { transition: none; }
+  }
+
+/* fuenfter Nav-Eintrag: mittlere Breiten */
+@media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="../">
+    <img src="../assets/logo-144.webp" width="46" height="46" alt="Adventure Dogs Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../ueber-mich/">Über mich</a></li>
+    <li><a href="../kontakt/">Kontakt</a></li>
+    <li><a href="../alltagstipps/">Alltagstipps</a></li>
+    <li><a href="https://officedogs.training/">Office Dogs</a></li>
+    <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="../ueber-mich/">Über mich</a>
+  <a href="../kontakt/">Kontakt</a>
+  <a href="../alltagstipps/">Alltagstipps</a>
+  <a href="https://officedogs.training/">Office Dogs</a>
+  <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
+
+<!-- KOPF -->
+<header class="audio-hero">
+  <span class="section-label">Stadtrallye</span>
+  <h1>Audio 1</h1>
+  <p>Tippe auf den Knopf und hör dir die Aufnahme an. Es braucht keine App und keine Anmeldung — nur diese Seite.</p>
+</header>
+
+<!-- ABSPIELEN -->
+<section class="audio-section">
+
+  <div>
+    <span class="section-label">Zum Anhören</span>
+    <h2 class="section-title">Einmal tippen, und los geht es</h2>
+    <p class="section-sub">Die Aufnahme läuft direkt hier im Browser. Ruckelt es unterwegs, weil das Netz schwach ist, lade sie einmal herunter — danach spielt sie auch ohne Empfang.</p>
+    <div class="cta-row">
+      <a class="btn-ghost" href="audio1.mp3" download>
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Aufnahme herunterladen
+      </a>
+    </div>
+  </div>
+
+  <aside class="player" id="player">
+    <!-- Quelle: dieselbe MP3 zweimal. audio1.mp3 wird als audio/mpeg
+         ausgeliefert, audio1.mpeg als video/mpeg — im <audio> spielt beides,
+         weil der Browser den Bitstrom erkennt. Die .mpeg bleibt der Link,
+         der weitergegeben wurde, und ist hier der Rueckfall. -->
+    <audio id="track" controls preload="metadata">
+      <source src="audio1.mp3" type="audio/mpeg">
+      <source src="audio1.mpeg" type="audio/mpeg">
+      <a href="audio1.mp3">Aufnahme herunterladen</a>
+    </audio>
+
+    <button class="play-btn" id="playBtn" type="button" aria-label="Abspielen" hidden>
+      <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+    </button>
+
+    <div class="player-body" id="playerBody" hidden>
+      <p class="player-label">Stadtrallye · Audio 1</p>
+      <input class="seek" id="seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in der Aufnahme">
+      <p class="player-times"><span id="cur">0:00</span><span id="dur">–:––</span></p>
+    </div>
+  </aside>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="../impressum/">Impressum</a>
+    <a href="../impressum/#datenschutz">Datenschutz</a>
+    <a href="../kontakt/">Kontakt</a>
+    <a href="../">Startseite</a>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hamburger
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+
+  // Eigener Abspielknopf.
+  //
+  // Im Quelltext steht <audio controls>: ohne JavaScript bleibt der
+  // Browser-Player stehen und die Aufnahme ist trotzdem hoerbar. Erst hier
+  // wird er ausgeblendet und der eigene Knopf eingeschaltet.
+  (function abspieler() {
+    const karte   = document.getElementById('player');
+    const spur    = document.getElementById('track');
+    const knopf   = document.getElementById('playBtn');
+    const koerper = document.getElementById('playerBody');
+    const regler  = document.getElementById('seek');
+    const jetzt   = document.getElementById('cur');
+    const laenge  = document.getElementById('dur');
+    if (!karte || !spur || !knopf) return;
+
+    spur.removeAttribute('controls');
+    spur.hidden = true;
+    knopf.hidden = false;
+    koerper.hidden = false;
+
+    let zieht = false;
+    const zeit = s => {
+      if (!isFinite(s)) return '–:––';
+      return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    };
+    const dauer = () => { laenge.textContent = zeit(spur.duration); };
+
+    knopf.addEventListener('click', () => {
+      // Nach dem Ende meldet der Browser die Spur nicht verlaesslich als
+      // pausiert. Ohne diesen Fall braeuchte der zweite Durchlauf zwei Klicks.
+      if (spur.ended) { spur.currentTime = 0; spur.play(); return; }
+      if (spur.paused) spur.play(); else spur.pause();
+    });
+    spur.addEventListener('play',  () => { karte.classList.add('playing');    knopf.setAttribute('aria-label', 'Pause'); });
+    spur.addEventListener('pause', () => { karte.classList.remove('playing'); knopf.setAttribute('aria-label', 'Abspielen'); });
+    spur.addEventListener('loadedmetadata', dauer);
+    spur.addEventListener('timeupdate', () => {
+      jetzt.textContent = zeit(spur.currentTime);
+      if (spur.duration && !zieht) regler.value = Math.round(spur.currentTime / spur.duration * 1000);
+    });
+    // Am Ende feuert kein 'pause' — der Knopf muss hier von selbst
+    // zurueckfallen, sonst zeigt er weiter das Pausenzeichen.
+    // currentTime wird bewusst NICHT zurueckgesetzt: ein Sprung auf 0 laesst
+    // eine beendete Spur in manchen Browsern gleich wieder loslaufen.
+    spur.addEventListener('ended', () => {
+      karte.classList.remove('playing');
+      knopf.setAttribute('aria-label', 'Abspielen');
+      regler.value = 0;
+      jetzt.textContent = '0:00';
+    });
+
+    // Ziehen am Regler: waehrend des Ziehens nicht von timeupdate ueberschreiben.
+    regler.addEventListener('pointerdown', () => { zieht = true; });
+    regler.addEventListener('pointerup',   () => { zieht = false; });
+    regler.addEventListener('input', () => {
+      if (!spur.duration) return;
+      spur.currentTime = regler.value / 1000 * spur.duration;
+      jetzt.textContent = zeit(spur.currentTime);
+    });
+
+    // Aus dem Cache kann loadedmetadata schon gelaufen sein.
+    if (spur.readyState >= 1) dauer();
+  })();
+</script>
+
+</body>
+</html>

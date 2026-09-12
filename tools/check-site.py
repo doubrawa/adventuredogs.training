@@ -30,8 +30,11 @@ PAGES = os.path.join(WURZEL, 'tools', 'pages.tsv')
 # Ordner, die nicht zur Website gehoeren.
 IGNORIERT = {'.git', 'tools', 'assets', 'willkommensmappe', 'available_images'}
 
-# Seiten, die absichtlich in keiner Sitemap stehen.
-AUSNAHMEN = {'404.html', 'gebucht/index.html'}
+# Seiten, die absichtlich in keiner Sitemap stehen. Alle drei tragen
+# "noindex, nofollow" und werden nur per Direktlink oder QR-Code erreicht:
+# die Buchungsbestaetigung nach dem Absenden, die Rallye-Station beim
+# Abscannen unterwegs. In der Suche haben sie nichts zu suchen.
+AUSNAHMEN = {'404.html', 'gebucht/index.html', 'stadtralley/index.html'}
 
 # Dateien in assets/, auf die bewusst keine Seite zeigt.
 #
