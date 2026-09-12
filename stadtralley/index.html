@@ -222,20 +222,33 @@
   }
 
   /* ── RESPONSIVE ── */
+  /* Eine Spalte — und die Karte wandert nach OBEN.
+     Sonst stehen erst Kopf und Erklaertext, und der Knopf beginnt bei
+     375 px erst nach 731 px: am Handy muss man scrollen, um das zu
+     finden, wozu die Seite da ist. Mit order: -1 folgt er direkt auf den
+     Kopf, der Erklaertext rutscht darunter und liest sich dort als
+     Bildunterschrift. */
   @media (max-width: 960px) {
-    .audio-section { grid-template-columns: 1fr; gap: 44px; }
+    .audio-section { grid-template-columns: 1fr; gap: 36px; }
+    .player { order: -1; }
   }
   @media (max-width: 860px) {
     .nav-hamburger { display: flex; }
     .nav-links { display: none !important; }
   }
+  /* Kompakter Kopf: 104 px lassen der 80-px-Nav noch 24 px Luft, und mit
+     dem knapperen Abstand zur Sektion liegt der Knopf komplett im ersten
+     Bildschirm — auch auf einem 375 x 667 Geraet, wo Safari rund 560 px
+     uebrig laesst. */
   @media (max-width: 720px) {
-    .audio-hero { padding: 124px 5% 64px; }
-    .audio-section { padding: 64px 5%; }
+    .audio-hero { padding: 104px 5% 40px; }
+    .audio-hero p { margin-top: 12px; }
+    .audio-section { padding: 32px 5% 56px; }
     footer { padding: 40px 5%; }
-    .player { padding: 28px 22px; gap: 20px; }
+    .player { padding: 24px 20px; gap: 18px; }
     .play-btn { width: 68px; height: 68px; }
     .play-btn svg { width: 24px; height: 24px; }
+    .cta-row { margin-top: 24px; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
