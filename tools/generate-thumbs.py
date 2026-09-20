@@ -33,19 +33,39 @@ MAX_BREITE = 800
 QUALITAET = 80
 FORCE = '--force' in sys.argv
 
+# Abweichende Qualitaet je Thema, mit Grund.
+#
+# silvester: ein Feuerwerk, also tausende feine helle Striche auf Schwarz.
+# Bei q80 spart WebP gegenueber dem JPEG nur 5 % - zu wenig, um den Tausch zu
+# rechtfertigen, weshalb dieses eine Vorschaubild bis zum 20.09.2026 als JPEG
+# liegen blieb. Bei q72 sind es 20 %, und im 100-%-Ausschnitt halten die
+# Striche, ohne Ringing auf dem Schwarz. Dasselbe Motiv, dieselbe Zahl: der
+# Hero daneben steht aus genau diesem Grund seit dem 09.09.2026 auf q72.
+QUALITAET_AUSNAHME = {'silvester': 72}
+
 # Thema -> Quellbild, aus dem das Vorschaubild abgeleitet wird.
-# Die Quellen sind die JPEG-Originale, nicht deren WebP-Ableitungen: aus dem
-# groesseren Original skaliert es sauberer als aus einem bereits komprimierten
-# Zwischenschritt.
+#
+# Die Quellen sind die WebP-Dateien. Bis zum 20.09.2026 waren es die JPEGs,
+# mit der Begruendung, aus dem groesseren Original skaliere es sauberer als
+# aus einem bereits komprimierten Zwischenschritt. Seit die JPEGs nur noch
+# als og:image gebraucht und dafuer auf 1200 px gestutzt werden, zeigt genau
+# diese Begruendung auf die WebP-Datei: sie traegt jetzt die volle Aufloesung,
+# das JPEG ist die kleinere Ableitung. Nachgemessen ueber alle acht
+# Vorschaubilder: gleiche Masse, 0 bis 9 KB kleiner.
+#
+# Die Masse haengen an der Quelle: 800 px Breite, Hoehe gerundet. Ein
+# Zwischenschritt ueber eine gestutzte Quelle verschiebt sie um bis zu 1 px
+# gegen die width/height im HTML - noch ein Grund, hier an der vollen
+# Aufloesung zu bleiben.
 THUMBS = [
-    ('welpenzeit',         'offer-welpenkurs.jpg'),
-    ('silvester',          'hero-silvester.jpg'),
-    ('urlaub',             'hero-urlaub.jpg'),
-    ('winter',             'hero-winter.jpg'),
-    ('alleinbleiben',      'hero-alleinbleiben.jpg'),
-    ('tierphysiotherapie', 'hero-tierphysiotherapie.jpg'),
-    ('ernaehrung',         'hero-ernaehrung.jpg'),
-    ('hund-entlaufen',     'hero-hund-entlaufen.jpg'),
+    ('welpenzeit',         'offer-welpenkurs.webp'),
+    ('silvester',          'hero-silvester.webp'),
+    ('urlaub',             'hero-urlaub.webp'),
+    ('winter',             'hero-winter.webp'),
+    ('alleinbleiben',      'hero-alleinbleiben.webp'),
+    ('tierphysiotherapie', 'hero-tierphysiotherapie.webp'),
+    ('ernaehrung',         'hero-ernaehrung.webp'),
+    ('hund-entlaufen',     'hero-hund-entlaufen.webp'),
 ]
 
 gebaut = uebersprungen = fehlend = 0
@@ -74,7 +94,8 @@ for slug, quelle in THUMBS:
     # Erst in eine Tempdatei, dann umbenennen: ein Abbruch mittendrin laesst
     # sonst ein halbes Bild im Ordner liegen.
     tmp = dst + '.tmp'
-    im.convert('RGB').save(tmp, 'WEBP', quality=QUALITAET, method=6)
+    im.convert('RGB').save(tmp, 'WEBP',
+                           quality=QUALITAET_AUSNAHME.get(slug, QUALITAET), method=6)
     os.replace(tmp, dst)
 
     gebaut += 1

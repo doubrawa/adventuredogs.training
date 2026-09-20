@@ -10,6 +10,7 @@ Skript nimmt die Kontrollen, die vorher niemand machte:
 
   1. Seitenliste  - deckt sich tools/pages.tsv mit dem, was auf der Platte liegt?
   2. SEO          - hat jede Seite title, description, canonical, og:*, viewport?
+                    Und stimmen og:image:width/height mit der Datei ueberein?
   3. Verweise     - loesen alle internen href/src auf eine existierende Datei auf?
   4. Sitemaps     - wohlgeformt, und decken sie sich mit pages.tsv?
   5. Bilder       - keine Ausreisser bei Maessen und Gewicht
@@ -63,11 +64,17 @@ KUER_TAGS = [('JSON-LD', r'application/ld\+json')]
 # meisten Bilder haengen an loading="lazy" und kommen erst beim Scrollen.
 # Gemessen am 08.09.2026: die Startseite laedt live 704 KB, waehrend die Summe
 # hier bei 1753 KB liegt. Die Zahl taugt also nicht als Ladezeit, wohl aber als
-# Sperrklinke gegen Wachstum: die Schwellen liegen knapp ueber dem heutigen
-# schwersten Fall (/angebot/ mit rund 2300 KB), damit heute alles durchgeht und
-# ein unbedachtes weiteres Grossbild auffaellt.
-SEITE_FEHLER_KB = 3000
-SEITE_WARNUNG_KB = 2500
+# Sperrklinke gegen Wachstum: die Schwellen liegen knapp ueber dem jeweils
+# schwersten Fall, damit heute alles durchgeht und ein unbedachtes weiteres
+# Grossbild auffaellt.
+#
+# Nachgezogen am 20.09.2026: der schwerste Fall ist /angebot/ mit 1686 statt
+# 2136 KB, seit die og:image-JPEGs auf 1200 px liegen und offer-quality-time
+# WebP ist. Bei 3000/2500 stuende ueber der Sperrklinke gut ein Megabyte
+# Luft - genug, um den Gewinn unbemerkt wieder aufzuessen. Der Abstand bleibt
+# derselbe wie vorher: Warnung rund 10 %, Fehler rund 30 % ueber dem Bestand.
+SEITE_FEHLER_KB = 2200
+SEITE_WARNUNG_KB = 1850
 
 # Einzelbild. Die Breite ist hart - dieselbe Grenze, die resize-assets.ps1 zieht.
 # Ein Kriterium fuer Bytes je Megapixel steht hier bewusst NICHT: darueber
@@ -210,6 +217,40 @@ def pruefe_seo(pages):
             if treffer.group(1).rstrip('/') + '/' != soll.rstrip('/') + '/':
                 melde_fehler('SEO', '%s: canonical zeigt auf %s statt auf %s'
                              % (p['datei'], treffer.group(1), soll))
+        pruefe_og_masse(p['datei'], kopf)
+
+
+def pruefe_og_masse(datei, kopf):
+    """og:image:width/height gegen die Datei nachrechnen.
+
+    Die beiden Angaben sind der Grund, warum Facebook und LinkedIn die grosse
+    Vorschaukarte schon aufbauen koennen, bevor das Bild geladen ist. Stimmen
+    sie nicht, reserviert der Crawler den falschen Platz - und merken wuerde
+    das niemand, weil die Seite selbst voellig normal aussieht. Genau dafuer
+    ist dieses Skript da.
+
+    Seit dem 20.09.2026 liegen die og:image-JPEGs auf 1200 px Breite
+    (tools/resize-og-images.py). Wer eins davon austauscht, ohne die Zahlen
+    nachzuziehen, faellt hier auf.
+    """
+    treffer = re.search(r'property="og:image"\s+content="[^"]*assets/([^"]+)"', kopf, re.I)
+    if not treffer:
+        return
+    bild = treffer.group(1)
+    pfad = os.path.join(WURZEL, 'assets', bild.replace('/', os.sep))
+    if not os.path.exists(pfad):
+        melde_fehler('SEO', '%s: og:image zeigt auf assets/%s - existiert nicht' % (datei, bild))
+        return
+    masse = bildmasse(pfad)
+    if not masse:
+        return
+    for name, soll in (('width', masse[0]), ('height', masse[1])):
+        gefunden = re.search(r'property="og:image:%s"\s+content="(\d+)"' % name, kopf, re.I)
+        if not gefunden:
+            melde_warnung('SEO', '%s: og:image:%s fehlt' % (datei, name))
+        elif int(gefunden.group(1)) != soll:
+            melde_fehler('SEO', '%s: og:image:%s steht auf %s, assets/%s ist %d px'
+                         % (datei, name, gefunden.group(1), bild, soll))
 
 
 # -------------------------------------------------------------------- 3. Verweise
