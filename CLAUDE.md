@@ -77,11 +77,27 @@ Von Hand nur zwei Dinge:
 
 - **Neue Seite?** In `tools/pages.tsv` eintragen. Das ist die einzige Quelle für
   beide Sitemaps; wer sie vergisst, wird vom Hook daran erinnert.
-- **Neue Bilder?** `resize-assets.ps1` laufen lassen, dann nach WebP wandeln.
-  Im HTML steht die `.webp`, im `og:image` bleibt die `.jpg` — Social-Crawler
-  kommen mit WebP nicht zuverlässig zurecht. Kein `<picture>`: der zusätzliche
-  Wrapper bricht CSS-Regeln, die auf direkte Kindelemente zielen.
+- **Neue Bilder?** Drei Schritte, in dieser Reihenfolge: `resize-assets.ps1`,
+  nach WebP wandeln, `resize-og-images.py`. Im HTML steht die `.webp`, im
+  `og:image` bleibt die `.jpg` — Social-Crawler kommen mit WebP nicht
+  zuverlässig zurecht. Kein `<picture>`: der zusätzliche Wrapper bricht
+  CSS-Regeln, die auf direkte Kindelemente zielen.
   `sitemap.xml` dagegen nie von Hand anfassen — sie wird erzeugt.
+
+  **Die `.webp` ist seit dem 20.09.2026 die große Fassung, nicht die `.jpg`.**
+  Die JPEGs liegen nur noch in og:image-Maß (1200 px); wer eine volle
+  Auflösung braucht, nimmt die `.webp` oder holt das alte JPEG aus der
+  git-Historie. Deshalb zieht auch `generate-thumbs.py` seine Vorschaubilder
+  aus den `.webp`. Wer ein og:image austauscht, zieht `og:image:width` und
+  `og:image:height` mit nach — `check-site.py` rechnet beide gegen die Datei
+  nach und bricht sonst ab.
+
+  **Und WebP ist nicht automatisch kleiner.** Bei detailreichen Motiven — ein
+  Feuerwerk, dichtes Laub — kostet es bei der üblichen Qualität 80 sogar mehr
+  als das JPEG. Die Regel im Bestand ist: umgestellt wird, wo WebP mindestens
+  10 % spart, notfalls bei niedrigerer Qualität und nach einem Blick auf den
+  100-%-Ausschnitt. `hero-silvester`, `thumb-silvester` und
+  `offer-quality-time` stehen aus diesem Grund auf q72 statt q80.
 
 Und weil `.nojekyll` gesetzt ist, liefert Pages das Repo ungefiltert aus: **alles auf
 `main` ist öffentlich erreichbar**, Punkt-Ordner eingeschlossen. Etwas committen und

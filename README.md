@@ -49,8 +49,8 @@ Vergleichen und keine Skripte, die einen Export ins Repo überführen.
 ├── 404.html                 Fehlerseite
 │
 ├── assets/
-│   ├── *.webp               alles, was im Browser gerendert wird
-│   ├── hero-*.jpg           dieselben Heroes als JPEG — nur für og:image
+│   ├── *.webp               alles, was im Browser gerendert wird — volle Auflösung
+│   ├── hero-*.jpg           dieselben Heroes als JPEG, 1200 px — nur für og:image
 │   ├── logo-144.webp        Nav-Logo (46 px bei bis zu 3× Pixeldichte)
 │   ├── favicon-32/64.png    Tab-Icon, apple-touch-icon.png fürs Homescreen
 │   ├── logo.png             360 px — publisher.logo im JSON-LD, Druckvorlage
@@ -135,8 +135,25 @@ Element hüllen und CSS-Regeln brechen, die auf direkte Kindelemente zielen. Web
 kann jeder Browser seit Safari 14 (2020).
 
 Ein neues Bild kommt also als JPEG nach `assets/`, wird mit `resize-assets.ps1`
-auf Maß gebracht und dann nach WebP gewandelt; im HTML steht die `.webp`, im
-`og:image` die `.jpg`. `check-site.py` merkt es, wenn eins von beidem fehlt.
+auf Maß gebracht, nach WebP gewandelt und zuletzt mit `resize-og-images.py` auf
+og:image-Maß gestutzt; im HTML steht die `.webp`, im `og:image` die `.jpg`.
+`check-site.py` merkt es, wenn eins von beidem fehlt.
+
+**Das JPEG ist seit dem 20.09.2026 nicht mehr die große Fassung.** Es lag bis
+dahin in voller Hero-Größe herum — bis 2400 × 1602 und 721 KB, über alle
+vierzehn zusammen 5,3 MB — obwohl es nur noch die Vorschaukarte beim Teilen
+füllt, und die zeigt 1200 px. Jetzt liegen sie bei 1200 px Breite, zusammen
+1,9 MB. Der Ausschnitt bleibt unverändert: die Karten schneiden selbst zu, und
+jeder Hero-Ausschnitt ist am Motiv gewählt.
+
+Die größte Fassung jedes Bildes ist damit die `.webp`. Darauf zeigt seither
+auch `generate-thumbs.py`, und das volle JPEG bleibt über die git-Historie
+erreichbar (`git show <commit>:assets/<datei>`).
+
+Jede Seite nennt die Maße zusätzlich als `og:image:width` / `og:image:height`,
+damit Facebook und LinkedIn die große Karte aufbauen können, bevor das Bild
+geladen ist. `check-site.py` rechnet die beiden Zahlen gegen die Datei nach —
+sie können also nicht abdriften.
 
 **Das Logo hat dieselbe Trennung.** Bis zum 08.09.2026 diente `logo.svg` als
 Nav-Logo *und* Favicon — 137 KB Vektorgrafik mit 327 Pfaden für eine Darstellung
@@ -150,12 +167,31 @@ liegen, damit man daraus jede Größe neu rastern kann — `check-site.py` weiß
 Schrumpft JPEGs auf web-vernünftige Maße: Heroes max **2400 px** Breite, sonst
 **1600 px**, Qualität 82, EXIF gestrippt. Bereits passende Bilder bleiben unangetastet.
 
+Das ist der **Eingangsschritt** — aus diesem Maß entsteht die WebP-Datei, die der
+Browser lädt. Das JPEG selbst wird danach von `resize-og-images.py` weiter gestutzt.
+
 ```bash
 powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1 -AssetsDir "C:/DATA/Claude/adventuredogs.training/assets"
 ```
 
+### `resize-og-images.py`
+Stutzt die JPEGs, auf die nur noch `og:image`, `twitter:image` oder das
+`image`-Feld im JSON-LD zeigt, auf **1200 px** Breite bei Qualität 82 —
+Seitenverhältnis unverändert, kein Beschnitt. Wer die Rolle hat, liest das Skript
+selbst aus den Seiten: ein JPEG, das irgendwo gerendert wird, kann es gar nicht
+erwischen. Idempotent, und `--dry-run` zeigt erst, was passieren würde.
+
+```bash
+py tools/resize-og-images.py --dry-run
+py tools/resize-og-images.py
+```
+
+Läuft **als letzter** der drei Bildschritte, nach `resize-assets.ps1` und nach der
+WebP-Wandlung — vorher gäbe es noch keine WebP-Datei, die die volle Auflösung hält.
+
 ### `generate-thumbs.py`
-Erzeugt `thumb-<slug>.webp` in 800 px Breite aus den Alltagstipps-Heroes. Die Karten
+Erzeugt `thumb-<slug>.webp` in 800 px Breite aus den Alltagstipps-Heroes (aus den
+`.webp`, seit die JPEGs nur noch og:image-Maß haben). Die Karten
 auf der Hub-Seite und die „Weiterlesen"-Karten rendern bei rund 400 px — der volle
 Hero wäre Verschwendung. Baut nur neu, was älter ist als seine Quelle; `--force`
 erzwingt alles.
@@ -194,7 +230,8 @@ git config core.hooksPath tools/hooks
 Danach:
 
 1. Dateien im Repo bearbeiten. Neue Seite? Dann in `tools/pages.tsv` eintragen.
-2. Neue oder ausgetauschte Bilder: `powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1`
+2. Neue oder ausgetauschte Bilder: `powershell -ExecutionPolicy Bypass -File tools/resize-assets.ps1`,
+   nach WebP wandeln, dann `py tools/resize-og-images.py`
 3. `git status` — schauen, was wirklich mitgeht.
 4. `git add <pfade>` (gezielt; `git add -A` nimmt auch mit, was nur zufällig im Baum liegt)
 5. `git commit` — der Hook erzeugt beide Sitemaps neu (waren sie nicht aktuell,
