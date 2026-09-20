@@ -189,13 +189,6 @@
     max-width: 880px;
     margin: 0 auto;
   }
-  .intro-photo {
-    position: sticky; top: 90px;
-    border-radius: var(--r-lg); overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .intro-photo img { width: 100%; display: block; }
-  .intro-text {}
   .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
@@ -327,7 +320,6 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
     .intro { grid-template-columns: 1fr; }
-    .intro-photo { position: static; }
     .story { padding-right: 7%; }
     .story::before { display: none; }
   }
