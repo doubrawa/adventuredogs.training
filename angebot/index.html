@@ -329,19 +329,6 @@
   /* ── MAIN CONTENT ── */
   main { padding: 48px 7% 80px; }
 
-  /* ── CATEGORY HEADERS ── */
-  .category-header {
-    display: flex; align-items: center; gap: 16px;
-    margin: 56px 0 32px;
-  }
-  .category-header:first-child { margin-top: 0; }
-  .category-tag {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent);
-    background: oklch(62% 0.12 185 / 0.1); padding: 5px 12px; border-radius: 20px;
-  }
-  .category-line { flex: 1; height: 1px; background: var(--cream2); }
-
   /* ── OFFER CARDS ── */
   .offers-grid {
     display: grid;
@@ -437,27 +424,6 @@
   .offer-card.highlight .offer-body h2 { font-size: 26px; }
   .offer-card.highlight .offer-body p { font-size: 15px; }
 
-  /* placeholder for image not yet provided */
-  .offer-img-placeholder {
-    min-height: 360px;
-    background-color: var(--cream2);
-    background-image: repeating-linear-gradient(
-      135deg,
-      transparent 0 14px,
-      oklch(0% 0 0 / 0.04) 14px 28px
-    );
-    display: flex; align-items: center; justify-content: center;
-  }
-  .offer-img-placeholder::after {
-    content: 'Bild folgt';
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 12px; letter-spacing: 0.12em;
-    color: var(--text-lt);
-    text-transform: uppercase;
-    background: var(--white);
-    padding: 6px 12px; border-radius: 4px;
-    box-shadow: 0 1px 4px oklch(0% 0 0 / 0.08);
-  }
 
   /* ── CTA BANNER ── */
   .cta-banner {
