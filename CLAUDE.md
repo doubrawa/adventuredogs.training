@@ -99,6 +99,13 @@ Von Hand nur zwei Dinge:
   100-%-Ausschnitt. `hero-silvester`, `thumb-silvester` und
   `offer-quality-time` stehen aus diesem Grund auf q72 statt q80.
 
+**Erzeugte Dateien haben LF, auch unter Windows.** `.gitattributes` legt beide
+Sitemaps mit `eol=lf` ab, und die Generatoren schreiben `\n` — nie `AppendLine`
+oder `[Environment]::NewLine`. Weichen Checkout und Generator in den
+Zeilenenden ab, ändert jeder Lauf die Dateigröße; Git meldet dann `M` ohne
+Diff, und das nächste `git pull --rebase` bricht mit „You have unstaged
+changes" ab. Wer eine weitere Datei per Skript erzeugt, trägt sie dort mit ein.
+
 Und weil `.nojekyll` gesetzt ist, liefert Pages das Repo ungefiltert aus: **alles auf
 `main` ist öffentlich erreichbar**, Punkt-Ordner eingeschlossen. Etwas committen und
 zugleich nicht veröffentlichen geht nicht — was nicht online gehört, gehört in

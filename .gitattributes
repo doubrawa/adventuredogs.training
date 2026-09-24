@@ -1,0 +1,8 @@
+# Beide Sitemaps werden erzeugt (tools/generate-sitemap.sh,
+# tools/generate-image-sitemap.ps1), und die Generatoren schreiben LF. Ein
+# Checkout muss dieselben Bytes ablegen: Mit core.autocrlf=true, der Vorgabe von
+# Git for Windows, kämen sie sonst als CRLF auf die Platte, jeder Generatorlauf
+# änderte die Dateigröße, und Git meldete die Datei als geändert, ohne dass sich
+# am Inhalt etwas getan hat. Ausführlich in tools/hooks/pre-commit.
+sitemap.xml         text eol=lf
+sitemap-images.xml  text eol=lf

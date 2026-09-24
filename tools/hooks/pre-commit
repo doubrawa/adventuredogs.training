@@ -49,11 +49,23 @@ fi
 # `git add` vergessen hat.
 mitgenommen=""
 for datei in sitemap.xml sitemap-images.xml; do
-    if ! git diff --quiet -- "$datei"; then
-        git add "$datei"
-        mitgenommen="$mitgenommen $datei"
-    fi
+    git diff --quiet -- "$datei" || mitgenommen="$mitgenommen $datei"
 done
+
+# Das `git add` laeuft trotzdem fuer beide, auch ohne Unterschied im Inhalt —
+# dann frischt es nur Groesse und Zeitstempel im Index auf. Genau daran hing es
+# bis zum 24.09.2026: Lag eine Sitemap nach Checkout, Pull oder Rebase als CRLF
+# auf der Platte und schrieb der Generator sie mit anderen Zeilenenden neu, wich
+# die Groesse vom Index ab. Eine Datei anderer Groesse haelt Git fuer geaendert,
+# ohne hineinzusehen: `git status` zeigte M, `git diff` nichts, und das naechste
+# `git pull --rebase` brach mit "You have unstaged changes" ab.
+# Die eigentliche Abhilfe steht in .gitattributes (beide Sitemaps als LF, wie
+# die Generatoren sie schreiben). Das hier heilt Arbeitskopien, deren Sitemaps
+# noch von vorher als CRLF daliegen, beim ersten Commit.
+git add sitemap.xml sitemap-images.xml || {
+    echo "  ABBRUCH: git add der Sitemaps ist gescheitert."
+    exit 1
+}
 
 if [ -n "$mitgenommen" ]; then
     echo "  nicht aktuell, neu erzeugt und in den Commit genommen:$mitgenommen"

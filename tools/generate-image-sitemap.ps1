@@ -52,10 +52,17 @@ foreach ($line in [System.IO.File]::ReadAllLines($pagesFile)) {
 }
 if ($urls.Count -eq 0) { throw "pages.tsv enthaelt keine Seite mit bilder=ja." }
 
-$sb = [System.Text.StringBuilder]::new()
-[void]$sb.AppendLine('<?xml version="1.0" encoding="UTF-8"?>')
-[void]$sb.AppendLine('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')
-[void]$sb.AppendLine('        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">')
+# Zeilen sammeln und erst beim Schreiben verbinden, damit das Zeilenende an
+# genau einer Stelle steht. Bis zum 24.09.2026 baute hier ein StringBuilder die
+# Datei, halb mit AppendLine (unter Windows CRLF), halb mit AppendFormat und
+# "`n" (LF). Ein Checkout legt die Sitemap dagegen einheitlich ab, also wich die
+# Dateigroesse nach jedem Lauf vom Index ab, und Git meldete sie als geaendert,
+# obwohl `git diff` leer war. Warum das den naechsten Rebase blockiert, steht
+# in tools/hooks/pre-commit.
+$lines = [System.Collections.Generic.List[string]]::new()
+$lines.Add('<?xml version="1.0" encoding="UTF-8"?>')
+$lines.Add('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')
+$lines.Add('        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">')
 
 $totalImages = 0
 $pagesWithImages = 0
@@ -93,21 +100,24 @@ foreach ($u in $urls) {
 
     if ($assets.Count -eq 0) { continue }
 
-    [void]$sb.AppendLine('  <url>')
-    [void]$sb.AppendFormat('    <loc>{0}{1}</loc>{2}', $SiteBase, $u.url, "`n")
+    $lines.Add('  <url>')
+    $lines.Add("    <loc>$SiteBase$($u.url)</loc>")
     foreach ($name in ($assets.Keys | Sort-Object)) {
-        [void]$sb.AppendFormat('    <image:image>{0}', "`n")
-        [void]$sb.AppendFormat('      <image:loc>{0}/assets/{1}</image:loc>{2}', $SiteBase, $name, "`n")
-        [void]$sb.AppendLine('    </image:image>')
+        $lines.Add('    <image:image>')
+        $lines.Add("      <image:loc>$SiteBase/assets/$name</image:loc>")
+        $lines.Add('    </image:image>')
         $totalImages++
     }
-    [void]$sb.AppendLine('  </url>')
+    $lines.Add('  </url>')
     $pagesWithImages++
 }
 
-[void]$sb.AppendLine('</urlset>')
+$lines.Add('</urlset>')
 
-[System.IO.File]::WriteAllText($OutFile, $sb.ToString(), [System.Text.UTF8Encoding]::new($false))
+# LF, nicht [Environment]::NewLine - so legt auch der Checkout die Datei ab
+# (.gitattributes: sitemap-images.xml eol=lf).
+$xml = ($lines -join "`n") + "`n"
+[System.IO.File]::WriteAllText($OutFile, $xml, [System.Text.UTF8Encoding]::new($false))
 
 Write-Host ("Image sitemap: {0} images across {1} pages -> {2}" -f `
     $totalImages, $pagesWithImages, (Split-Path -Leaf $OutFile))
