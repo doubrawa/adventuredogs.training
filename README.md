@@ -46,6 +46,7 @@ Vergleichen und keine Skripte, die einen Export ins Repo überführen.
 ├── kontakt/index.html       Kontakt + FAQ + Formspree-Formular
 ├── impressum/index.html     Impressum + Datenschutzerklärung
 ├── gebucht/index.html       Danke-Seite nach dem Formular (noindex, nicht in der Sitemap)
+├── anamnesebogen/index.html Fragebogen für neue Kunden, Link schickt Julia (noindex, nicht in der Sitemap)
 ├── 404.html                 Fehlerseite
 │
 ├── assets/
@@ -93,7 +94,7 @@ Prüft, was sonst niemand prüft, und endet bei Fehlern mit Exit 1:
 
 | Prüfung | worauf |
 |---|---|
-| Seitenliste | deckt sich `pages.tsv` mit den HTML-Dateien auf der Platte? |
+| Seitenliste | deckt sich `pages.tsv` mit den HTML-Dateien auf der Platte? Seiten mit `noindex` fehlen dort mit Absicht – und dürfen auch nicht drinstehen |
 | SEO | hat jede Seite `title`, `description`, `canonical`, `og:title`, `og:image`, `viewport` — und zeigt das canonical auf die eigene URL? |
 | Verweise | lösen alle internen `href`/`src` auf existierende Dateien auf? |
 | Sitemaps | wohlgeformtes XML, deckungsgleich mit `pages.tsv`, keine toten Bild-URLs |
@@ -261,15 +262,37 @@ Klassen aus dem Bestand. Details dazu in [CLAUDE.md](CLAUDE.md).
 
 ---
 
-## Kontaktformular
+## Formulare
 
-Verwendet **[Formspree](https://formspree.io)** (Form-ID `xaqvnvzq`). Submissions
-gehen per HTTP POST an `https://formspree.io/f/xaqvnvzq` und werden von dort an
-die im Formspree-Dashboard hinterlegte E-Mail weitergeleitet.
+Beide Formulare laufen über **[Formspree](https://formspree.io)** mit derselben
+Form-ID `xaqvnvzq`: das Kontaktformular auf `/kontakt/` und der Anamnesebogen auf
+`/anamnesebogen/`. Submissions gehen per HTTP POST an `https://formspree.io/f/xaqvnvzq`
+und werden von dort an die im Formspree-Dashboard hinterlegte E-Mail weitergeleitet.
 
-Free-Tier: 50 Einreichungen/Monat. Bot-Schutz via Honeypot-Field (`_gotcha`).
+Free-Tier: 50 Einreichungen/Monat, für beide Formulare zusammen – bei rund fünf
+Anamnesebögen im Monat reicht das. Bot-Schutz via Honeypot-Field (`_gotcha`).
 
-Bei Form-ID-Wechsel: in `kontakt/index.html` ändern.
+**Der Anamnesebogen** löste im September 2026 ein Google-Formular ab, das per Add-on
+eine Mail schickte. Was bei Formspree ankommt, baut das Skript am Seitenende selbst
+zusammen: je Frage ein Feld, benannt nach dem Fragetext, in der Reihenfolge des
+Bogens – Formspree soll die Felder in der Mail genau so auflisten. **Das ist noch
+ungeprüft** (Stand 26.09.2026, bisher ging kein echter Bogen raus): Beim ersten
+echten Bogen nachsehen, ob die Reihenfolge stimmt, ob Umlaute in den Feldnamen
+heil ankommen, ob `subject` zusätzlich im Mailtext steht und ob die Mail nicht im
+Formspree-Spamordner hängt. Wer eine Frage umformuliert, ändert damit auch ihre
+Zeile in der Mail; eine zweite Liste gibt es nicht. Eine neue Frage ist ein
+weiterer `.frage`-Block mit einem `.frage-kopf`, das Skript nimmt ihn von selbst mit.
+
+**Eine Gesamttabelle wie beim Google-Formular gibt es nicht mehr.** Formspree Free
+zeigt Einsendungen nur 30 Tage lang und exportiert nicht; Export und API gibt es erst
+ab dem Tarif Personal (10 $/Monat). Das Archiv sind die Mails in Julias Postfach. Die
+alten Antworten bis September 2026 bleiben im Google-Formular.
+
+Zwei Feldnamen sind fest, weil Formspree sie auswertet: `subject` wird zum Betreff
+(„Anamnesebogen: Name mit Hund“), `email` zur Antwortadresse – „Antworten“ in der
+Mail geht damit direkt an den Kunden.
+
+Bei Form-ID-Wechsel: im `action`-Attribut beider Seiten ändern.
 
 ---
 

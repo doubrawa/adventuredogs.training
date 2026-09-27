@@ -1,7 +1,7 @@
 # Die Seitenliste der Website — einzige Quelle.
 #
 # Gelesen von tools/generate-sitemap.sh, tools/generate-image-sitemap.ps1 und
-# tools/check-site.sh. Frueher stand dieselbe Liste doppelt in den beiden
+# tools/check-site.py. Frueher stand dieselbe Liste doppelt in den beiden
 # Generatoren, in zwei Sprachen; wer eine neue Seite nur an einer Stelle
 # eintrug, verlor sie stillschweigend in der anderen Sitemap.
 #
@@ -15,10 +15,13 @@
 #                        Korrekturen sollen das Datum NICHT hochbumpen)
 #   bilder      ja/nein — kommt die Seite in sitemap-images.xml vor?
 #
-# Nicht gelistet und das mit Absicht: 404.html, /gebucht/ und
-# /stadtralley/ (alle noindex, nur per Direktlink oder QR-Code erreichbar).
-# Wer eine Seite hinzufuegt, traegt sie hier ein — check-site.sh vergleicht
-# diese Liste mit den index.html auf der Platte und meldet Abweichungen.
+# Nicht gelistet und das mit Absicht: jede Seite mit robots-Meta "noindex"
+# (Fehlerseite, Buchungsbestaetigung, Rallye, Anamnesebogen) — nur per
+# Direktlink oder QR-Code erreichbar.
+# Wer eine Seite hinzufuegt, traegt sie hier ein oder gibt ihr noindex —
+# check-site.py vergleicht diese Liste mit den HTML-Dateien auf der Platte und
+# meldet beides: eine Seite ohne Eintrag und ohne noindex, und einen Eintrag
+# fuer eine Seite mit noindex.
 #
 # url	datei	changefreq	prioritaet	lastmod	bilder
 /	index.html	monthly	1.0	git	ja

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anamnesebogen – Adventure Dogs | Julia Doubrawa</title>
+<meta name="description" content="Anamnesebogen der Hundeschule Adventure Dogs in Krumbach – vor dem ersten Training erzählst du Julia Doubrawa von dir und deinem Hund.">
+<link rel="canonical" href="https://adventuredogs.training/anamnesebogen/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adventure Dogs">
+<meta property="og:title" content="Anamnesebogen – Adventure Dogs | Julia Doubrawa">
+<meta property="og:description" content="Ich freue mich auf euch und möchte euch gerne etwas besser kennenlernen.">
+<meta property="og:url" content="https://adventuredogs.training/anamnesebogen/">
+<meta property="og:image" content="https://adventuredogs.training/assets/hero-kontakt.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="800">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon-64.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta name="robots" content="noindex, nofollow">
+<link href="../assets/fonts.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+
+  :root {
+    --blue:     oklch(32% 0.07 240);
+    --blue-mid: oklch(45% 0.09 225);
+    --blue-lt:  oklch(88% 0.04 225);
+    --cream:    oklch(97% 0.01 80);
+    --cream2:   oklch(93% 0.015 80);
+    --text:     oklch(22% 0.02 60);
+    --text-lt:  oklch(50% 0.02 60);
+    --accent:   oklch(62% 0.12 185);
+    --white:    #fff;
+    --r-lg:     14px;
+    --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
+  }
+
+  /* Die Navigation steht fest und ist 80 px hoch. Ohne den Abstand landen die
+     Spruenge aus der Teile-Liste und das Feld, zu dem die Browser-Pruefung
+     beim Absenden springt, genau darunter. */
+  html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+
+  /* ── NAV (identisch zu den anderen Seiten) ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 clamp(22px, 4vw, 52px); display: flex; align-items: center; justify-content: space-between;
+    height: 80px; background: transparent;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: oklch(97% 0.01 80 / 0.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px oklch(0% 0 0 / 0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { width: 46px; height: 46px; }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    color: var(--white); white-space: nowrap; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo-text { color: var(--blue); }
+  .nav-links { display: flex; gap: 30px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 13.5px; font-weight: 500; color: oklch(100% 0 0 / 0.88); transition: color 0.2s; }
+  nav.scrolled .nav-links a { color: var(--text); }
+  .nav-links a:hover { color: var(--white); font-weight: 700; }
+  nav.scrolled .nav-links a:hover { color: var(--text); font-weight: 700; }
+  .nav-cta {
+    background: var(--white); color: var(--blue) !important;
+    padding: 12px 22px; border-radius: 40px; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+  }
+  nav.scrolled .nav-cta { background: var(--blue); color: var(--white) !important; }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── PAGE HEADER (wie im Impressum: blaues Band ohne Bild) ──
+     Die Unterzeile gibt es dort nicht; sie ist im Stil der Hero-Unterzeile
+     der anderen Seiten gesetzt. */
+  .page-header {
+    padding: 130px 7% 60px;
+    background: var(--blue);
+    position: relative; overflow: hidden;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, oklch(45% 0.09 225 / 0.4) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-header-inner { position: relative; z-index: 1; }
+  .page-header-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px); font-weight: 900;
+    color: var(--white); line-height: 1.08;
+  }
+  .page-header h1 em { font-style: italic; color: oklch(90% 0.06 185); }
+  .page-header-sub {
+    margin-top: 16px; font-size: clamp(15px, 1.8vw, 18px); color: oklch(100% 0 0 / 0.8);
+    max-width: 520px; line-height: 1.65; font-weight: 300;
+  }
+
+  /* ── BOGEN ──
+     Zwei Spalten wie auf /kontakt/: links Einleitung und Teile-Liste, rechts
+     die Karte mit den Fragen. Beide laufen im Seitenrand ueber die volle
+     Breite, ohne Deckel (siehe CLAUDE.md, Abschnitt Layout). */
+  .bogen-section {
+    padding: 80px 7% 100px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+    gap: 72px;
+    align-items: start;
+  }
+  /* Ab 2200 px bekommt die Karte mehr Anteil, damit die Einleitung links
+     auch mit mitwachsender Schrift unter 75 Zeichen je Zeile bleibt. */
+  @media (min-width: 2200px) {
+    .bogen-section { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  }
+
+  .bogen-info { position: sticky; top: 110px; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3vw, 40px); font-weight: 700;
+    color: var(--blue); line-height: 1.15; margin-bottom: 24px; text-wrap: pretty;
+  }
+  /* Lesbar ohne Deckel (CLAUDE.md, Layout): die Schrift waechst mit, die
+     Spaltenaufteilung oben haelt die Zeile kurz. */
+  .bogen-info > p {
+    font-size: clamp(16px, 0.9vw, 24px); line-height: 1.8; color: var(--text-lt);
+    font-weight: 300; margin-bottom: 16px;
+  }
+
+  /* Teile-Liste: wird vom Skript aus den Ueberschriften der Teile gebaut und
+     hakt einen Teil ab, sobald alle Pflichtfragen darin beantwortet sind. */
+  .teile { list-style: none; margin: 32px 0 28px; display: flex; flex-direction: column; gap: 2px; }
+  .teile a {
+    display: flex; align-items: center; gap: 14px; padding: 7px 0;
+    text-decoration: none; color: var(--text); font-size: 15px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .teile a:hover { color: var(--accent); }
+  .teil-status {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: oklch(62% 0.12 185 / 0.12); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; transition: background 0.2s, color 0.2s;
+  }
+  .teil-status svg { display: none; width: 13px; height: 13px; stroke: var(--white); fill: none; }
+  .teile .fertig .teil-status { background: var(--accent); color: var(--white); }
+  .teile .fertig .teil-status .nr { display: none; }
+  .teile .fertig .teil-status svg { display: block; }
+
+  /* ── FORMULAR ── */
+  .form-card {
+    background: var(--white); border-radius: var(--r-lg);
+    padding: 48px; box-shadow: var(--shadow);
+  }
+  .teil + .teil { margin-top: 48px; padding-top: 44px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.2vw, 28px); font-weight: 700;
+    color: var(--blue); margin-bottom: 28px;
+  }
+
+  .frage { margin-bottom: 28px; min-width: 0; }
+  fieldset.frage { border: 0; }
+  .frage-kopf {
+    display: block; font-size: clamp(15.5px, 0.9vw, 18px); font-weight: 600;
+    color: var(--text); line-height: 1.45; margin-bottom: 10px; text-wrap: pretty;
+  }
+  /* Eine Legende sitzt sonst auf dem Rahmen des Fieldsets und nimmt keinen
+     Aussenabstand an. Als Float verhaelt sie sich wie jede andere Ueberschrift. */
+  legend.frage-kopf { float: left; width: 100%; padding: 0; }
+  legend.frage-kopf + * { clear: both; }
+  .frei {
+    display: inline-block; margin-left: 6px; padding: 2px 9px; border-radius: 40px;
+    background: var(--cream2); color: var(--text-lt);
+    font-size: 12px; font-weight: 500; line-height: 1.5; vertical-align: 2px; white-space: nowrap;
+  }
+  .frage-hinweis { font-size: 13px; color: var(--text-lt); margin: -4px 0 10px; }
+
+  /* 16 px, nicht 15 wie auf /kontakt/: darunter zoomt Safari auf dem iPhone
+     bei jedem Antippen in das Feld hinein - bei 37 Fragen ein Dauerzustand. */
+  .frage input[type="text"],
+  .frage input[type="email"],
+  .frage input[type="tel"],
+  .frage textarea {
+    width: 100%;
+    border: 1.5px solid oklch(0% 0 0 / 0.12);
+    border-radius: 10px; padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.5; color: var(--text);
+    background: var(--cream); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .frage input:focus,
+  .frage textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px oklch(62% 0.12 185 / 0.12);
+    background: var(--white);
+  }
+  /* Waechst mit der Antwort mit, wo der Browser field-sizing kennt; sonst
+     laesst es sich von Hand aufziehen. */
+  .frage textarea { min-height: 128px; resize: vertical; field-sizing: content; }
+  .frage textarea.kurz { min-height: 80px; }
+
+  /* Zwei kurze Fragen nebeneinander; wird die Karte zu schmal, untereinander.
+     240 px, damit es bei 1280 noch nebeneinander passt - dort bleiben in der
+     Karte nur 557 px. */
+  .frage-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); column-gap: 20px; }
+
+  /* Auswahl als Knoepfe. Das echte Eingabefeld liegt unsichtbar darueber:
+     so bleibt es per Tastatur erreichbar, und die Browser-Pruefung hat einen
+     Ort, an dem sie ihre Meldung zeigen kann. */
+  .optionen { display: flex; flex-wrap: wrap; gap: 8px; }
+  .optionen + .optionen { margin-top: 8px; }
+  .option { position: relative; display: inline-flex; cursor: pointer; }
+  .option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .option span {
+    display: inline-flex; align-items: center;
+    padding: 10px 18px; border-radius: 40px;
+    border: 1.5px solid oklch(0% 0 0 / 0.12); background: var(--cream);
+    font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .option:hover span { border-color: var(--accent); }
+  .option input:checked + span { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .option input:focus-visible + span { box-shadow: 0 0 0 3px oklch(62% 0.12 185 / 0.35); }
+
+  .option-sonstiges { display: flex; align-items: center; gap: 8px; flex: 1 1 260px; min-width: 0; }
+  .frage .option-sonstiges input.sonstiges { flex: 1 1 140px; width: auto; min-width: 0; padding: 10px 14px; }
+
+  /* Freiwillige Einfachauswahl: ein Radio laesst sich nicht abwaehlen,
+     also wie bei Google ein Knopf dafuer. Das Skript setzt ihn ein. */
+  .auswahl-weg {
+    margin-top: 8px; padding: 0; border: none; background: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-lt);
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  .auswahl-weg:hover { color: var(--accent); }
+
+  /* ── ABSENDEN ── */
+  .absenden { margin-top: 48px; padding-top: 40px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
+  .check-label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; margin-bottom: 24px; }
+  .check-label input[type="checkbox"] {
+    width: 18px; height: 18px; min-width: 18px; margin-top: 2px;
+    accent-color: var(--accent); cursor: pointer; border-radius: 4px;
+  }
+  .check-label span { font-size: 14px; line-height: 1.6; color: var(--text-lt); }
+  .check-label span a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* .btn-primary wie auf der Startseite; dazu nur, was ein <button> statt
+     eines Links braucht: kein Rahmen, eigene Schrift, Zeiger, Sperre. */
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: var(--white); text-decoration: none;
+    font-size: 15px; font-weight: 600; padding: 14px 30px; border-radius: 40px;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
+    border: none; font-family: 'DM Sans', sans-serif; cursor: pointer;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
+  .btn-primary:disabled { cursor: wait; transform: none; }
+  .btn-primary svg { width: 16px; height: 16px; stroke: var(--white); fill: none; }
+  .form-privacy { font-size: 12px; color: var(--text-lt); margin-top: 16px; line-height: 1.6; }
+
+  /* Schlaegt das Absenden fehl, bleiben die Antworten stehen - und wer sie
+     nicht verlieren will, kann sie kopieren und selbst per Mail schicken. */
+  .sende-fehler {
+    margin-top: 28px; padding: 22px 24px; border-radius: var(--r-lg);
+    background: var(--cream2); border-left: 4px solid var(--blue);
+    font-size: 15px; line-height: 1.65; color: var(--text);
+  }
+  .sende-fehler strong { display: block; color: var(--blue); font-size: 16px; margin-bottom: 4px; }
+  .sende-fehler a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .fehler-detail { margin-top: 10px; font-weight: 600; color: var(--blue); }
+  .btn-kopieren {
+    margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border: none; border-radius: 40px; cursor: pointer;
+    background: var(--blue); color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-kopieren:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-kopieren svg { width: 15px; height: 15px; stroke: var(--white); fill: none; }
+  .kopie {
+    display: block; width: 100%; min-height: 220px; margin-top: 14px; padding: 12px 14px;
+    border: 1.5px solid oklch(0% 0 0 / 0.12); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.5; color: var(--text);
+    background: var(--white); resize: vertical;
+  }
+
+  /* ── DANKE ── */
+  .form-success { text-align: center; padding: 40px 0; }
+  .form-success-icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: oklch(62% 0.12 185 / 0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .form-success-icon svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--blue); margin-bottom: 8px; outline: none; }
+  .form-success p { font-size: 16px; color: var(--text-lt); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text); color: oklch(100% 0 0 / 0.55);
+    padding: 40px 7%; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 500; }
+  footer a { color: oklch(100% 0 0 / 0.45); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 110;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--white); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--blue); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile {
+    display: none; position: fixed; top: 80px; left: 0; right: 0;
+    background: oklch(97% 0.01 80 / 0.98); backdrop-filter: blur(16px);
+    padding: 20px clamp(22px, 4vw, 52px) 28px; flex-direction: column; gap: 4px;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.10); z-index: 99;
+    border-top: 1px solid oklch(0% 0 0 / 0.06);
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    text-decoration: none; font-size: 16px; font-weight: 500;
+    color: var(--text); padding: 12px 0;
+    border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile .nav-cta-mobile {
+    margin-top: 8px; background: var(--blue); color: var(--white) !important;
+    padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
+    text-align: center; border-bottom: none !important;
+  }
+
+  /* ── RESPONSIVE ── */
+  /* Die Teile-Liste steht nur neben dem Bogen; ueber ihm waere sie beim
+     Ausfuellen laengst aus dem Bild gescrollt. Dort sagt "Teil x von 7" an
+     jedem Abschnitt, wo man steht. */
+  @media (max-width: 1080px) {
+    .bogen-section { grid-template-columns: 1fr; gap: 40px; }
+    .bogen-info { position: static; }
+    .teile { display: none; }
+  }
+  /* Auf niedrigen Bildschirmen wuerde die mitlaufende Spalte unten abgeschnitten. */
+  @media (max-height: 700px) {
+    .bogen-info { position: static; }
+  }
+  @media (max-width: 860px) {
+    .nav-hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+  /* Am Handy 5 % Rand wie auf der Startseite - hier aber fuer Titel und Fuss
+     gleich mit, damit die linke Kante durchgeht und der Bogen die Breite
+     bekommt, die er braucht. */
+  @media (max-width: 720px) {
+    .page-header { padding: 110px 5% 44px; }
+    .bogen-section { padding: 64px 5%; }
+    footer { padding: 40px 5%; }
+    .form-card { padding: 28px 22px; }
+    .btn-primary { width: 100%; }
+  }
+
+/* fuenfter Nav-Eintrag: mittlere Breiten */
+@media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+</style>
+</head>
+<body>
+
+<!-- NAV - ohne Bild im Kopf von Anfang an hell, wie im Impressum. Deshalb
+     fest "scrolled" und kein Umschalten beim Scrollen. -->
+<nav id="nav" class="scrolled">
+  <a class="nav-logo" href="../">
+    <img src="../assets/logo-144.webp" width="46" height="46" alt="Adventure Dogs Logo">
+    <span class="nav-logo-text">Adventure Dogs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../ueber-mich/">Über mich</a></li>
+    <li><a href="../kontakt/">Kontakt</a></li>
+    <li><a href="../alltagstipps/">Alltagstipps</a></li>
+    <li><a href="https://officedogs.training/">Office Dogs</a></li>
+    <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="../ueber-mich/">Über mich</a>
+  <a href="../kontakt/">Kontakt</a>
+  <a href="../alltagstipps/">Alltagstipps</a>
+  <a href="https://officedogs.training/">Office Dogs</a>
+  <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="page-header-eyebrow">Anamnesebogen</span>
+    <h1>Willkommen bei <em>Adventure Dogs.</em></h1>
+    <p class="page-header-sub">Ich freue mich auf euch und möchte euch gerne etwas besser kennenlernen.</p>
+  </div>
+</div>
+
+<!-- BOGEN -->
+<section class="bogen-section">
+
+  <!-- LINKS: Einleitung -->
+  <aside class="bogen-info">
+    <span class="section-label">Vor unserem ersten Training</span>
+    <h2 class="section-title">Erzähl mir von euch</h2>
+    <p>Je besser ich dich und deinen Hund kenne, desto genauer kann ich das Training auf euch abstimmen. Nimm dir ruhig etwas Zeit – es gibt keine falschen Antworten.</p>
+    <p>Fragen mit dem Zusatz „freiwillig“ kannst du auslassen, alle anderen brauchen eine Antwort.</p>
+    <ol class="teile" id="teile" aria-label="Teile des Fragebogens" hidden></ol>
+  </aside>
+
+  <!-- RECHTS: Fragen -->
+  <div class="form-card">
+    <!-- Kein novalidate - aus demselben Grund wie auf /kontakt/: sonst bricht
+         der Handler bei leeren Pflichtfeldern ab, ohne dass der Browser sagt,
+         welches Feld fehlt.
+
+         Was bei Formspree ankommt, baut das Skript unten selbst: je Frage ein
+         Feld, benannt nach dem Fragetext, in der Reihenfolge des Bogens.
+         Formspree soll die Felder in der Mail genau so auflisten (siehe
+         README, Abschnitt Formulare). Die name-Attribute halten die
+         Auswahlgruppen zusammen und tragen den Versand ohne Skript, der dann
+         nur Kurznamen statt der Fragetexte kennt. -->
+    <form id="bogen" action="https://formspree.io/f/xaqvnvzq" method="POST">
+
+      <!-- Honeypot – für Bots unsichtbar -->
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+      <!-- ─── TEIL 1 ─── -->
+      <section class="teil" id="teil-1" aria-labelledby="teil-1-titel">
+        <span class="section-label">Teil 1 von 7</span>
+        <h3 class="form-title" id="teil-1-titel">Über dich</h3>
+
+        <div class="frage-paar">
+          <div class="frage">
+            <label class="frage-kopf" for="f-name">Vor- und Nachname</label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="frage">
+            <label class="frage-kopf" for="f-anschrift">Anschrift</label>
+            <input type="text" id="f-anschrift" name="anschrift" placeholder="Straße, PLZ und Ort" required>
+          </div>
+        </div>
+        <div class="frage-paar">
+          <div class="frage">
+            <label class="frage-kopf" for="f-telefon">Telefonnummer</label>
+            <input type="tel" id="f-telefon" name="telefon" autocomplete="tel" required>
+          </div>
+          <!-- data-feld: Formspree setzt nur ein Feld namens "email" als
+               Antwortadresse der Mail - so geht "Antworten" direkt an den Kunden. -->
+          <div class="frage" data-feld="email">
+            <label class="frage-kopf" for="f-email">E-Mail-Adresse</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── TEIL 2 ─── -->
+      <section class="teil" id="teil-2" aria-labelledby="teil-2-titel">
+        <span class="section-label">Teil 2 von 7</span>
+        <h3 class="form-title" id="teil-2-titel">Dein Hund</h3>
+
+        <div class="frage-paar">
+          <div class="frage">
+            <label class="frage-kopf" for="f-hund">Name deines Hundes</label>
+            <input type="text" id="f-hund" name="hund" autocomplete="off" required>
+          </div>
+          <div class="frage">
+            <label class="frage-kopf" for="f-geburtsdatum">Geburtsdatum deines Hundes</label>
+            <input type="text" id="f-geburtsdatum" name="geburtsdatum" autocomplete="off" placeholder="TT.MM.JJJJ – oder ungefähr" required>
+          </div>
+        </div>
+
+        <!-- Bei Google eine Kaestchenfrage mit allen vier Antworten, in der man
+             auch "Ruede" und "Huendin" zugleich ankreuzen konnte. Hier zwei
+             Zeilen mit je einer Wahl; in der Mail stehen beide in einer Zeile.
+             "Unbekannt", weil bei Tierschutzhunden der Status oft offen ist -
+             sonst muesste geraten werden. -->
+        <fieldset class="frage">
+          <legend class="frage-kopf">Geschlecht</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="geschlecht" value="Rüde" required><span>Rüde</span></label>
+            <label class="option"><input type="radio" name="geschlecht" value="Hündin"><span>Hündin</span></label>
+          </div>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="kastration" value="Intakt" required><span>Intakt</span></label>
+            <label class="option"><input type="radio" name="kastration" value="Kastriert/sterilisiert"><span>Kastriert/sterilisiert</span></label>
+            <label class="option"><input type="radio" name="kastration" value="Unbekannt"><span>Unbekannt</span></label>
+          </div>
+        </fieldset>
+
+        <!-- Immer sichtbar wie bei Google: auch wer "Intakt" waehlt, soll eine
+             geplante Kastration oder einen Chip notieren koennen. -->
+        <div class="frage">
+          <label class="frage-kopf" for="f-kastration">Zeitpunkt und Grund der Kastration <span class="frei">freiwillig</span></label>
+          <textarea id="f-kastration" name="kastration_details" class="kurz" placeholder="Auch wenn sie geplant ist oder per Chip"></textarea>
+        </div>
+
+        <div class="frage-paar">
+          <div class="frage">
+            <label class="frage-kopf" for="f-seit">Dein Hund lebt bei dir seit:</label>
+            <input type="text" id="f-seit" name="seit" autocomplete="off" placeholder="z. B. Mai 2023" required>
+          </div>
+          <fieldset class="frage">
+            <legend class="frage-kopf">Ist das dein erster Hund?</legend>
+            <div class="optionen">
+              <label class="option"><input type="radio" name="erster_hund" value="Ja" required><span>Ja</span></label>
+              <label class="option"><input type="radio" name="erster_hund" value="Nein"><span>Nein</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-vorgeschichte">Was weißt du über die Vorgeschichte deines Hundes?</label>
+          <textarea id="f-vorgeschichte" name="vorgeschichte" required></textarea>
+        </div>
+      </section>
+
+      <!-- ─── TEIL 3 ─── -->
+      <section class="teil" id="teil-3" aria-labelledby="teil-3-titel">
+        <span class="section-label">Teil 3 von 7</span>
+        <h3 class="form-title" id="teil-3-titel">Gesundheit und Futter</h3>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Ist dein Hund schmerzfrei?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="schmerzfrei" value="Ja" required><span>Ja</span></label>
+            <label class="option"><input type="radio" name="schmerzfrei" value="Nein"><span>Nein</span></label>
+          </div>
+        </fieldset>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-erkrankungen">Gibt es Erkrankungen, Allergien oder Beeinträchtigungen?</label>
+          <textarea id="f-erkrankungen" name="erkrankungen" class="kurz" required></textarea>
+        </div>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Ist der Impfstatus deines Hundes auf dem aktuellen Stand?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="impfstatus" value="Ja" required><span>Ja</span></label>
+            <label class="option"><input type="radio" name="impfstatus" value="Nein"><span>Nein</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Wie oft am Tag bekommt dein Hund Futter?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="futter" value="Einmal" required><span>Einmal</span></label>
+            <label class="option"><input type="radio" name="futter" value="Zweimal"><span>Zweimal</span></label>
+            <label class="option"><input type="radio" name="futter" value="Dreimal"><span>Dreimal</span></label>
+            <label class="option"><input type="radio" name="futter" value="Steht immer zur freien Verfügung"><span>Steht immer zur freien Verfügung</span></label>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- ─── TEIL 4 ─── -->
+      <section class="teil" id="teil-4" aria-labelledby="teil-4-titel">
+        <span class="section-label">Teil 4 von 7</span>
+        <h3 class="form-title" id="teil-4-titel">Rasse und Erwartungen</h3>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-rasse">Rasse deines Hundes</label>
+          <input type="text" id="f-rasse" name="rasse" autocomplete="off" required>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-entschieden">Wieso hast du dich für deinen Hund entschieden?</label>
+          <textarea id="f-entschieden" name="entschieden" required></textarea>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-erwartungen">Welche Erwartungen hattest du an deinen Hund und wurden diese erfüllt?</label>
+          <textarea id="f-erwartungen" name="erwartungen" required></textarea>
+        </div>
+      </section>
+
+      <!-- ─── TEIL 5 ─── -->
+      <section class="teil" id="teil-5" aria-labelledby="teil-5-titel">
+        <span class="section-label">Teil 5 von 7</span>
+        <h3 class="form-title" id="teil-5-titel">Euer Alltag</h3>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-tagesablauf">Wie sieht ein typischer Tagesablauf deines Hundes aus?</label>
+          <textarea id="f-tagesablauf" name="tagesablauf" required></textarea>
+        </div>
+
+        <fieldset class="frage" data-mindestens-eins aria-describedby="h-wohnen">
+          <legend class="frage-kopf">Wie wohnt ihr?</legend>
+          <p class="frage-hinweis" id="h-wohnen">Mehrfachauswahl möglich</p>
+          <div class="optionen">
+            <label class="option"><input type="checkbox" name="wohnen" value="städtisch"><span>städtisch</span></label>
+            <label class="option"><input type="checkbox" name="wohnen" value="ländlich"><span>ländlich</span></label>
+            <label class="option"><input type="checkbox" name="wohnen" value="mit Garten"><span>mit Garten</span></label>
+            <span class="option-sonstiges">
+              <label class="option"><input type="checkbox" name="wohnen" value="Sonstiges" data-freitext="f-wohnen-sonstiges"><span>Sonstiges:</span></label>
+              <input type="text" id="f-wohnen-sonstiges" name="wohnen_sonstiges" class="sonstiges" autocomplete="off" placeholder="Was genau?" aria-label="Wie wohnt ihr – Sonstiges">
+            </span>
+          </div>
+        </fieldset>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-umfeld">Welche anderen Menschen und anderen Tiere gehören zum sozialen/häuslichen Umfeld des Hundes?</label>
+          <textarea id="f-umfeld" name="umfeld" required></textarea>
+        </div>
+
+        <div class="frage-paar">
+          <fieldset class="frage">
+            <legend class="frage-kopf">Hat dein Hund regelmäßig Kontakt zu Artgenossen?</legend>
+            <div class="optionen">
+              <label class="option"><input type="radio" name="artgenossen" value="Ja" required><span>Ja</span></label>
+              <label class="option"><input type="radio" name="artgenossen" value="Nein"><span>Nein</span></label>
+              <label class="option"><input type="radio" name="artgenossen" value="Selten"><span>Selten</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="frage">
+            <legend class="frage-kopf">Sind es feste Freunde oder wechselnde, fremde Hunde? <span class="frei">freiwillig</span></legend>
+            <div class="optionen">
+              <label class="option"><input type="radio" name="freunde" value="Feste Freunde"><span>Feste Freunde</span></label>
+              <label class="option"><input type="radio" name="freunde" value="Fremde"><span>Fremde</span></label>
+              <label class="option"><input type="radio" name="freunde" value="Beides"><span>Beides</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-beschaeftigung">Führst du weitere Beschäftigungen mit deinem Hund durch? Was macht ihr und wie oft?</label>
+          <textarea id="f-beschaeftigung" name="beschaeftigung" class="kurz" required></textarea>
+        </div>
+      </section>
+
+      <!-- ─── TEIL 6 ─── -->
+      <section class="teil" id="teil-6" aria-labelledby="teil-6-titel">
+        <span class="section-label">Teil 6 von 7</span>
+        <h3 class="form-title" id="teil-6-titel">Verhalten</h3>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Folgt dir dein Hund zuhause, sobald du aus dem Raum gehst?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="folgt" value="Ja" required><span>Ja</span></label>
+            <label class="option"><input type="radio" name="folgt" value="Nein"><span>Nein</span></label>
+          </div>
+        </fieldset>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-besuche">Wie verlaufen Besuche bei dir zu Hause? Wie verhält sich dein Hund?</label>
+          <textarea id="f-besuche" name="besuche" required></textarea>
+        </div>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Bleibt dein Hund auf einem zugewiesenen Platz?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="platz" value="nein" required><span>nein</span></label>
+            <label class="option"><input type="radio" name="platz" value="5–20 Minuten"><span>5–20 Minuten</span></label>
+            <label class="option"><input type="radio" name="platz" value="ja, aber schläft nicht"><span>ja, aber schläft nicht</span></label>
+            <label class="option"><input type="radio" name="platz" value="ja, entspannt und schläft"><span>ja, entspannt und schläft</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Dein Hund ist an fremden Orten:</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="fremde_orte" value="entspannt" required><span>entspannt</span></label>
+            <label class="option"><input type="radio" name="fremde_orte" value="aufgeregt"><span>aufgeregt</span></label>
+            <label class="option"><input type="radio" name="fremde_orte" value="unsicher/ängstlich"><span>unsicher/ängstlich</span></label>
+            <label class="option"><input type="radio" name="fremde_orte" value="unsicher/aggressiv"><span>unsicher/aggressiv</span></label>
+          </div>
+        </fieldset>
+
+        <!-- Bei Google hiess die erste Antwort "Ja (bitte Situation unter
+             Sonstiges erlaeutern)" - in einer Auswahl, in der man nur eins
+             waehlen kann, also nie beides. Jetzt fragt ein eigenes Feld nach. -->
+        <fieldset class="frage">
+          <legend class="frage-kopf">Gab es schon mal einen Beißvorfall?</legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="beissvorfall" value="Ja" required><span>Ja</span></label>
+            <label class="option"><input type="radio" name="beissvorfall" value="Nein"><span>Nein</span></label>
+            <span class="option-sonstiges">
+              <label class="option"><input type="radio" name="beissvorfall" value="Sonstiges" data-freitext="f-beissvorfall-sonstiges"><span>Sonstiges:</span></label>
+              <input type="text" id="f-beissvorfall-sonstiges" name="beissvorfall_sonstiges" class="sonstiges" autocomplete="off" placeholder="Was genau?" aria-label="Beißvorfall – Sonstiges">
+            </span>
+          </div>
+        </fieldset>
+
+        <!-- disabled schon im HTML: laeuft das Skript nicht, blockiert das
+             versteckte Pflichtfeld sonst den Versand, ohne dass der Browser
+             zeigen kann, woran es liegt. Das Skript schaltet es bei "Ja" frei. -->
+        <div class="frage" data-zeige-wenn="beissvorfall=Ja" hidden>
+          <label class="frage-kopf" for="f-beissvorfall">Was ist beim Beißvorfall passiert?</label>
+          <textarea id="f-beissvorfall" name="beissvorfall_details" class="kurz" required disabled></textarea>
+        </div>
+      </section>
+
+      <!-- ─── TEIL 7 ─── -->
+      <section class="teil" id="teil-7" aria-labelledby="teil-7-titel">
+        <span class="section-label">Teil 7 von 7</span>
+        <h3 class="form-title" id="teil-7-titel">Training und Zusammenarbeit</h3>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-gut">Was kann dein Hund besonders gut?</label>
+          <textarea id="f-gut" name="gut" class="kurz" required></textarea>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-trainingszustand">Beschreibe kurz den Trainingszustand deines Hundes (wie gut funktionieren Grundsignale wie Sitz/Platz/Rückruf im Alltag)</label>
+          <textarea id="f-trainingszustand" name="trainingszustand" required></textarea>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-aendern">Gibt es Verhaltensweisen, die du an deinem Hund ändern möchtest?</label>
+          <textarea id="f-aendern" name="aendern" required></textarea>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-grund">Aus welchem Grund kommst du zu mir ins Training?</label>
+          <textarea id="f-grund" name="grund" required></textarea>
+        </div>
+
+        <fieldset class="frage" aria-describedby="h-selbst">
+          <legend class="frage-kopf">Wie würdest du dich selbst beschreiben? <span class="frei">freiwillig</span></legend>
+          <p class="frage-hinweis" id="h-selbst">Mehrfachauswahl möglich</p>
+          <div class="optionen">
+            <label class="option"><input type="checkbox" name="selbst" value="entspannt"><span>entspannt</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="nervös/gestresst"><span>nervös/gestresst</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="unsicher"><span>unsicher</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="selbstbewusst"><span>selbstbewusst</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="ungeduldig"><span>ungeduldig</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="zielstrebig"><span>zielstrebig</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="ruhig"><span>ruhig</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="klar"><span>klar</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="schnell emotional"><span>schnell emotional</span></label>
+            <label class="option"><input type="checkbox" name="selbst" value="impulsiv"><span>impulsiv</span></label>
+          </div>
+        </fieldset>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-fragen">Welche Fragen hast du an mich? Was erwartest du von unserer Zusammenarbeit?</label>
+          <textarea id="f-fragen" name="fragen" required></textarea>
+        </div>
+
+        <div class="frage">
+          <label class="frage-kopf" for="f-wuensche">Was wünschst du dir für deinen Hund und für euch beide?</label>
+          <textarea id="f-wuensche" name="wuensche" required></textarea>
+        </div>
+
+        <fieldset class="frage">
+          <legend class="frage-kopf">Wie bist du auf mich aufmerksam geworden? <span class="frei">freiwillig</span></legend>
+          <div class="optionen">
+            <label class="option"><input type="radio" name="aufmerksam" value="Web-Suche"><span>Web-Suche</span></label>
+            <label class="option"><input type="radio" name="aufmerksam" value="Empfehlung"><span>Empfehlung</span></label>
+            <span class="option-sonstiges">
+              <label class="option"><input type="radio" name="aufmerksam" value="Sonstiges" data-freitext="f-aufmerksam-sonstiges"><span>Sonstiges:</span></label>
+              <input type="text" id="f-aufmerksam-sonstiges" name="aufmerksam_sonstiges" class="sonstiges" autocomplete="off" placeholder="Was genau?" aria-label="Aufmerksam geworden – Sonstiges">
+            </span>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- ─── ABSENDEN ─── -->
+      <div class="absenden">
+        <label class="check-label">
+          <input type="checkbox" id="privacy" name="privacy" required>
+          <span>Ich habe die <a href="../impressum/#datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und bin einverstanden, dass meine Angaben zur Vorbereitung und Durchführung des Trainings verarbeitet werden.</span>
+        </label>
+
+        <button type="submit" class="btn-primary" id="bogenKnopf">
+          Anamnesebogen absenden
+          <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+        <p class="form-privacy">Deine Antworten kommen per E-Mail bei mir an und werden nur für unser Training verwendet.</p>
+
+        <div class="sende-fehler" id="sendeFehler" role="alert" hidden>
+          <strong>Das Absenden hat leider nicht geklappt.</strong>
+          <p>Deine Antworten sind noch da – versuch es bitte gleich noch einmal. Klappt es weiterhin nicht, kopier sie hier heraus und schick sie mir an <a href="mailto:julia@adventuredogs.training">julia@adventuredogs.training</a>.</p>
+          <p class="fehler-detail" id="fehlerDetail" hidden></p>
+          <button type="button" class="btn-kopieren" id="kopieren">
+            <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Antworten kopieren</span>
+          </button>
+          <textarea class="kopie" id="kopie" readonly aria-label="Deine Antworten zum Kopieren" hidden></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-success" id="bogenDanke" hidden>
+      <div class="form-success-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h3 tabindex="-1">Danke, dein Anamnesebogen ist angekommen!</h3>
+      <p>Ich freue mich darauf, dich und <span id="dankeHund">deinen Hund</span> kennenzulernen.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span>Adventure Dogs · Hundeschule Julia Doubrawa · Krumbach</span>
+  </div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <a href="../impressum/">Impressum</a>
+    <a href="../impressum/#datenschutz">Datenschutz</a>
+    <a href="../kontakt/">Kontakt</a>
+    <a href="../">Startseite</a>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+  }
+</script>
+
+<script>
+  // Anamnesebogen
+  (function () {
+    const form = document.getElementById('bogen');
+    if (!form) return;
+
+    const knopf = document.getElementById('bogenKnopf');
+    const knopfInhalt = knopf.innerHTML;
+    const fehler = document.getElementById('sendeFehler');
+    const detail = document.getElementById('fehlerDetail');
+    const danke = document.getElementById('bogenDanke');
+    const teile = [...form.querySelectorAll('.teil')];
+    const HAKEN = '<svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    let ungesichert = false;
+
+    // Teile-Liste links, aus den Ueberschriften der Teile - so kann sie nicht
+    // von den Titeln im Bogen abweichen.
+    const liste = document.getElementById('teile');
+    const eintraege = teile.map((teil, i) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + teil.id;
+      a.innerHTML = '<span class="teil-status" aria-hidden="true"><span class="nr">' + (i + 1) + '</span>' + HAKEN + '</span>';
+      a.append(teil.querySelector('.form-title').textContent);
+      li.append(a);
+      liste.append(li);
+      return li;
+    });
+    liste.hidden = false;
+
+    // Ist in der Gruppe `name` etwas angehakt - oder, mit `wert`, genau diese
+    // Option? Gilt fuer Radios und Kaestchen gleich. form.elements[name].value
+    // kann das nicht: bei einem einzelnen Feld liefert es den Wert auch
+    // ungewaehlt, bei Kaestchen immer ''.
+    function gewaehlt(name, wert) {
+      return [...form.querySelectorAll('input')].some(f =>
+        f.name === name && f.checked && (wert === undefined || f.value === wert));
+    }
+
+    // Alles, was vom Stand der Antworten abhaengt, an einer Stelle. Laeuft bei
+    // jeder Eingabe komplett durch - bei knapp hundert Feldern kostet das
+    // nichts und erspart es, Zustand pro Feld nachzuhalten.
+    function aktualisiere() {
+      // Folgefragen: ausgeblendet heisst auch abgeschaltet. Ein verstecktes
+      // Pflichtfeld wuerde das Absenden sonst blockieren, ohne dass der
+      // Browser zeigen kann, welches Feld fehlt.
+      form.querySelectorAll('[data-zeige-wenn]').forEach(folge => {
+        const [name, ...rest] = folge.dataset.zeigeWenn.split('=');
+        const sichtbar = gewaehlt(name, rest.join('='));
+        folge.hidden = !sichtbar;
+        folge.querySelectorAll('input, textarea').forEach(feld => { feld.disabled = !sichtbar; });
+      });
+      // "Auswahl entfernen" nur, solange es etwas zu entfernen gibt.
+      form.querySelectorAll('.auswahl-weg').forEach(weg => {
+        weg.hidden = !weg.closest('fieldset').querySelector('input[type="radio"]:checked');
+      });
+      // "Sonstiges" gewaehlt: dann will ich auch wissen, was.
+      form.querySelectorAll('[data-freitext]').forEach(option => {
+        document.getElementById(option.dataset.freitext).required = option.checked;
+      });
+      // Bei Kaestchen kennt HTML kein "mindestens eins" - also von Hand.
+      form.querySelectorAll('[data-mindestens-eins]').forEach(gruppe => {
+        const kaestchen = [...gruppe.querySelectorAll('input[type="checkbox"]')];
+        const eins = kaestchen.some(k => k.checked);
+        kaestchen[0].setCustomValidity(eins ? '' : 'Bitte wähle mindestens eine Antwort aus.');
+      });
+      teile.forEach((teil, i) => {
+        const fertig = [...teil.querySelectorAll('input, textarea')].every(f => f.disabled || f.validity.valid);
+        eintraege[i].classList.toggle('fertig', fertig);
+      });
+    }
+
+    function frageText(frage) {
+      const kopf = frage.querySelector('.frage-kopf').cloneNode(true);
+      kopf.querySelectorAll('.frei').forEach(el => el.remove());
+      return kopf.textContent.replace(/\s+/g, ' ').trim();
+    }
+
+    function antwortVon(frage) {
+      if (frage.hidden) return '–';
+      const stuecke = [];
+      frage.querySelectorAll('input, textarea').forEach(feld => {
+        if (feld.classList.contains('sonstiges')) {
+          // Kommt sonst ueber seine Option. Steht Text drin, obwohl eine andere
+          // Option gewaehlt ist - etwa Details neben "Ja" -, geht er trotzdem mit.
+          const option = form.querySelector('[data-freitext="' + feld.id + '"]');
+          if (!option.checked && feld.value.trim()) stuecke.push(feld.value.trim());
+          return;
+        }
+        if (feld.type === 'radio' || feld.type === 'checkbox') {
+          if (!feld.checked) return;
+          const freitext = feld.dataset.freitext && document.getElementById(feld.dataset.freitext);
+          stuecke.push(freitext ? freitext.value.trim() : feld.value);
+        } else if (feld.value.trim()) {
+          stuecke.push(feld.value.trim());
+        }
+      });
+      return stuecke.join(', ') || '–';
+    }
+
+    // Je Frage: der Text, wie er im Bogen steht, der Feldname fuer Formspree
+    // (derselbe Text, ausser bei der E-Mail) und die Antwort.
+    function antworten() {
+      return [...form.querySelectorAll('.frage')].map(frage => {
+        const text = frageText(frage);
+        return { frage: text, feld: frage.dataset.feld || text, antwort: antwortVon(frage) };
+      });
+    }
+
+    function wert(id) { return document.getElementById(id).value.trim(); }
+
+    // Zwischenstand im Tab (sessionStorage): verwirft das Handy den Tab im
+    // Hintergrund und laedt ihn neu, sind die Antworten wieder da. Er bleibt
+    // auf dem Geraet, endet mit dem Tab und wird nach dem Absenden geloescht
+    // (Datenschutzerklaerung, Abschnitt 5). Einwilligung und Honeypot bleiben
+    // aussen vor.
+    const ENTWURF = 'anamnesebogen-entwurf';
+    const merkbar = f => f.id !== 'kopie' && f.name !== '_gotcha' && f.name !== 'privacy';
+    function sichereEntwurf() {
+      const stand = {};
+      form.querySelectorAll('input, textarea').forEach(f => {
+        if (!merkbar(f)) return;
+        if (f.type === 'radio' || f.type === 'checkbox') { if (f.checked) stand[f.name + '=' + f.value] = true; }
+        else if (f.value) stand['#' + f.id] = f.value;
+      });
+      try { sessionStorage.setItem(ENTWURF, JSON.stringify(stand)); } catch (err) { /* ohne Speicher eben ohne Zwischenstand */ }
+    }
+    function ladeEntwurf() {
+      let stand = null;
+      try { stand = JSON.parse(sessionStorage.getItem(ENTWURF)); } catch (err) { /* kein Zwischenstand */ }
+      if (!stand) return false;
+      form.querySelectorAll('input, textarea').forEach(f => {
+        if (!merkbar(f)) return;
+        if (f.type === 'radio' || f.type === 'checkbox') f.checked = !!stand[f.name + '=' + f.value];
+        else if (('#' + f.id) in stand) f.value = stand['#' + f.id];
+      });
+      return true;
+    }
+    function geaendert() {
+      ungesichert = true;
+      aktualisiere();
+      sichereEntwurf();
+    }
+
+    // Freiwillige Einfachauswahl: ein Radio laesst sich nicht abwaehlen, also
+    // wie bei Google ein Knopf, der zurueck zu "keine Angabe" fuehrt.
+    form.querySelectorAll('fieldset.frage').forEach(gruppe => {
+      if (!gruppe.querySelector('legend .frei') || !gruppe.querySelector('input[type="radio"]')) return;
+      const weg = document.createElement('button');
+      weg.type = 'button';
+      weg.className = 'auswahl-weg';
+      weg.textContent = 'Auswahl entfernen';
+      weg.addEventListener('click', () => {
+        gruppe.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; });
+        gruppe.querySelectorAll('input.sonstiges').forEach(t => { t.value = ''; });
+        geaendert();
+      });
+      gruppe.append(weg);
+    });
+
+    form.addEventListener('input', e => {
+      // Wer beim "Sonstiges"-Feld zu tippen anfaengt, meint die Option dazu -
+      // bei Einfachauswahl aber nur, solange noch nichts gewaehlt ist. Sonst
+      // kippte "Ja" beim Beissvorfall unbemerkt auf "Sonstiges".
+      if (e.target.classList.contains('sonstiges') && e.target.value.trim()) {
+        const option = form.querySelector('[data-freitext="' + e.target.id + '"]');
+        if (option.type === 'checkbox' || !gewaehlt(option.name)) option.checked = true;
+      }
+      geaendert();
+    });
+    form.addEventListener('change', geaendert);
+    if (ladeEntwurf()) ungesichert = true;
+    aktualisiere();
+
+    // Siebenunddreissig Antworten gehen mit einem Klick auf "Zurueck" verloren.
+    window.addEventListener('beforeunload', e => {
+      if (!ungesichert) return;
+      e.preventDefault();
+      e.returnValue = '';
+    });
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      // Nur-Leerzeichen besteht required, ist aber keine Antwort. Leeren, dann
+      // zeigt der Browser beim ersten solchen Feld seine Meldung.
+      form.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea').forEach(feld => {
+        if (!feld.value.trim()) feld.value = '';
+      });
+      aktualisiere();
+      if (!form.reportValidity()) return;
+
+      knopf.disabled = true;
+      knopf.textContent = 'Wird gesendet…';
+      fehler.hidden = true;
+
+      // Alles ab hier im try: wirft etwas oder haengt die Verbindung (Funkloch),
+      // kommt der Fehlerkasten mit dem Kopierknopf - statt ewig "Wird gesendet…".
+      const abbruch = new AbortController();
+      const frist = setTimeout(() => abbruch.abort(), 30000);
+      try {
+        const daten = new FormData();
+        daten.append('subject', 'Anamnesebogen: ' + wert('f-name') + ' mit ' + wert('f-hund'));
+        antworten().forEach(a => daten.append(a.feld, a.antwort));
+        daten.append('Datenschutzerklärung', 'gelesen und zugestimmt');
+        daten.append('_gotcha', form.elements._gotcha.value);
+
+        const antwort = await fetch(form.action, {
+          method: 'POST',
+          body: daten,
+          headers: { 'Accept': 'application/json' },
+          signal: abbruch.signal
+        });
+        if (!antwort.ok) {
+          // Formspree sagt, was es ablehnt: { errors: [{ field, message }] }.
+          const rueckmeldung = await antwort.json().catch(() => ({}));
+          throw Object.assign(new Error('Formspree antwortet ' + antwort.status), { liste: rueckmeldung.errors || [] });
+        }
+
+        ungesichert = false;
+        try { sessionStorage.removeItem(ENTWURF); } catch (err) { /* nichts zu loeschen */ }
+        eintraege.forEach(li => li.classList.add('fertig'));
+        document.getElementById('dankeHund').textContent = wert('f-hund');
+        form.hidden = true;
+        danke.hidden = false;
+        danke.scrollIntoView({ block: 'start' });
+        danke.querySelector('h3').focus({ preventScroll: true });
+      } catch (err) {
+        // Lehnt Formspree ein Feld ab, hilft Nochmal-Versuchen nicht - dann
+        // sagen, welches. Die E-Mail-Adresse ist der wahrscheinlichste Fall:
+        // type="email" laesst auch "name@praxis" ohne Endung durch.
+        const liste = err.liste || [];
+        detail.textContent = liste.some(f => f.field === 'email')
+          ? 'Formspree nimmt die E-Mail-Adresse nicht an – bitte prüf sie in Teil 1.'
+          : liste.map(f => f.message).filter(Boolean).join(' · ');
+        detail.hidden = !detail.textContent;
+        knopf.disabled = false;
+        knopf.innerHTML = knopfInhalt;
+        fehler.hidden = false;
+        fehler.scrollIntoView({ block: 'center' });
+      } finally {
+        clearTimeout(frist);
+      }
+    });
+
+    // Notausgang, falls Formspree nicht will: alles als Text in die Zwischenablage.
+    const kopierKnopf = document.getElementById('kopieren');
+    const kopie = document.getElementById('kopie');
+    kopierKnopf.addEventListener('click', async () => {
+      const text = 'Anamnesebogen\n\n' + antworten().map(a => a.frage + '\n' + a.antwort).join('\n\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        kopierKnopf.querySelector('span').textContent = 'Kopiert – jetzt in eine E-Mail einfügen';
+      } catch (err) {
+        // Ohne Zwischenablage (alter Browser, verweigerte Erlaubnis): Text
+        // zeigen und markieren, dann geht Strg+C bzw. "Kopieren" von Hand.
+        kopie.value = text;
+        kopie.hidden = false;
+        kopie.select();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

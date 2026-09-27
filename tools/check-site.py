@@ -31,11 +31,12 @@ PAGES = os.path.join(WURZEL, 'tools', 'pages.tsv')
 # Ordner, die nicht zur Website gehoeren.
 IGNORIERT = {'.git', 'tools', 'assets', 'willkommensmappe', 'available_images'}
 
-# Seiten, die absichtlich in keiner Sitemap stehen. Alle drei tragen
-# "noindex, nofollow" und werden nur per Direktlink oder QR-Code erreicht:
-# die Buchungsbestaetigung nach dem Absenden, die Rallye-Station beim
-# Abscannen unterwegs. In der Suche haben sie nichts zu suchen.
-AUSNAHMEN = {'404.html', 'gebucht/index.html', 'stadtralley/index.html'}
+# Seiten, die absichtlich in keiner Sitemap stehen, erkennt das Skript an
+# ihrem robots-Meta mit "noindex": die Fehlerseite, die Buchungsbestaetigung,
+# die Rallye-Station, der Anamnesebogen - alles nur per Direktlink oder
+# QR-Code erreichbar. Bis zum 26.09.2026 stand hier eine Handliste, die
+# dasselbe noch einmal sagte und dabei schon abgedriftet war.
+NOINDEX = re.compile(r'<meta\s+name="robots"\s+content="[^"]*noindex', re.I)
 
 # Dateien in assets/, auf die bewusst keine Seite zeigt.
 #
@@ -177,14 +178,31 @@ def bildmasse(pfad):
     return None
 
 
+def noindex_seiten(dateien):
+    """Die Seiten, deren <head> ein robots-Meta mit noindex traegt."""
+    seiten = set()
+    for rel in dateien:
+        text = open(os.path.join(WURZEL, rel.replace('/', os.sep)),
+                    encoding='utf-8', errors='ignore').read()
+        kopf = text[:text.find('</head>')] if '</head>' in text else text
+        if NOINDEX.search(kopf):
+            seiten.add(rel)
+    return seiten
+
+
 # ---------------------------------------------------------------- 1. Seitenliste
 def pruefe_seitenliste(pages):
     gelistet = {p['datei'] for p in pages}
     auf_platte = set(html_dateien())
-    for datei in sorted(auf_platte - gelistet - AUSNAHMEN):
+    noindex = noindex_seiten(auf_platte)
+    for datei in sorted(auf_platte - gelistet - noindex):
         melde_fehler('Seitenliste',
                      '%s liegt auf der Platte, steht aber nicht in pages.tsv '
-                     '(sonst fehlt sie in beiden Sitemaps)' % datei)
+                     '(sonst fehlt sie in beiden Sitemaps) und traegt auch kein noindex' % datei)
+    for datei in sorted(gelistet & noindex):
+        melde_fehler('Seitenliste',
+                     '%s steht in pages.tsv, traegt aber noindex - die Sitemap '
+                     'boete Google eine Seite an, die es nicht aufnehmen soll' % datei)
     for datei in sorted(gelistet - auf_platte):
         melde_fehler('Seitenliste', '%s steht in pages.tsv, existiert aber nicht' % datei)
     for p in pages:

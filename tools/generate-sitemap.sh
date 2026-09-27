@@ -7,8 +7,8 @@
 #
 # Die Seitenliste steht NICHT mehr hier, sondern in tools/pages.tsv —
 # dieselbe Quelle, aus der auch generate-image-sitemap.ps1 und
-# check-site.sh lesen. /gebucht/ und 404.html fehlen dort mit Absicht
-# (beide noindex).
+# check-site.py lesen. Welche Seiten dort mit Absicht fehlen (alle
+# noindex), steht im Kopf von pages.tsv.
 set -e
 DST="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$DST/sitemap.xml"
