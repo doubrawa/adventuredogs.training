@@ -44,6 +44,14 @@
   html { scroll-behavior: smooth; scroll-padding-top: 110px; }
   body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
 
+  /* Der Fuss gehoert an den unteren Rand, auch wenn der Inhalt den Schirm
+     nicht fuellt - hier nach dem Absenden, wenn nur die Danke-Karte bleibt:
+     bei 2560 x 1440 standen darunter 123 px Creme. Muster wie auf
+     /stadtralley/: der Bogen-Abschnitt dehnt sich und schiebt den Fuss nach
+     unten; dvh vor vh, damit die Adressleiste am Handy nicht mitrechnet. */
+  body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+  .page-header, footer { flex: 0 0 auto; }
+
   /* ── NAV (identisch zu den anderen Seiten) ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -116,6 +124,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
     gap: 72px;
     align-items: start;
+    flex: 1 1 auto;   /* nimmt den Platz, den der Fuss nicht braucht */
   }
   /* Ab 2200 px bekommt die Karte mehr Anteil, damit die Einleitung links
      auch mit mitwachsender Schrift unter 75 Zeichen je Zeile bleibt. */
@@ -448,8 +457,8 @@
 
          Was bei Formspree ankommt, baut das Skript unten selbst: je Frage ein
          Feld, benannt nach dem Fragetext, in der Reihenfolge des Bogens.
-         Formspree soll die Felder in der Mail genau so auflisten (siehe
-         README, Abschnitt Formulare). Die name-Attribute halten die
+         Formspree listet die Felder in der Mail genau so auf (mit einem
+         Testbogen geprueft, siehe README, Abschnitt Formulare). Die name-Attribute halten die
          Auswahlgruppen zusammen und tragen den Versand ohne Skript, der dann
          nur Kurznamen statt der Fragetexte kennt. -->
     <form id="bogen" action="https://formspree.io/f/xaqvnvzq" method="POST">

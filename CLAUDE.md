@@ -44,6 +44,28 @@ bis es am 05.09.2026 herausgenommen wurde.
 1280, und die linke Kante gegen den Abschnitt darüber und darunter prüfen – am besten
 gemessen (`getBoundingClientRect().left`) statt geschätzt.
 
+## Die Fußzeile steht immer unten
+
+Auch wenn der Inhalt den Schirm nicht füllt, gehört die Fußzeile an den unteren
+Bildrand – nie mitten in den Schirm mit Creme darunter. Kein `position: fixed`: Der
+Fuß steht am Seitenende und rutscht bei kurzem Inhalt nur nach unten. Das Muster
+steht in `stadtralley/` und `anamnesebogen/`:
+
+```css
+body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+.kopf, footer { flex: 0 0 auto; }
+.hauptabschnitt { flex: 1 1 auto; }   /* nimmt den Platz, den der Fuß nicht braucht */
+```
+
+`dvh` vor `vh`, damit die eingefahrene Adressleiste am Handy nicht mitrechnet.
+
+**Die Falle:** Kurz wird eine Seite oft erst in einem bestimmten Zustand – nach dem
+Absenden eines Formulars, auf einer Fehlerseite. Und sichtbar wird es erst auf hohen
+Schirmen: Der Anamnesebogen stand nach dem Absenden bei 1920 × 1080 richtig, bei
+2560 × 1440 blieben 123 px Creme unter dem Fuß. Solche Zustände also per Skript
+herstellen und den Abstand messen (`innerHeight` minus
+`footer.getBoundingClientRect().bottom`), auch bei 2560 × 1440 und hochkant.
+
 ## Schriften und Farben kommen aus dem Bestand
 
 Farben ausschließlich aus den `:root`-Variablen in `index.html` (`--blue`, `--accent`,

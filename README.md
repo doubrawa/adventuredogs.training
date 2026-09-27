@@ -275,11 +275,10 @@ Anamnesebögen im Monat reicht das. Bot-Schutz via Honeypot-Field (`_gotcha`).
 **Der Anamnesebogen** löste im September 2026 ein Google-Formular ab, das per Add-on
 eine Mail schickte. Was bei Formspree ankommt, baut das Skript am Seitenende selbst
 zusammen: je Frage ein Feld, benannt nach dem Fragetext, in der Reihenfolge des
-Bogens – Formspree soll die Felder in der Mail genau so auflisten. **Das ist noch
-ungeprüft** (Stand 26.09.2026, bisher ging kein echter Bogen raus): Beim ersten
-echten Bogen nachsehen, ob die Reihenfolge stimmt, ob Umlaute in den Feldnamen
-heil ankommen, ob `subject` zusätzlich im Mailtext steht und ob die Mail nicht im
-Formspree-Spamordner hängt. Wer eine Frage umformuliert, ändert damit auch ihre
+Bogens – Formspree listet die Felder in der Mail genau so auf. Geprüft am
+27.09.2026 mit einem Testbogen („Manfred Mustermann (TEST)“): Die Mail kommt an,
+mit Betreff, Umlauten und Reihenfolge. Fehlt einmal eine Mail, zuerst im
+Spamordner des Formspree-Kontos nachsehen. Wer eine Frage umformuliert, ändert damit auch ihre
 Zeile in der Mail; eine zweite Liste gibt es nicht. Eine neue Frage ist ein
 weiterer `.frage`-Block mit einem `.frage-kopf`, das Skript nimmt ihn von selbst mit.
 
