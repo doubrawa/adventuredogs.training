@@ -321,5 +321,13 @@ Bei Form-ID-Wechsel: im `action`-Attribut beider Seiten ändern.
 
 ## Lizenz
 
-Privater Code für eine konkrete Webseite. Keine offizielle Lizenz hinterlegt —
-nicht zur Wiederverwendung gedacht.
+Alle Rechte vorbehalten, siehe [LICENSE](LICENSE). Das Repo ist nur öffentlich,
+weil GitHub Pages ohne GitHub Pro nicht aus privaten Repos ausliefert —
+einsehbar heißt nicht frei verwendbar. Das gilt für den Code ebenso wie für
+Texte, Fotos, Logos und PDFs.
+
+Ausgenommen sind die Schriften in `assets/fonts/`: DM Sans und Playfair Display
+stehen unter der SIL Open Font License 1.1, und die verlangt, dass Copyright
+und Lizenztext mitgeliefert werden – dafür liegt dort `OFL.txt`. Kommt eine
+weitere Schrift dazu, gehört ihre Copyright-Zeile oben in `OFL.txt` (sie steht
+im `name`-Eintrag 0 der Schriftdatei).
