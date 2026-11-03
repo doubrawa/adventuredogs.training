@@ -162,6 +162,20 @@
   a.platinum-cta { background: var(--accent); color: var(--white); padding: 13px 24px; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
   a.platinum-cta:hover { background: oklch(58% 0.13 185); transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.25); }
 
+  /* Aktionsvariante: Hochformat-Motiv neben dem Text, sobald die Karte breit genug ist */
+  .platinum-card.platinum-aktion { container-type: inline-size; }
+  .platinum-body .platinum-label { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: oklch(90% 0.06 185); margin-bottom: 10px; }
+  .platinum-code { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 10px 16px; border: 1.5px dashed oklch(100% 0 0 / 0.45); border-radius: 10px; background: oklch(100% 0 0 / 0.06); color: var(--white); font: 600 16px/1.2 'DM Sans', sans-serif; letter-spacing: 0.02em; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+  .platinum-code:hover { background: oklch(100% 0 0 / 0.12); border-color: oklch(100% 0 0 / 0.7); }
+  .platinum-code svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .platinum-code .icon-ok, .platinum-code.copied .icon-copy { display: none; }
+  .platinum-code.copied .icon-ok { display: block; }
+  @container (min-width: 540px) {
+    .platinum-aktion-grid { display: grid; grid-template-columns: 5fr 6fr; align-items: center; }
+    .closing-cta.platinum-card .platinum-aktion-grid a.platinum-banner { border-radius: 0; }
+    .platinum-aktion-grid .platinum-body { padding: 28px 32px; }
+  }
+
   .more-section { background: var(--cream2); padding: 80px 7% 100px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
   .more-head { max-width: 1200px; margin: 0 auto 36px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   .more-head .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block; }
@@ -332,15 +346,22 @@
     </ul>
     
 
-    <div class="closing-cta platinum-card">
-      <a class="platinum-banner" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="sponsored nofollow noopener">
-        <img src="../../assets/platinum.webp" width="1200" height="628" alt="Platinum — Hundenahrung aus Fleischsaftgarung, bestens ausgerüstet für das Welpentraining">
-      </a>
-      <div class="platinum-body">
-        <p>Gut zu wissen: Jeder neue Kunde erhält zum Einstieg eine <strong>Testportion</strong>, um das Futter unkompliziert auszuprobieren.</p>
-        <a class="platinum-cta" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="sponsored nofollow noopener">Platinum entdecken
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+    <div class="closing-cta platinum-card platinum-aktion">
+      <div class="platinum-aktion-grid">
+        <a class="platinum-banner" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="sponsored nofollow noopener">
+          <img src="../../assets/platinum-winteraktion.webp" width="1080" height="1440" alt="Platinum-Winteraktion: Relax Snack gratis — ein Hund trägt die Tüte durch den Schnee">
         </a>
+        <div class="platinum-body">
+          <p class="platinum-label">Winteraktion · 9.–22.11.</p>
+          <p>Ab 29&nbsp;€ Bestellwert gibt es mit diesem Code einen <strong>Relax Snack gratis</strong> dazu:</p>
+          <button class="platinum-code" type="button" data-code="Winter26-Adventure" title="Code kopieren" aria-label="Code Winter26-Adventure kopieren">Winter26-Adventure
+            <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="icon-ok" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <a class="platinum-cta" href="https://www.platinum.com/?utm_source=adventuredogs.training+&amp;utm_medium=link&amp;utm_campaign=de_extern_koop_adventuredogs" target="_blank" rel="sponsored nofollow noopener">Platinum entdecken
+            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -436,6 +457,24 @@
       });
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     sections.forEach(s => observer.observe(s));
+  }
+
+  const codeButton = document.querySelector('.platinum-code');
+  if (codeButton && navigator.clipboard) {
+    const label = codeButton.getAttribute('aria-label');
+    codeButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codeButton.dataset.code);
+      } catch (err) {
+        return;
+      }
+      codeButton.classList.add('copied');
+      codeButton.setAttribute('aria-label', 'Code kopiert');
+      setTimeout(() => {
+        codeButton.classList.remove('copied');
+        codeButton.setAttribute('aria-label', label);
+      }, 2000);
+    });
   }
 </script>
 
