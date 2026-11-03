@@ -43,11 +43,26 @@ grep -v '^[[:space:]]*#' "$PAGES" | grep -v '^[[:space:]]*$' | while IFS=$'\t' r
         continue
     fi
     case "$mode" in
-      anlage)
-        # Fertige Artikel: lastmod = Erstelldatum (erstes git-Add), konsistent
-        # mit dateModified im Article-Schema und stabil. Globale Aenderungen
-        # (z.B. ein Logo-Swap im gemeinsamen Header) sollen es nicht anheben.
-        lastmod=$(git -C "$DST" log --format=%cd --date=short --diff-filter=A -- "$file" 2>/dev/null | tail -1) ;;
+      schema)
+        # Artikel: lastmod = dateModified aus dem Article-Schema der Seite.
+        # Damit steht das Datum an genau einer Stelle, und die Sitemap kann der
+        # Seite nicht widersprechen. Globale Aenderungen (CSS, Nav, Logo,
+        # Bildformat) lassen dateModified in Ruhe und damit auch lastmod; wer
+        # den Text wirklich ueberarbeitet, setzt dateModified von Hand hoch.
+        #
+        # Bis zum 03.11.2026 hiess der Modus "anlage" und nahm das Datum des
+        # ersten Commits. Das deckte sich mit dateModified nur, solange niemand
+        # einen Artikel ueberarbeitete - ein hochgesetztes dateModified waere
+        # nie in der Sitemap angekommen.
+        lastmod=$(grep -o -m1 '"dateModified": *"[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' "$DST/$file" \
+                  | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' || true)
+        if [ -z "$lastmod" ]; then
+            # Kein Rueckfall auf heute: ein still erfundenes Datum ist genau
+            # das, was Google an lastmod misstrauisch macht.
+            echo "FEHLER: $file hat kein dateModified (JJJJ-MM-TT) im Article-Schema." >&2
+            echo x >> "$ERR"
+            continue
+        fi ;;
       *)
         # Seiten, die sich real aendern: lastmod = letztes Commit-Datum.
         #
@@ -86,7 +101,7 @@ echo '</urlset>' >> "$TMP"
 # Die Schleife laeuft in einer Subshell (Pipeline), ihre Variablen sind hier
 # nicht mehr sichtbar — deshalb der Umweg ueber die Fehlerdatei.
 if [ -s "$ERR" ]; then
-    echo "FEHLER: $(grep -c . "$ERR") Eintrag/Eintraege aus pages.tsv ohne Datei." >&2
+    echo "FEHLER: $(grep -c . "$ERR") Eintrag/Eintraege aus pages.tsv nicht verwertbar (siehe oben)." >&2
     echo "        sitemap.xml wurde nicht angefasst." >&2
     exit 1
 fi
@@ -95,4 +110,4 @@ anzahl=$(grep -c '<loc>' "$TMP" || true)
 [ "$anzahl" -gt 0 ] || { echo "FEHLER: keine einzige URL erzeugt." >&2; exit 1; }
 
 mv "$TMP" "$OUT"
-echo "  sitemap.xml: $anzahl URLs, lastmod aus git"
+echo "  sitemap.xml: $anzahl URLs, lastmod aus git bzw. dateModified"

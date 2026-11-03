@@ -206,9 +206,9 @@ def pruefe_seitenliste(pages):
     for datei in sorted(gelistet - auf_platte):
         melde_fehler('Seitenliste', '%s steht in pages.tsv, existiert aber nicht' % datei)
     for p in pages:
-        if p['lastmod'] not in ('git', 'anlage'):
+        if p['lastmod'] not in ('git', 'schema'):
             melde_fehler('Seitenliste',
-                         '%s: lastmod ist "%s", erlaubt sind git|anlage' % (p['datei'], p['lastmod']))
+                         '%s: lastmod ist "%s", erlaubt sind git|schema' % (p['datei'], p['lastmod']))
         if p['bilder'] not in ('ja', 'nein'):
             melde_fehler('Seitenliste',
                          '%s: bilder ist "%s", erlaubt sind ja|nein' % (p['datei'], p['bilder']))

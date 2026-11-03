@@ -11,8 +11,9 @@
 #   changefreq  Angabe fuer sitemap.xml
 #   prioritaet  Angabe fuer sitemap.xml
 #   lastmod     git    = letztes Commit-Datum (Seiten, die sich real aendern)
-#               anlage = Datum des ersten Commits (fertige Artikel; spaetere
-#                        Korrekturen sollen das Datum NICHT hochbumpen)
+#               schema = dateModified aus dem Article-Schema der Seite (Artikel;
+#                        technische Aenderungen lassen es stehen, eine echte
+#                        Ueberarbeitung des Textes setzt es von Hand hoch)
 #   bilder      ja/nein — kommt die Seite in sitemap-images.xml vor?
 #
 # Nicht gelistet und das mit Absicht: jede Seite mit robots-Meta "noindex"
@@ -28,13 +29,13 @@
 /angebot/	angebot/index.html	monthly	0.9	git	ja
 /ueber-mich/	ueber-mich/index.html	monthly	0.8	git	ja
 /alltagstipps/	alltagstipps/index.html	monthly	0.8	git	ja
-/alltagstipps/welpenzeit/	alltagstipps/welpenzeit/index.html	monthly	0.7	anlage	ja
-/alltagstipps/silvester/	alltagstipps/silvester/index.html	monthly	0.7	anlage	ja
-/alltagstipps/urlaub/	alltagstipps/urlaub/index.html	monthly	0.7	anlage	ja
-/alltagstipps/winter/	alltagstipps/winter/index.html	monthly	0.7	anlage	ja
-/alltagstipps/alleinbleiben/	alltagstipps/alleinbleiben/index.html	monthly	0.7	anlage	ja
-/alltagstipps/tierphysiotherapie/	alltagstipps/tierphysiotherapie/index.html	monthly	0.7	anlage	ja
-/alltagstipps/ernaehrung/	alltagstipps/ernaehrung/index.html	monthly	0.7	anlage	ja
-/alltagstipps/hund-entlaufen/	alltagstipps/hund-entlaufen/index.html	monthly	0.7	anlage	ja
+/alltagstipps/welpenzeit/	alltagstipps/welpenzeit/index.html	monthly	0.7	schema	ja
+/alltagstipps/silvester/	alltagstipps/silvester/index.html	monthly	0.7	schema	ja
+/alltagstipps/urlaub/	alltagstipps/urlaub/index.html	monthly	0.7	schema	ja
+/alltagstipps/winter/	alltagstipps/winter/index.html	monthly	0.7	schema	ja
+/alltagstipps/alleinbleiben/	alltagstipps/alleinbleiben/index.html	monthly	0.7	schema	ja
+/alltagstipps/tierphysiotherapie/	alltagstipps/tierphysiotherapie/index.html	monthly	0.7	schema	ja
+/alltagstipps/ernaehrung/	alltagstipps/ernaehrung/index.html	monthly	0.7	schema	ja
+/alltagstipps/hund-entlaufen/	alltagstipps/hund-entlaufen/index.html	monthly	0.7	schema	ja
 /kontakt/	kontakt/index.html	monthly	0.7	git	ja
 /impressum/	impressum/index.html	yearly	0.3	git	nein

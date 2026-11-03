@@ -108,9 +108,16 @@ py tools/check-site.py
 ### `generate-sitemap.sh`
 Schreibt `sitemap.xml` aus `pages.tsv`. `lastmod` kommt aus dem letzten Commit der
 jeweiligen Datei; hat sich eine Datei seit `HEAD` geändert, zählt das heutige Datum —
-das Skript kann also **vor** dem Commit laufen. Artikel-Detailseiten behalten bewusst
-ihr Erstelldatum (Spalte `lastmod = anlage`), damit spätere Korrekturen es nicht
-verschieben.
+das Skript kann also **vor** dem Commit laufen. Artikel-Detailseiten (Spalte
+`lastmod = schema`) nehmen stattdessen das `dateModified` aus ihrem Article-Schema,
+damit Umbauten an CSS, Navigation oder Bildformaten das Datum nicht verschieben. Fehlt
+es, bricht das Skript ab.
+
+**Artikel inhaltlich überarbeitet?** Dann `dateModified` im JSON-LD auf den Tag setzen
+und im Hero „Veröffentlicht · Mai 2026“ durch „Aktualisiert · ‹Monat Jahr›“ ersetzen;
+die Sitemap zieht beim Commit von selbst nach. Nur bei echten Textänderungen: Google
+vergleicht `lastmod` mit der Seite und ignoriert es für die ganze Website, wenn es sich
+als unzuverlässig erweist.
 
 ```bash
 bash tools/generate-sitemap.sh
@@ -313,7 +320,7 @@ Bei Form-ID-Wechsel: im `action`-Attribut beider Seiten ändern.
 | Seite zeigt alte WordPress-Inhalte | Lokaler DNS-Cache. `ipconfig /flushdns` oder Mobilfunk-Test. |
 | HTTPS-Fehler nach Domain-Änderung | Let's-Encrypt-Provisioning kann 5-30 Min dauern; in GitHub Pages Settings „Remove + Re-Add" der Custom Domain triggert frisch. |
 | Bild fehlt oder ist riesig | Liegt es in `assets/`? Ist der Pfad relativ korrekt (Unterseiten brauchen `../assets/…`)? Danach `resize-assets.ps1`. |
-| Sitemap-Datum stimmt nicht | `bash tools/generate-sitemap.sh` — es leitet `lastmod` aus git ab. |
+| Sitemap-Datum stimmt nicht | `bash tools/generate-sitemap.sh` — es leitet `lastmod` aus git ab, bei Artikeln aus `dateModified` der Seite. |
 | Form-Mails kommen nicht an | Erste Formspree-Verifizierungs-Mail evtl. übersehen → Formspree-Dashboard prüfen. |
 | Google indexiert eine Seite nicht | URL-Inspection in Search Console → „Live test" + „Indexierung beantragen". Kann 1-3 Tage dauern. |
 
