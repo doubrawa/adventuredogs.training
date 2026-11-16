@@ -33,6 +33,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
     --r-lg:     14px;
     --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
@@ -101,7 +107,7 @@
   .page-header-inner { position: relative; z-index: 1; }
   .page-header-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+    text-transform: uppercase; color: var(--accent-lt); margin-bottom: 14px; display: block;
   }
   .page-header h1 {
     font-family: 'Playfair Display', serif;
@@ -135,7 +141,7 @@
   .bogen-info { position: sticky; top: 110px; }
   .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+    text-transform: uppercase; color: var(--accent-dk); margin-bottom: 12px; display: block;
   }
   .section-title {
     font-family: 'Playfair Display', serif;
@@ -157,10 +163,10 @@
     text-decoration: none; color: var(--text); font-size: 15px; font-weight: 500;
     transition: color 0.2s;
   }
-  .teile a:hover { color: var(--accent); }
+  .teile a:hover { color: var(--accent-dk); }
   .teil-status {
     width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-    background: oklch(62% 0.12 185 / 0.12); color: var(--accent);
+    background: oklch(62% 0.12 185 / 0.12); color: var(--accent-dk);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 700; transition: background 0.2s, color 0.2s;
   }
@@ -255,7 +261,7 @@
     font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-lt);
     text-decoration: underline; text-underline-offset: 2px;
   }
-  .auswahl-weg:hover { color: var(--accent); }
+  .auswahl-weg:hover { color: var(--accent-dk); }
 
   /* ── ABSENDEN ── */
   .absenden { margin-top: 48px; padding-top: 40px; border-top: 1px solid oklch(0% 0 0 / 0.06); }
@@ -265,13 +271,13 @@
     accent-color: var(--accent); cursor: pointer; border-radius: 4px;
   }
   .check-label span { font-size: 14px; line-height: 1.6; color: var(--text-lt); }
-  .check-label span a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .check-label span a { color: var(--accent-dk); text-decoration: underline; text-underline-offset: 2px; }
 
   /* .btn-primary wie auf der Startseite; dazu nur, was ein <button> statt
      eines Links braucht: kein Rahmen, eigene Schrift, Zeiger, Sperre. */
   .btn-primary {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--accent); color: var(--white); text-decoration: none;
+    background: var(--accent-dk); color: var(--white); text-decoration: none;
     font-size: 15px; font-weight: 600; padding: 14px 30px; border-radius: 40px;
     transition: transform 0.18s, box-shadow 0.18s;
     box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
@@ -290,7 +296,7 @@
     font-size: 15px; line-height: 1.65; color: var(--text);
   }
   .sende-fehler strong { display: block; color: var(--blue); font-size: 16px; margin-bottom: 4px; }
-  .sende-fehler a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .sende-fehler a { color: var(--accent-dk); text-decoration: underline; text-underline-offset: 2px; }
   .fehler-detail { margin-top: 10px; font-weight: 600; color: var(--blue); }
   .btn-kopieren {
     margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
@@ -359,7 +365,7 @@
     border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px; background: var(--blue); color: var(--white) !important;
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -371,7 +377,9 @@
      Ausfuellen laengst aus dem Bild gescrollt. Dort sagt "Teil x von 7" an
      jedem Abschnitt, wo man steht. */
   @media (max-width: 1080px) {
-    .bogen-section { grid-template-columns: 1fr; gap: 40px; }
+    /* minmax(0, …) statt blankem 1fr: sonst waechst die Spalte mit dem laengsten
+       unteilbaren Wort, bei 375 px stand die Einleitung 4 px ueber. */
+    .bogen-section { grid-template-columns: minmax(0, 1fr); gap: 40px; }
     .bogen-info { position: static; }
     .teile { display: none; }
   }
@@ -396,9 +404,32 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* <main> liegt zwischen body und den Abschnitten: es dehnt sich selbst und
+     gibt die Spalte weiter, damit der Abschnitt darin den Fuss weiter nach
+     unten schiebt (siehe oben und CLAUDE.md, "Die Fusszeile steht immer unten"). */
+  main { flex: 1 1 auto; display: flex; flex-direction: column; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches Scrollen. */
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV - ohne Bild im Kopf von Anfang an hell, wie im Impressum. Deshalb
      fest "scrolled" und kein Umschalten beim Scrollen. -->
@@ -414,7 +445,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -428,6 +459,7 @@
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
+<main id="inhalt">
 <!-- PAGE HEADER -->
 <div class="page-header">
   <div class="page-header-inner">
@@ -836,6 +868,8 @@
 
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
@@ -854,16 +888,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 </script>

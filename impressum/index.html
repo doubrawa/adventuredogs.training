@@ -40,6 +40,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
     --r-lg:     14px;
     --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
@@ -88,7 +94,7 @@
   .page-header-inner { position: relative; z-index: 1; }
   .page-header-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+    text-transform: uppercase; color: var(--accent-lt); margin-bottom: 14px; display: block;
   }
   .page-header h1 {
     font-family: 'Playfair Display', serif;
@@ -101,7 +107,10 @@
   .impressum-content {
     padding: 72px 7% 80px;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    /* minmax(0, …): ein blankes fr waechst mit dem laengsten unteilbaren Wort.
+       Die langen Adressen in der Datenschutzerklaerung machten die Spalte am
+       Handy 366 statt 323 px breit, die Karten ragten 17 px aus dem Schirm. */
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     gap: 60px;
     align-items: start;
   }
@@ -124,7 +133,7 @@
   }
   .imp-block p:last-child { margin-bottom: 0; }
   .imp-block p strong { color: var(--text); font-weight: 600; }
-  .imp-block a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+  .imp-block a { color: var(--accent-dk); text-decoration: none; transition: opacity 0.2s; }
   .imp-block a:hover { opacity: 0.75; }
 
   .notice-box {
@@ -144,7 +153,7 @@
   }
   .sidebar-card h3 { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
   .sidebar-card p { font-size: 13px; line-height: 1.7; color: var(--text-lt); margin-bottom: 8px; }
-  .sidebar-card a { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; }
+  .sidebar-card a { color: var(--accent-dk); text-decoration: none; font-size: 13px; font-weight: 500; }
   .sidebar-card a:hover { opacity: 0.75; }
 
   .contact-link {
@@ -175,7 +184,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
-    .impressum-content { grid-template-columns: 1fr; }
+    .impressum-content { grid-template-columns: minmax(0, 1fr); }
     .impressum-sidebar { position: static; }
   }
 
@@ -207,7 +216,7 @@
     border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px; background: var(--blue); color: var(--white) !important;
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -220,9 +229,45 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
+     Scrollen. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
+
+  .sidebar-card a { padding: 4px 0; }
+
+  .imp-block a { overflow-wrap: anywhere; }
+
+  /* Lange Fliesstexte laufen auf breiten Schirmen in Spalten statt in einer
+     Zeile ueber die ganze Karte: gemessen waren es 114 bis 177 Zeichen je Zeile
+     bei 1920 und 2560 px. Kein Deckel (CLAUDE.md), die Karte bleibt voll breit. */
+  @media (min-width: 1400px) {
+    .imp-fliess { columns: 2; column-gap: 56px; }
+    .imp-fliess h2 { column-span: all; }
+    .imp-fliess p { orphans: 3; widows: 3; }
+    .imp-fliess p strong:only-child { break-after: avoid; }
+  }
+  @media (min-width: 2300px) { .imp-fliess { columns: 3; } }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav>
@@ -237,7 +282,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -262,7 +307,7 @@
 <!-- CONTENT -->
 <div class="impressum-content">
 
-  <main class="impressum-main">
+  <main class="impressum-main" id="inhalt">
 
     <!-- Angaben -->
     <div class="imp-block">
@@ -308,13 +353,13 @@
     </div>
 
     <!-- Verbraucherschlichtung -->
-    <div class="imp-block">
+    <div class="imp-block imp-fliess">
       <h2>Verbraucherstreitbeilegung</h2>
       <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
     </div>
 
     <!-- Datenschutzerklärung -->
-    <div class="imp-block" id="datenschutz">
+    <div class="imp-block imp-fliess" id="datenschutz">
       <h2>Datenschutzerklärung</h2>
 
       <p><strong>1. Verantwortliche Stelle</strong></p>
@@ -364,21 +409,21 @@
     </div>
 
     <!-- Haftung Inhalte -->
-    <div class="imp-block">
+    <div class="imp-block imp-fliess">
       <h2>Haftung für Inhalte</h2>
       <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
       <p>Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
     </div>
 
     <!-- Haftung Links -->
-    <div class="imp-block">
+    <div class="imp-block imp-fliess">
       <h2>Haftung für Links</h2>
       <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
       <p>Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
     </div>
 
     <!-- Urheberrecht -->
-    <div class="imp-block">
+    <div class="imp-block imp-fliess">
       <h2>Urheberrecht</h2>
       <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
       <p>Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Solltest du trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis.</p>
@@ -448,16 +493,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 </script>

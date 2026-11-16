@@ -18,6 +18,12 @@
     --blue-dk:  oklch(26% 0.06 240);
     --cream:    oklch(97% 0.01 80);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
   }
 
@@ -64,7 +70,7 @@
   }
   .nav-mobile.open { display: flex; }
   .nav-mobile a { color: var(--white); text-decoration: none; font-size: 16px; font-weight: 500; padding: 15px 0; border-bottom: 1px solid oklch(100% 0 0 / 0.12); }
-  .nav-mobile .nav-cta-mobile { margin-top: 12px; background: var(--accent); color: var(--white); padding: 14px 20px; border-radius: 40px; font-weight: 600; text-align: center; border-bottom: none; }
+  .nav-mobile .nav-cta-mobile { margin-top: 12px; background: var(--accent-dk); color: var(--white); padding: 14px 20px; border-radius: 40px; font-weight: 600; text-align: center; border-bottom: none; }
 
   /* ── MAIN ── */
   main {
@@ -125,7 +131,7 @@
   .actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: var(--white); text-decoration: none;
+    background: var(--accent-dk); color: var(--white); text-decoration: none;
     font-size: 15px; font-weight: 600; padding: 14px 30px; border-radius: 40px;
     box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.4); transition: transform 0.18s, box-shadow 0.18s;
   }
@@ -163,9 +169,26 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--white); color: var(--blue);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav>
@@ -180,7 +203,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="/angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -195,7 +218,7 @@
 </div>
 
 <!-- MAIN -->
-<main>
+<main id="inhalt">
   <div class="paw-trail" aria-hidden="true">
     <svg class="pt1" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
     <svg class="pt2" viewBox="0 0 100 100"><ellipse cx="50" cy="67" rx="23" ry="19"/><ellipse cx="20" cy="47" rx="9" ry="11.5" transform="rotate(-32 20 47)"/><ellipse cx="39" cy="29" rx="9.5" ry="12" transform="rotate(-11 39 29)"/><ellipse cx="61" cy="29" rx="9.5" ry="12" transform="rotate(11 61 29)"/><ellipse cx="80" cy="47" rx="9" ry="11.5" transform="rotate(32 80 47)"/></svg>
@@ -240,12 +263,21 @@
 </footer>
 
 <script>
-  const ham = document.getElementById('navHamburger');
-  const mob = document.getElementById('navMobile');
-  ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    mob.classList.toggle('open');
-  });
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  if (hamburger && mobileNav) {
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
+    });
+  }
 </script>
 
 </body>

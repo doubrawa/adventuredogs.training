@@ -120,6 +120,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
     --r-lg:     14px;
     --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
@@ -181,7 +187,8 @@
   .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 860px; }
   .hero-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: oklch(100% 0 0 / 0.92); margin-bottom: 14px;
+    text-transform: uppercase; color: var(--white); margin-bottom: 14px;
+    text-shadow: 0 0 3px oklch(0% 0 0 / 0.8), 0 0 10px oklch(0% 0 0 / 0.7), 0 0 24px oklch(0% 0 0 / 0.6);
   }
   .hero h1 {
     font-family: 'Playfair Display', serif;
@@ -207,7 +214,7 @@
   .contact-info {}
   .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+    text-transform: uppercase; color: var(--accent-dk); margin-bottom: 12px; display: block;
   }
   .section-title {
     font-family: 'Playfair Display', serif;
@@ -278,7 +285,9 @@
     font-size: clamp(20px, 2.2vw, 28px); font-weight: 700;
     color: var(--blue); margin-bottom: 8px;
   }
-  .form-subtitle { font-size: 14px; color: var(--text-lt); margin-bottom: 28px; line-height: 1.6; }
+  /* Textmass statt Kartenbreite: drei Saetze liefen bei 1920 px sonst mit
+     121 Zeichen je Zeile ueber die ganze Karte. */
+  .form-subtitle { font-size: 14px; color: var(--text-lt); margin-bottom: 28px; line-height: 1.6; max-width: 34em; }
 
   .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
   .form-group label { font-size: 13px; font-weight: 600; color: var(--text); }
@@ -303,7 +312,7 @@
 
   .btn-submit {
     width: 100%; padding: 14px; border: none; border-radius: 40px;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
     cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
     box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
@@ -331,7 +340,7 @@
     font-size: 13px; line-height: 1.6; color: var(--text-lt);
   }
   .check-label span a {
-    color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+    color: var(--accent-dk); text-decoration: underline; text-underline-offset: 2px;
   }
 
   /* success state */
@@ -355,7 +364,7 @@
     border-top: 1px solid oklch(0% 0 0 / 0.05);
   }
   .anfahrt-head { max-width: 760px; margin-bottom: 36px; }
-  .anfahrt-head .section-label { color: var(--accent); }
+  .anfahrt-head .section-label { color: var(--accent-dk); }
   .anfahrt-head .section-title { color: var(--blue); margin-bottom: 12px; }
   .anfahrt-head p {
     font-size: 16px; line-height: 1.75; color: var(--text-lt);
@@ -389,7 +398,7 @@
   }
   .step-num {
     width: 26px; height: 26px; border-radius: 50%;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     display: flex; align-items: center; justify-content: center;
     font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: -1px;
   }
@@ -414,7 +423,7 @@
     background: var(--blue);
   }
   .faq-inner { max-width: 760px; }
-  .faq-section .section-label { color: var(--accent); }
+  .faq-section .section-label { color: var(--accent-lt); }
   .faq-section .section-title { color: var(--white); margin-bottom: 32px; }
 
   .faq-list { display: flex; flex-direction: column; gap: 2px; }
@@ -435,15 +444,19 @@
     transition: transform 0.3s;
   }
   .faq-item.open .faq-question svg { transform: rotate(45deg); }
+  /* visibility nimmt die zugeklappte Antwort aus Tab-Reihenfolge und Vorlesen;
+     max-height: 0 allein liess den Link darin unsichtbar fokussierbar. Beim
+     Schliessen schaltet sie erst nach der Hoehen-Animation um. */
   .faq-answer {
-    max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+    max-height: 0; overflow: hidden; visibility: hidden;
+    transition: max-height 0.35s ease, visibility 0s 0.35s;
     padding: 0 24px;
   }
   .faq-answer p {
     font-size: 14px; line-height: 1.75; color: oklch(100% 0 0 / 0.7);
     padding-bottom: 20px; font-weight: 300;
   }
-  .faq-item.open .faq-answer { max-height: 800px; }
+  .faq-item.open .faq-answer { max-height: 800px; visibility: visible; transition: max-height 0.35s ease, visibility 0s; }
 
   /* ── FOOTER ── */
   footer {
@@ -495,7 +508,7 @@
     border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px; background: var(--blue); color: var(--white) !important;
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -508,9 +521,76 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* Links in FAQ-Antworten: ohne eigene Farbe griff das Browser-Blau, auf Navy 1,13 : 1. */
+  .faq-answer a { color: var(--accent-lt); text-decoration: underline; text-underline-offset: 3px; }
+  .faq-answer a:hover { color: var(--white); }
+
+  /* ── Lesbarkeit der Navigation ueber dem Hero-Foto ──
+     Die Navigation steht ohne eigenen Grund ueber dem Foto. Auf hellen Motiven
+     (Nebel, Himmel, Schnee) kamen die weissen Links nur auf 1,5 bis 2,3 : 1,
+     gefordert sind 4,5 : 1. Der Schleier haengt an der Navigation und blendet
+     aus, sobald sie beim Scrollen ihren Cremegrund bekommt oder das Mobilmenue
+     offen ist (es liegt direkt darunter und wuerde sonst mit abgedunkelt). */
+  nav::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 150px;
+    z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, oklch(0% 0 0 / 0.5) 0%, oklch(0% 0 0 / 0.38) 45%, oklch(0% 0 0 / 0) 100%);
+    transition: opacity 0.3s;
+  }
+  nav.scrolled::before, nav:has(.nav-hamburger.open)::before { opacity: 0; }
+  .nav-logo-text, .nav-links a:not(.nav-cta) { text-shadow: 0 1px 3px oklch(0% 0 0 / 0.5); }
+  nav.scrolled .nav-logo-text, nav.scrolled .nav-links a { text-shadow: none; }
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
+     Scrollen. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  .form-error {
+    margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+    background: var(--cream2); color: var(--text);
+    font-size: 14px; font-weight: 500; line-height: 1.55;
+  }
+  /* Unter 16 px zoomt iOS beim Antippen in das Feld hinein. */
+  @media (max-width: 720px) {
+    .form-group input, .form-group textarea { font-size: 16px; }
+  }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
+
+  /* FAQ ohne Deckel: bis 1100 px bleibt die eine Spalte, darueber fuellen zwei
+     und ab 2200 px drei Spalten die Sektion. Vorher standen 760 px links und
+     bei 1920 px 1026 px Navy daneben leer. align-items: start, damit eine
+     aufgeklappte Antwort ihre Nachbarin nicht mit in die Hoehe zieht. */
+  @media (min-width: 1100px) {
+    .faq-inner { max-width: none; }
+    .faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 24px; align-items: start; }
+  }
+  @media (min-width: 1500px) {
+    .faq-question { font-size: clamp(15px, 0.9vw, 18px); }
+    .faq-answer p { font-size: clamp(14px, 1.05vw, 20px); }
+  }
+  @media (min-width: 2200px) {
+    .faq-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav id="nav">
@@ -525,7 +605,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -539,6 +619,7 @@
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
+<main id="inhalt">
 <!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
@@ -634,7 +715,7 @@
   <div class="contact-form-wrap">
     <div class="form-card">
       <h2 class="form-title">Ich freu mich auf deine Nachricht</h2>
-      <p class="form-subtitle">Schreib mir, was dich beschäftigt – ich melde mich so schnell ich kann.</p>
+      <p class="form-subtitle">Schreib mir, was dich beschäftigt. Das Erstgespräch ist kostenlos und unverbindlich – wir telefonieren kurz und schauen, was zu euch passt. Ich versuche, innerhalb von 1–2 Werktagen zu antworten; am schnellsten erreichst du mich per WhatsApp.</p>
 
       <!-- Kein novalidate: sonst ist die Browser-Validierung abgeschaltet und der
            Handler unten bricht bei leeren Feldern still ab — der Besucher klickt
@@ -649,11 +730,11 @@
         <div class="form-row">
           <div class="form-group">
             <label for="name">Dein Name *</label>
-            <input type="text" id="name" name="name" placeholder="Julia Mustermann" required>
+            <input type="text" id="name" name="name" autocomplete="name" placeholder="Julia Mustermann" required>
           </div>
           <div class="form-group">
             <label for="email">Deine E-Mail *</label>
-            <input type="email" id="email" name="email" placeholder="julia@beispiel.de" required>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="julia@beispiel.de" required>
           </div>
         </div>
         <div class="form-group">
@@ -675,6 +756,7 @@
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
+        <p class="form-error" id="formError" role="alert" hidden></p>
         <p class="form-privacy">* Pflichtfelder. Deine Daten werden ausschließlich zur Bearbeitung deiner Anfrage verwendet.</p>
       </form>
 
@@ -779,7 +861,7 @@
           Was kostet das Training?
           <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <div class="faq-answer"><p>Alle Preise findest du transparent im Buchungsportal — je nachdem, welches Format du buchst (Welpenkurs, Einzelstunde, Workshop oder Event), siehst du den passenden Preis direkt bei der Buchung.</p></div>
+        <div class="faq-answer"><p>Alle Preise findest du transparent im <a href="https://adventuredogs.123hundeschule.de/">Buchungsportal</a> — je nachdem, welches Format du buchst (Welpenkurs, Einzelstunde, Workshop oder Event), siehst du den passenden Preis direkt bei der Buchung.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
@@ -812,6 +894,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
@@ -869,6 +953,10 @@
       }
 
       const submitBtn = document.getElementById('submitBtn');
+      const formError = document.getElementById('formError');
+      // Meldung im Formular statt alert(): bleibt stehen und wird vorgelesen.
+      const showError = text => { formError.textContent = text; formError.hidden = false; };
+      formError.hidden = true;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Wird gesendet…';
 
@@ -885,12 +973,12 @@
         } else {
           submitBtn.disabled = false;
           submitBtn.innerHTML = 'Nachricht senden <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-          alert('Es gab einen Fehler beim Senden. Bitte versuch es erneut oder schreib direkt an julia@adventuredogs.training.');
+          showError('Es gab einen Fehler beim Senden. Bitte versuch es erneut oder schreib direkt an julia@adventuredogs.training.');
         }
       } catch (err) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Nachricht senden <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-        alert('Keine Verbindung. Bitte versuch es erneut.');
+        showError('Keine Verbindung. Bitte versuch es erneut.');
       }
     });
   }
@@ -900,16 +988,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 </script>

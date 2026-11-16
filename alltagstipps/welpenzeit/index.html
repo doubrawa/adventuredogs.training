@@ -68,6 +68,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --warm:     oklch(58% 0.13 25);
     --white:    #fff;
     --r-lg:     14px;
@@ -133,8 +139,9 @@
     font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
     color: oklch(100% 0 0 / 0.85); margin-bottom: 22px;
     text-transform: uppercase;
+    text-shadow: 0 0 3px oklch(0% 0 0 / 0.8), 0 0 10px oklch(0% 0 0 / 0.7), 0 0 24px oklch(0% 0 0 / 0.6);
   }
-  .breadcrumb a { color: oklch(100% 0 0 / 0.7); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a { color: oklch(100% 0 0 / 0.95); text-decoration: none; transition: color 0.2s; }
   .breadcrumb a:hover { color: var(--white); }
   .breadcrumb svg { width: 11px; height: 11px; stroke: oklch(100% 0 0 / 0.6); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
   .breadcrumb .crumb-current { color: oklch(100% 0 0 / 0.95); }
@@ -173,8 +180,8 @@
     font-size: 13px; line-height: 1.6;
   }
   .toc-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--accent);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent-dk);
     margin-bottom: 14px; padding-bottom: 12px;
     border-bottom: 1px solid oklch(0% 0 0 / 0.08);
   }
@@ -211,7 +218,7 @@
   article h2:first-of-type { margin-top: 0; }
   article p { color: var(--text-lt); }
   article p strong { color: var(--text); font-weight: 600; }
-  article a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  article a { color: var(--accent-dk); text-decoration: underline; text-underline-offset: 3px; }
 
   /* Drop cap on first paragraph */
   article .lede-paragraph {
@@ -271,7 +278,7 @@
   .callout-title {
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 6px;
+    color: var(--accent-dk); margin-bottom: 6px;
   }
   .callout-text {
     font-size: 15px; line-height: 1.65; color: var(--text);
@@ -288,7 +295,7 @@
     position: relative; overflow: hidden;
   }
   .closing-cta-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
     color: oklch(90% 0.06 185); text-transform: uppercase; margin-bottom: 14px;
   }
   .closing-cta h3 {
@@ -322,7 +329,7 @@
   }
   .more-head .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: block;
+    text-transform: uppercase; color: var(--accent-dk); margin-bottom: 10px; display: block;
   }
   .more-head h2 {
     font-family: 'Playfair Display', serif;
@@ -334,7 +341,7 @@
     text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
     transition: gap 0.2s, color 0.2s;
   }
-  .more-link:hover { gap: 12px; color: var(--accent); }
+  .more-link:hover { gap: 12px; color: var(--accent-dk); }
   .more-link svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
   .more-grid {
@@ -354,8 +361,8 @@
   .more-card-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .more-card-body { padding: 20px 22px 24px; }
   .more-card-eyebrow {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent-dk); margin-bottom: 8px;
   }
   .more-card-title {
     font-family: 'Playfair Display', serif;
@@ -405,7 +412,7 @@
     border-bottom: 1px solid oklch(0% 0 0 / 0.06); transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px; background: var(--blue); color: var(--white) !important;
     padding: 13px 20px; border-radius: 40px; font-weight: 600 !important;
@@ -431,9 +438,49 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* ── Lesbarkeit der Navigation ueber dem Hero-Foto ──
+     Die Navigation steht ohne eigenen Grund ueber dem Foto. Auf hellen Motiven
+     (Nebel, Himmel, Schnee) kamen die weissen Links nur auf 1,5 bis 2,3 : 1,
+     gefordert sind 4,5 : 1. Der Schleier haengt an der Navigation und blendet
+     aus, sobald sie beim Scrollen ihren Cremegrund bekommt oder das Mobilmenue
+     offen ist (es liegt direkt darunter und wuerde sonst mit abgedunkelt). */
+  nav.site-nav::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 150px;
+    z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, oklch(0% 0 0 / 0.5) 0%, oklch(0% 0 0 / 0.38) 45%, oklch(0% 0 0 / 0) 100%);
+    transition: opacity 0.3s;
+  }
+  nav.site-nav.scrolled::before, nav.site-nav:has(.nav-hamburger.open)::before { opacity: 0; }
+  .nav-logo-text, .nav-links a:not(.nav-cta) { text-shadow: 0 1px 3px oklch(0% 0 0 / 0.5); }
+  nav.site-nav.scrolled .nav-logo-text, nav.site-nav.scrolled .nav-links a { text-shadow: none; }
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
+     Scrollen. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
+
+  /* Antippflaechen von Brotkrume und "Alle Themen" auf ueber 24 px. */
+  .breadcrumb a, .more-link { padding: 6px 0; margin: -6px 0; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav class="site-nav" id="nav">
@@ -448,7 +495,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -462,6 +509,7 @@
   <a href="../../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
+<main id="inhalt">
 <!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
@@ -631,6 +679,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
@@ -654,16 +704,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 

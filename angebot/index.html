@@ -193,6 +193,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
     --r-lg:     14px;
     --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
@@ -256,7 +262,8 @@
   .page-hero-content { padding: 0 7%; max-width: 860px; }
   .page-hero-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: oklch(100% 0 0 / 0.85); margin-bottom: 14px;
+    text-transform: uppercase; color: var(--white); margin-bottom: 14px;
+    text-shadow: 0 0 3px oklch(0% 0 0 / 0.8), 0 0 10px oklch(0% 0 0 / 0.7), 0 0 24px oklch(0% 0 0 / 0.6);
   }
   .page-hero h1 {
     font-family: 'Playfair Display', serif;
@@ -372,7 +379,7 @@
     color: var(--blue); margin-bottom: 10px; line-height: 1.25;
   }
   .offer-body .offer-lead {
-    font-size: 13px; font-weight: 600; color: var(--accent);
+    font-size: 13px; font-weight: 600; color: var(--accent-dk);
     margin-bottom: 6px; font-style: italic;
     flex: 0 0 auto;
   }
@@ -399,7 +406,7 @@
   }
   .btn-book {
     display: inline-flex; align-items: center; gap: 7px;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     text-decoration: none; font-size: 13px; font-weight: 600;
     padding: 10px 20px; border-radius: 40px;
     transition: transform 0.15s, box-shadow 0.15s;
@@ -442,7 +449,7 @@
   }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     text-decoration: none; font-size: 15px; font-weight: 600;
     padding: 14px 30px; border-radius: 40px;
     transition: transform 0.18s, box-shadow 0.18s;
@@ -471,7 +478,7 @@
      kein Deckel"). */
   .termine-eyebrow {
     font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent) !important; margin-bottom: 12px;
+    text-transform: uppercase; color: var(--accent-dk) !important; margin-bottom: 12px;
     font-style: italic;
   }
   /* Gewicht und Groesse wie .filter-question ("Wobei brauchst du
@@ -535,12 +542,12 @@
     font-size: 14px; line-height: 1.7; color: var(--text-lt);
     max-width: 520px; margin-bottom: 26px;
   }
-  .termine-consent p a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .termine-consent p a { color: var(--accent-dk); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
   .termine-consent p a:hover { color: var(--blue); }
   .consent-load-btn {
     display: inline-flex; align-items: center; gap: 8px;
     font-family: inherit; font-size: 15px; font-weight: 600;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     border: 0; border-radius: 40px; padding: 14px 32px;
     cursor: pointer;
     transition: transform 0.18s, box-shadow 0.18s;
@@ -555,7 +562,7 @@
     background: none; border: 0; padding: 4px 2px; cursor: pointer;
     text-decoration: underline; text-underline-offset: 2px;
   }
-  .termine-revoke button:hover { color: var(--accent); }
+  .termine-revoke button:hover { color: var(--accent-dk); }
   .termine-revoke button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
   @media (max-width: 720px) {
     .termine-consent { padding: 40px 6% 40px; }
@@ -632,7 +639,7 @@
     transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px;
     background: var(--blue); color: var(--white) !important;
@@ -649,9 +656,62 @@
 
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* ── Lesbarkeit der Navigation ueber dem Hero-Foto ──
+     Die Navigation steht ohne eigenen Grund ueber dem Foto. Auf hellen Motiven
+     (Nebel, Himmel, Schnee) kamen die weissen Links nur auf 1,5 bis 2,3 : 1,
+     gefordert sind 4,5 : 1. Der Schleier haengt an der Navigation und blendet
+     aus, sobald sie beim Scrollen ihren Cremegrund bekommt oder das Mobilmenue
+     offen ist (es liegt direkt darunter und wuerde sonst mit abgedunkelt). */
+  nav::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 150px;
+    z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, oklch(0% 0 0 / 0.5) 0%, oklch(0% 0 0 / 0.38) 45%, oklch(0% 0 0 / 0) 100%);
+    transition: opacity 0.3s;
+  }
+  nav.scrolled::before, nav:has(.nav-hamburger.open)::before { opacity: 0; }
+  .nav-logo-text, .nav-links a:not(.nav-cta) { text-shadow: 0 1px 3px oklch(0% 0 0 / 0.5); }
+  nav.scrolled .nav-logo-text, nav.scrolled .nav-links a { text-shadow: none; }
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
+     Scrollen. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
+
+  /* Einzeltraining und Intensivcoaching laufen ueber die volle Rasterbreite.
+     Ihr Text stand bei 1920 px mit 87 bis 121 Zeichen je Zeile da, bei 2560 px
+     mit bis zu 216. Statt die Karte zu deckeln, laeuft der Text in Spalten.
+     Das !important hebt nur den Abstand auf, den die Absaetze als style-Attribut
+     tragen: am Spaltenkopf stuende der zweite Absatz sonst 12 px tiefer. */
+  @media (min-width: 1400px) {
+    .offer-card.highlight .offer-body { display: block; columns: 2; column-gap: 56px; }
+    .offer-card.highlight .offer-body .offer-lead,
+    .offer-card.highlight .offer-body h2,
+    .offer-card.highlight .offer-body .offer-footer { column-span: all; }
+    .offer-card.highlight .offer-body p:not(.offer-lead) {
+      margin: 0 0 12px !important; break-inside: avoid;
+    }
+  }
+  @media (min-width: 2000px) { .offer-card.highlight .offer-body { columns: 3; } }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav id="nav">
@@ -666,7 +726,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="#" class="nav-cta active">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -693,42 +753,42 @@
   <h2 class="filter-question">Wobei brauchst du Unterstützung?</h2>
   <p class="filter-sub">Wähl aus, was am besten zu dir und deinem Hund passt.</p>
   <div class="filter-nav">
-    <button class="filter-btn active" onclick="filterCards('all', this)">
+    <button class="filter-btn active" aria-pressed="true" onclick="filterCards('all', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-ueberall.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-ueberall-white.webp" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Alle Angebote</span>
     </button>
-    <button class="filter-btn" onclick="filterCards('erziehung', this)">
+    <button class="filter-btn" aria-pressed="false" onclick="filterCards('erziehung', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-erziehung.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-erziehung-white.webp" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Erziehung</span>
     </button>
-    <button class="filter-btn" onclick="filterCards('alltag', this)">
+    <button class="filter-btn" aria-pressed="false" onclick="filterCards('alltag', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-alltag.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-alltag-white.webp" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Alltagstraining</span>
     </button>
-    <button class="filter-btn" onclick="filterCards('begegnung', this)">
+    <button class="filter-btn" aria-pressed="false" onclick="filterCards('begegnung', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-begegnung.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-begegnung-white.webp" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Hundebegegnungen</span>
     </button>
-    <button class="filter-btn" onclick="filterCards('events', this)">
+    <button class="filter-btn" aria-pressed="false" onclick="filterCards('events', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-events.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-events-white.webp" width="256" height="256" alt="">
       </span>
       <span class="filter-label">Beschäftigung &amp; Events</span>
     </button>
-    <button class="filter-btn" onclick="filterCards('problem', this)">
+    <button class="filter-btn" aria-pressed="false" onclick="filterCards('problem', this)">
       <span class="filter-icon">
         <img class="icon-default" src="../assets/icon-problem.webp" width="256" height="256" alt="">
         <img class="icon-active"  src="../assets/icon-problem-white.webp" width="256" height="256" alt="">
@@ -739,7 +799,7 @@
 </div>
 
 <!-- MAIN -->
-<main>
+<main id="inhalt">
 
   <div class="offers-grid">
 
@@ -757,7 +817,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/gruppen/53-welpengruppe" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -781,7 +841,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/kurse?tag=Basis" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -799,7 +859,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/kurse/139-jagen-nein-danke-zusatztermin" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -817,7 +877,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/gruppen/55-sozialkontakt" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -835,7 +895,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/gruppen/95-social-walk" class="btn-book">
             Nächste Termine
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -858,7 +918,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/veranstaltungen?tag=Erziehung" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -884,7 +944,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/veranstaltungen?tag=Quality+Time" class="btn-book">
             Nächste Termine
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -902,7 +962,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/kurse/132-dein-hund-wird-zum-trickdog" class="btn-book">
             Nächster Termin
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -922,7 +982,7 @@
         <div class="offer-footer">
           <a href="https://adventuredogs.123hundeschule.de/einzeltraining" class="btn-book">
             Jetzt anfragen
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
         </div>
       </div>
@@ -1063,8 +1123,10 @@
 </script>
 <script>
   function filterCards(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
 
     document.querySelectorAll('.offer-card').forEach(card => {
       const cats = (card.dataset.cat || '').split(/\s+/);
@@ -1088,17 +1150,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    // close on link click
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 </script>

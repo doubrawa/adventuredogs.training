@@ -99,6 +99,12 @@
     --text:     oklch(22% 0.02 60);
     --text-lt:  oklch(50% 0.02 60);
     --accent:   oklch(62% 0.12 185);
+    /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
+       Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
+       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
+       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+    --accent-dk: oklch(49% 0.1 185);
+    --accent-lt: oklch(80% 0.09 185);
     --white:    #fff;
     --r-lg:     14px;
     --shadow:   0 4px 32px oklch(0% 0 0 / 0.10);
@@ -161,7 +167,8 @@
   .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 860px; }
   .hero-eyebrow {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: oklch(100% 0 0 / 0.92); margin-bottom: 14px;
+    text-transform: uppercase; color: var(--white); margin-bottom: 14px;
+    text-shadow: 0 0 3px oklch(0% 0 0 / 0.8), 0 0 10px oklch(0% 0 0 / 0.7), 0 0 24px oklch(0% 0 0 / 0.6);
   }
   .hero h1 {
     font-family: 'Playfair Display', serif;
@@ -175,7 +182,7 @@
   }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: var(--white);
+    background: var(--accent-dk); color: var(--white);
     text-decoration: none; font-size: 15px; font-weight: 600;
     padding: 13px 28px; border-radius: 40px;
     box-shadow: 0 4px 20px oklch(62% 0.12 185 / 0.35);
@@ -184,14 +191,27 @@
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px oklch(62% 0.12 185 / 0.45); }
 
   /* ── INTRO SECTION ── */
-  .intro {
-    padding: 80px 7%;
-    max-width: 880px;
-    margin: 0 auto;
+  /* Kein zentrierter Deckel (CLAUDE.md): der Abschnitt laeuft im 7-%-Rand ueber
+     die volle Breite, Text links, die vier Karten rechts. Die Zeile bleibt ueber
+     den mitwachsenden Schriftgrad bei 55 bis 75 Zeichen. */
+  .intro { padding: 80px 7%; }
+  .intro-text {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(40px, 5vw, 96px); align-items: start;
+  }
+  .intro-text > * { grid-column: 1; }
+  .intro-text > .why-cards { grid-column: 2; grid-row: 1 / span 6; margin: 0; }
+  @media (min-width: 1700px) {
+    .intro-text { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+    .intro-text > .why-cards { display: grid; grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    .intro-text { display: block; }
+    .intro-text > .why-cards { margin: 28px 0; }
   }
   .section-label {
     font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block;
+    text-transform: uppercase; color: var(--accent-dk); margin-bottom: 12px; display: block;
   }
   .section-title {
     font-family: 'Playfair Display', serif;
@@ -199,7 +219,7 @@
     color: var(--blue); line-height: 1.15; margin-bottom: 24px; text-wrap: pretty;
   }
   .intro-text p {
-    font-size: 16px; line-height: 1.8; color: var(--text-lt); margin-bottom: 18px;
+    font-size: clamp(16px, 1.05vw, 21px); line-height: 1.8; color: var(--text-lt); margin-bottom: 18px;
   }
   .intro-text p strong { color: var(--text); font-weight: 600; }
 
@@ -237,7 +257,7 @@
   .story-inner {
     max-width: 760px; position: relative; z-index: 1;
   }
-  .story .section-label { color: var(--accent); }
+  .story .section-label { color: var(--accent-lt); }
   .story .section-title { color: var(--white); margin-bottom: 28px; }
   .story p { font-size: 16px; line-height: 1.8; color: oklch(100% 0 0 / 0.72); margin-bottom: 18px; font-weight: 300; }
   .story p strong { color: var(--white); font-weight: 500; }
@@ -270,7 +290,10 @@
 
   /* ── FORTBILDUNGEN ── */
   .fortbildungen { padding: 80px 7%; }
-  .fortbildungen .section-title { margin-bottom: 36px; }
+  .fortbildungen .section-title { margin-bottom: 14px; }
+  /* Die Erlaubnis stand bis 16.11.2026 nur im Impressum. */
+  .fort-erlaubnis { font-size: 16px; line-height: 1.7; color: var(--text-lt); margin-bottom: 32px; }
+  .fort-erlaubnis strong { color: var(--text); font-weight: 600; }
   .fort-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -286,7 +309,7 @@
     flex-shrink: 0; margin-top: 6px;
   }
   .fort-item a { color: var(--text); text-decoration: none; font-size: 14px; line-height: 1.55; transition: color 0.2s; }
-  .fort-item a:hover { color: var(--accent); }
+  .fort-item a:hover { color: var(--accent-dk); }
   .fort-item span { font-size: 14px; line-height: 1.55; color: var(--text); }
 
   /* ── CTA ── */
@@ -362,7 +385,7 @@
     transition: color 0.2s;
   }
   .nav-mobile a:last-child { border-bottom: none; }
-  .nav-mobile a:hover { color: var(--accent); }
+  .nav-mobile a:hover { color: var(--accent-dk); }
   .nav-mobile .nav-cta-mobile {
     margin-top: 8px;
     background: var(--blue); color: var(--white) !important;
@@ -384,9 +407,46 @@
   }
 /* fuenfter Nav-Eintrag: mittlere Breiten */
 @media (min-width: 961px) and (max-width: 1120px){.nav-links{gap:18px}.nav-links a{font-size:13.5px}.nav-links .nav-cta{padding-left:15px;padding-right:15px}}
+
+  /* ── Lesbarkeit der Navigation ueber dem Hero-Foto ──
+     Die Navigation steht ohne eigenen Grund ueber dem Foto. Auf hellen Motiven
+     (Nebel, Himmel, Schnee) kamen die weissen Links nur auf 1,5 bis 2,3 : 1,
+     gefordert sind 4,5 : 1. Der Schleier haengt an der Navigation und blendet
+     aus, sobald sie beim Scrollen ihren Cremegrund bekommt oder das Mobilmenue
+     offen ist (es liegt direkt darunter und wuerde sonst mit abgedunkelt). */
+  nav::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 150px;
+    z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, oklch(0% 0 0 / 0.5) 0%, oklch(0% 0 0 / 0.38) 45%, oklch(0% 0 0 / 0) 100%);
+    transition: opacity 0.3s;
+  }
+  nav.scrolled::before, nav:has(.nav-hamburger.open)::before { opacity: 0; }
+  .nav-logo-text, .nav-links a:not(.nav-cta) { text-shadow: 0 1px 3px oklch(0% 0 0 / 0.5); }
+  nav.scrolled .nav-logo-text, nav.scrolled .nav-links a { text-shadow: none; }
+
+  /* Sprunglink fuer Tastatur und Screenreader: liegt ausserhalb des Bilds,
+     bis er den Fokus bekommt. */
+  .skip-link {
+    position: absolute; left: 16px; top: -64px; z-index: 200;
+    background: var(--blue); color: var(--white);
+    padding: 11px 20px; border-radius: 40px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 14px; }
+
+  /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
+     Scrollen. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* Fusszeilen-Links: 17 px Schrift, mit Polster 29 px Antippflaeche. */
+  footer a { display: inline-block; padding: 6px 0; margin: -6px 0; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
 <!-- NAV -->
 <nav id="nav">
@@ -401,7 +461,7 @@
     <li><a href="https://officedogs.training/">Office Dogs</a></li>
     <li><a href="../angebot/" class="nav-cta">Trainings entdecken</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navMobile">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -415,6 +475,7 @@
   <a href="../angebot/" class="nav-cta-mobile">Trainings entdecken</a>
 </div>
 
+<main id="inhalt">
 <!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
@@ -517,6 +578,7 @@
 <section class="fortbildungen">
   <span class="section-label">Qualifikation</span>
   <h2 class="section-title">Fortbildungen & Ausbildung</h2>
+  <p class="fort-erlaubnis"><strong>Behördlich zugelassen:</strong> Die Erlaubnis nach §11 Abs. 1 Nr. 8f TierSchG liegt vor.</p>
   <div class="fort-grid">
 
     <div class="fort-item"><div class="fort-dot"></div><a href="https://www.ziemer-falke.de/" target="_blank">Hundetrainer Ausbildung Theorie bei Ziemer & Falke</a></div>
@@ -562,6 +624,8 @@
   </div>
 </div>
 
+</main>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
@@ -586,16 +650,16 @@
   const hamburger = document.getElementById('navHamburger');
   const mobileNav = document.getElementById('navMobile');
   if (hamburger && mobileNav) {
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
+    const setMenu = open => {
+      mobileNav.classList.toggle('open', open);
       hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-      });
+    };
+    hamburger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) { setMenu(false); hamburger.focus(); }
     });
   }
 </script>
