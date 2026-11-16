@@ -70,9 +70,12 @@
     --accent:   oklch(62% 0.12 185);
     /* --accent traegt Flaechen, Symbole und Linien. Als Schrift- oder
        Knopffarbe reicht es nicht: 3,4 : 1 gegen Weiss, 2,7 : 1 auf --cream2.
-       --accent-dk kommt gegen Weiss und beide Cremetoene ueber 4,5 : 1,
-       --accent-lt ist das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
+       --accent-dk ist das Tuerkis fuer Schrift auf Weiss und Creme (4,7 : 1 auf
+       --cream2, heller geht dort nicht), --accent-btn die Knopfflaeche unter
+       weisser Schrift (4,7 : 1, bei 55 % waeren es nur noch 4,5),
+       --accent-lt das Tuerkis fuer Schrift auf Navy (7,5 : 1). */
     --accent-dk: oklch(49% 0.1 185);
+    --accent-btn: oklch(54% 0.11 185);
     --accent-lt: oklch(80% 0.09 185);
     --warm:     oklch(58% 0.13 25);
     --white:    #fff;
@@ -165,7 +168,7 @@
   .platinum-body { padding: 36px 40px 40px; position: relative; z-index: 1; }
   .platinum-body p { font-size: 15px; color: oklch(100% 0 0 / 0.85); line-height: 1.65; font-weight: 300; max-width: 580px; margin-bottom: 22px; }
   .platinum-body p strong { color: var(--white); font-weight: 600; }
-  a.platinum-cta { background: var(--accent-dk); color: var(--white); padding: 13px 24px; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
+  a.platinum-cta { background: var(--accent-btn); color: var(--white); padding: 13px 24px; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
   a.platinum-cta:hover { background: oklch(58% 0.13 185); transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0% 0 0 / 0.25); }
 
   /* Aktionsvariante: Hochformat-Motiv neben dem Text, sobald die Karte breit genug ist */
