@@ -834,10 +834,13 @@
   .skip-link:focus { top: 14px; }
 
   /* Wer im System "Bewegung reduzieren" gewaehlt hat, bekommt kein weiches
-     Scrollen und keine Dauerbewegung (Badge, Scrollpfeil). */
+     Scrollen und keinen huepfenden Scrollpfeil. Der Lauftext um das Badge
+     dreht sich mit Absicht weiter (22 s je Umlauf): er gehoert zum Badge,
+     und stillstehend liest er sich schlechter. Entschieden am 16.11.2026;
+     wer die Regel wieder verschaerft, nimmt .hero-badge .badge-spin dazu. */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .hero-badge .badge-spin, .hero-scroll-hint { animation: none; }
+    .hero-scroll-hint { animation: none; }
   }
 
   /* Antippflaeche: der Link ist 14 px hoch, mit Polster 28 px (Soll 24). */
