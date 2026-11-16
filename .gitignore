@@ -9,6 +9,10 @@ Thumbs.db
 # Werkzeugkram, nicht Teil der Seite. Ohne diese Zeile nimmt das im README
 # beschriebene `git add -A` den Ordner beim naechsten Import mit.
 .claude/
+# Impeccable (Design-Pruefwerkzeug, liegt in .claude/) legt Berichte, Konfiguration
+# und Live-Modus-Dateien in .impeccable/ im Projektstamm ab. Wegen .nojekyll
+# waere der Ordner nach einem `git add -A` oeffentlich erreichbar.
+.impeccable/
 
 # Logs
 *.log
