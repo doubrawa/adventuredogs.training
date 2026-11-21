@@ -1,0 +1,141 @@
+/* Arbeitsheft – sammelt die Druckblätter aller Lektionen zu einem Heft.
+
+   Baut auf lernseite.css auf: Farben, Kopf, Knöpfe, Felder, die Karten der
+   Kursübersicht und die Druckstile .druckblatt/.db-… kommen von dort. Hier
+   steht nur, was das Heft dazu braucht: die Seite mit Erklärung,
+   Einstellungen und Inhaltsverzeichnis, das Papier der Vorschau, das
+   Deckblatt und die Druckregeln für mehrere Blätter.
+
+   Druck: lernseite.css zeigt im Druck nur, was als .druckblatt direkt unter
+   body steht. Im Heft steckt jedes Blatt in einem .ah-blatt (dem Papier der
+   Vorschau). Das bleibt hier im Druck sichtbar und beginnt jeweils eine neue
+   Seite. Die Gestaltung der Blätter (.druckblatt, .db-…) gilt in
+   lernseite.css auch auf dem Schirm; hier wird das Blatt nur eingeblendet. */
+
+/* ── Seite ────────────────────────────────────────────────────────────── */
+/* Eine Spalte in Papierbreite: Erklärung, Einstellungen, Inhalt und die
+   Blätter darunter fluchten links und rechts. */
+.arbeitsheft { --papier: min(210mm, 100% - 32px); }
+.ah-seite {
+  flex: 1 0 auto;
+  display: flex; flex-direction: column;
+  width: var(--papier);
+  margin: 0 auto;
+  padding: clamp(24px, 5vh, 56px) 0 clamp(24px, 4vh, 40px);
+}
+
+/* ── Einstellungen: Hundename, Auswahl, Drucken ───────────────────────── */
+.ah-einstellungen {
+  display: flex; flex-direction: column; gap: 22px;
+  padding: clamp(18px, 2.5vw, 28px);
+  border: 1px solid var(--blue-lt); border-radius: 18px; background: var(--white);
+}
+.ah-einstellungen .feld { max-width: 440px; }
+.ah-einstellungen input[type="text"] { min-height: 50px; padding: 10px 16px; font-size: 18px; font-weight: 500; color: var(--blue); }
+.ah-drucken {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  padding-top: 20px; border-top: 1px solid var(--blue-lt);
+}
+.ah-drucken p { margin: 0; max-width: 42ch; font-size: 14px; color: var(--text-lt); }
+
+/* ── Inhaltsverzeichnis und Vorschau-Überschrift ──────────────────────── */
+.ah-abschnitt { display: flex; flex-direction: column; gap: 14px; }
+.ah-abschnitt-kopf {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 6px 20px;
+}
+.ah-abschnitt-kopf .modul-kopf p:not(.schritt-marke) { margin: 0; font-size: 15px; color: var(--text-lt); }
+.ah-anzahl { margin: 0; font-size: 15px; font-weight: 600; color: var(--accent-dk); }
+.ah-hinweis {
+  margin: 0; padding: 14px 18px; border-radius: var(--r-lg);
+  background: var(--cream2); font-size: 15px; color: var(--text);
+}
+/* Karten wie in der Kursübersicht; der Titel springt zum Blatt, der Link
+   darunter führt in die Lektion und liegt deshalb über dem Kartenlink. */
+.ah-karte-fuss {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 6px 14px; margin-top: 6px;
+}
+.ah-karte-fuss .lektion-status { margin-top: 0; }
+.ah-zur-lektion {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 14px; font-weight: 600; color: var(--accent-dk); text-decoration: none;
+}
+.ah-zur-lektion:hover { text-decoration: underline; }
+.ah-zur-lektion .symbol { width: 16px; height: 16px; }
+
+/* ── Papier: jedes Blatt als A4-Seite auf Creme ───────────────────────── */
+/* Innen derselbe Rand wie im Druck (@page in lernseite.css: 14 mm / 16 mm),
+   dann bricht der Text auf dem Bildschirm genauso um wie auf Papier. */
+.ah-blatt {
+  flex: none;
+  display: flex; flex-direction: column;
+  width: var(--papier);
+  aspect-ratio: 210 / 297;
+  margin: 0 auto clamp(20px, 3vw, 36px);
+  padding: 14mm 16mm;
+  border-radius: 3px;
+  background: var(--white);
+  box-shadow: 0 1px 2px oklch(0% 0 0 / 0.06), 0 14px 40px oklch(0% 0 0 / 0.09);
+  scroll-margin-top: 88px;
+}
+.ah-blatt > .druckblatt { display: flex; flex: 1 0 auto; }
+@media (max-width: 860px) {
+  .ah-blatt { padding: clamp(20px, 5vw, 40px) clamp(16px, 4.5vw, 44px); }
+}
+/* Am Handy fließt das Blatt in einer Spalte: Zwei Spalten mit 14-px-Schrift
+   wären bei 390 px nur je gut 140 px breit. Der Druck bleibt zweispaltig. */
+@media screen and (max-width: 560px) {
+  .ah-blatt .db-zwei, .ah-blatt .db-merksatz { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Deckblatt ────────────────────────────────────────────────────────── */
+/* Die Luft verteilt sich 2 : 3, so steht der Titel etwas über der Mitte. */
+.ah-deck-logo { width: 76px; height: 76px; }
+.ah-deck-luft { flex: 2 1 0; min-height: 28px; }
+.ah-deck-luft-unten { flex-grow: 3; }
+.ah-deck-titel { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.ah-deck-name {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(36px, 10.5vw, 64px); font-weight: 900; line-height: 1.02; letter-spacing: -0.015em;
+  color: var(--blue);
+}
+.ah-deck-kurs {
+  margin: 4px 0 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(19px, 4.6vw, 26px); font-weight: 600; line-height: 1.25;
+  color: var(--blue-mid);
+}
+.ah-deck-hund {
+  display: flex; flex-direction: column; gap: 8px;
+  width: min(100%, 120mm); margin-top: clamp(32px, 7vw, 20mm);
+}
+/* Leer bleibt eine Schreiblinie stehen, gefüllt steht der Name darauf */
+.ah-hund {
+  margin: 0; min-height: 52px; padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--blue-lt);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(24px, 6vw, 34px); font-weight: 700; line-height: 1.35;
+  color: var(--blue); overflow-wrap: anywhere;
+}
+
+/* ── Druck ────────────────────────────────────────────────────────────── */
+@media print {
+  /* lernseite.css blendet alles aus, was nicht als .druckblatt direkt unter
+     body steht. Die Blätter des Hefts stecken in .ah-blatt; ausgeblendete
+     (Auswahl „nur mit Einträgen“) bleiben draußen. */
+  body > article.ah-blatt:not([hidden]) { display: block !important; }
+  .ah-blatt {
+    width: auto; aspect-ratio: auto; margin: 0; padding: 0;
+    border-radius: 0; background: none; box-shadow: none;
+  }
+  /* Das Deckblatt steht vorn, jedes weitere Blatt beginnt eine neue Seite */
+  .ah-blatt + .ah-blatt { break-before: page; }
+  /* Druckbereich 269 mm hoch; etwas Luft, damit der Fuß nicht umbricht */
+  .ah-deckblatt { min-height: 262mm; }
+  .ah-deck-name { font-size: 64px; }
+  .ah-deck-kurs { font-size: 26px; }
+  .ah-deck-hund { margin-top: 20mm; }
+  .ah-hund { font-size: 34px; }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de" data-kurs="frustration" data-kursbasis="./">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onlinekurs „Gelassen statt explosiv“ – Adventure Dogs</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Zugang zum Onlinekurs „Gelassen statt explosiv“ der Hundeschule Adventure Dogs.">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon-64.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../player/lernseite.css">
+</head>
+<body data-art="seite">
+
+<svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-schloss" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-haken" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-drucker" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></symbol>
+</svg>
+
+<header class="kopf">
+  <div class="kopf-zeile">
+    <a href="../../" aria-label="Zur Website von Adventure Dogs"><img class="kopf-logo" src="../../assets/logo-144.webp" alt="" width="40" height="40"></a>
+    <div class="kopf-text">
+      <span class="kopf-kurs">Onlinekurs</span>
+      <span class="kopf-lektion">Gelassen statt explosiv</span>
+    </div>
+    <span class="vorschau-marke" id="klartext-marke" hidden title="Lokale Vorschau der unverschlüsselten Quellen">Klartext-Vorschau</span>
+    <button type="button" class="knopf knopf-geist knopf-klein" id="abmelden" hidden>Abmelden</button>
+  </div>
+</header>
+
+<main class="buehne seite">
+  <div class="laden" id="laden" role="status"><p>Einen Moment …</p></div>
+
+  <section class="zugang" id="zugang" hidden aria-labelledby="zugang-titel">
+    <div class="zugang-text">
+      <p class="schritt-marke">Onlinekurs</p>
+      <h1 id="zugang-titel">Gelassen statt explosiv</h1>
+      <div class="titel-regel"></div>
+      <p class="lead">Mit deinem Zugangscode öffnest du den Kurs. Du findest ihn in der Mail zu deiner Buchung.</p>
+      <form class="zugang-form" id="zugang-form" novalidate>
+        <label class="feld">
+          <span class="feld-label">Zugangscode</span>
+          <input id="code" name="code" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="40" placeholder="XXXX-XXXX-XXXX-XXXX" aria-describedby="code-hinweis code-fehler">
+        </label>
+        <p class="feld-hinweis" id="code-hinweis">16 Zeichen, Groß- und Kleinschreibung ist egal.</p>
+        <label class="merken"><input type="checkbox" id="merken" checked>Auf diesem Gerät angemeldet bleiben (sonst gilt der Zugang nur in diesem Tab)</label>
+        <p class="zugang-fehler" id="code-fehler" role="alert" hidden></p>
+        <button type="submit" class="knopf knopf-primaer knopf-gross" id="oeffnen"><svg class="symbol" aria-hidden="true"><use href="#i-schloss"/></svg><span>Kurs öffnen</span></button>
+      </form>
+      <p class="zugang-hilfe">Code verloren oder keine Mail bekommen? <a href="../../kontakt/">Schreib Julia</a>.</p>
+    </div>
+    <figure class="titel-foto zugang-foto">
+      <img src="../../assets/hero-alltagstipps.webp" width="2400" height="1602" loading="lazy" alt="Julia sitzt in einem Sessel, ihr Hund Einstein wartet ruhig neben ihr.">
+    </figure>
+  </section>
+
+  <section class="uebersicht" id="uebersicht" hidden aria-labelledby="uebersicht-titel">
+    <div class="uebersicht-kopf">
+      <p class="schritt-marke">Onlinekurs</p>
+      <h1 id="uebersicht-titel">Gelassen statt explosiv</h1>
+      <div class="titel-regel"></div>
+      <p class="lead">Schön, dass du dabei bist. Hier findest du alle Lektionen. Dein Fortschritt bleibt auf diesem Gerät gespeichert.</p>
+      <p class="lokal-hinweis"><svg class="symbol" aria-hidden="true"><use href="#i-schloss"/></svg>Gut zu wissen: Safari (iPhone, iPad, Mac) löscht Fortschritt, Einträge und den gemerkten Code, wenn du den Kurs sieben Tage lang nicht öffnest. Druck dein Arbeitsheft deshalb ab und zu aus oder speichere es als PDF.</p>
+      <p class="uebersicht-stand" id="uebersicht-stand"></p>
+      <a class="knopf knopf-geist" href="arbeitsheft/" data-zum-arbeitsheft><svg class="symbol" aria-hidden="true"><use href="#i-drucker"/></svg>Mein Arbeitsheft</a>
+    </div>
+    <div class="module" id="module"></div>
+  </section>
+</main>
+
+<footer class="fuss">
+  <span>Adventure Dogs · Julia Doubrawa</span>
+  <nav aria-label="Rechtliches">
+    <a href="../../impressum/">Impressum</a>
+    <a href="../../impressum/#datenschutz">Datenschutz</a>
+    <a href="../../">adventuredogs.training</a>
+  </nav>
+</footer>
+
+<script src="../player/kurs.js"></script>
+<script src="../player/zugang.js"></script>
+</body>
+</html>

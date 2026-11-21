@@ -73,6 +73,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://adventuredogs.training/kurse/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://adventuredogs.training/kontakt/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>

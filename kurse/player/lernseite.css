@@ -1,0 +1,1155 @@
+/* Lernseite – Abspieler für die Lektionen des Onlinekurses
+   „Wenn Geräusche Angst machen“.
+
+   Farben und Schriften kommen aus dem Bestand der Website (index.html :root,
+   assets/fonts.css). Neue Töne entstehen nur als Mischung daraus (color-mix),
+   nicht als frei erfundene Werte.
+
+   Maßeinheit der Bühne ist --s: ein Hundertstel der Fensterbreite, aber nie
+   mehr als 1,45 % der Höhe. So füllt eine Folie den breiten Schirm, ohne auf
+   einem flachen Laptop unten aus dem Bild zu laufen. */
+
+:root {
+  --blue:       oklch(32% 0.07 240);
+  --blue-mid:   oklch(45% 0.09 225);
+  --blue-lt:    oklch(88% 0.04 225);
+  --earth:      oklch(52% 0.07 55);
+  --cream:      oklch(97% 0.01 80);
+  --cream2:     oklch(93% 0.015 80);
+  --text:       oklch(22% 0.02 60);
+  --text-lt:    oklch(50% 0.02 60);
+  --accent:     oklch(62% 0.12 185);
+  --accent-dk:  oklch(49% 0.1 185);
+  --accent-btn: oklch(54% 0.11 185);
+  --accent-lt:  oklch(80% 0.09 185);
+  --white:      #fff;
+  --r:          6px;
+  --r-lg:       14px;
+  --shadow:     0 4px 32px oklch(0% 0 0 / 0.12);
+
+  --ja-flaeche:    color-mix(in oklch, var(--accent) 9%, var(--white));
+  --nein-flaeche:  color-mix(in oklch, var(--earth) 10%, var(--white));
+  --blau-flaeche:  color-mix(in oklch, var(--blue) 8%, var(--white));
+  --earth-hell:    color-mix(in oklch, var(--earth) 60%, var(--white));
+  --earth-dk:      color-mix(in oklch, var(--earth) 72%, var(--text));
+
+  --s: min(1vw, 1.45vh);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* Platz für den Rollbalken immer freihalten: Manche Schritte sind länger als
+   der Schirm, andere nicht – ohne Reserve springt die Seite seitlich. */
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--cream);
+}
+img { display: block; max-width: 100%; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+[tabindex="-1"]:focus { outline: none; }
+[hidden] { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.symbol {
+  width: 1em; height: 1em; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.symbol.voll { fill: currentColor; stroke: none; }
+
+/* ── Kopf ─────────────────────────────────────────────────────────────── */
+.kopf {
+  position: sticky; top: 0; z-index: 30;
+  padding: 12px clamp(16px, 4vw, 48px);
+  background: var(--cream);
+  border-bottom: 1px solid var(--blue-lt);
+}
+.kopf-zeile { display: flex; align-items: center; gap: 12px; min-height: 40px; }
+.kopf-logo { width: 40px; height: 40px; flex: none; }
+/* Der Text schiebt alles nach ihm an den rechten Rand: Zähler, Marke, Abmelden */
+.kopf-text { display: flex; flex-direction: column; min-width: 0; margin-right: auto; line-height: 1.3; }
+.kopf-kurs, .kopf-lektion { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kopf-kurs {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--accent-dk);
+}
+.kopf-lektion { font-size: 15px; font-weight: 600; color: var(--blue); }
+.kopf-zaehler {
+  padding-left: 12px;
+  font-size: 13px; font-weight: 500; color: var(--text-lt);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.vorschau-marke {
+  flex: none; padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--earth-dk); background: var(--nein-flaeche);
+}
+.fortschritt { display: flex; gap: 4px; padding: 12px 0 0; }
+.fortschritt button {
+  position: relative; flex: 1 1 0; height: 6px; padding: 0;
+  border: 0; border-radius: 3px; background: var(--blue-lt);
+  transition: background-color 0.3s;
+}
+.fortschritt button::before { content: ''; position: absolute; inset: -10px 0; }
+.fortschritt button:hover { background: var(--blue-mid); }
+.fortschritt button.erledigt { background: var(--accent); }
+.fortschritt button.aktuell { background: var(--blue); }
+
+/* ── Bühne und Schritte ───────────────────────────────────────────────── */
+.buehne {
+  flex: 1 0 auto;
+  display: flex; flex-direction: column;
+  padding: clamp(16px, 3vh, 48px) clamp(16px, 5vw, 96px);
+}
+.schritt {
+  display: none;
+  flex: 1 0 auto; flex-direction: column; justify-content: center;
+  gap: clamp(16px, 2.4vh, 28px);
+  width: 100%;
+}
+.schritt.aktiv { display: flex; animation: auftritt 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.schritt.ohne-auftritt { animation: none; }
+@keyframes auftritt { from { opacity: 0; transform: translateY(14px); } }
+@keyframes einblenden { from { opacity: 0; } }
+
+.schritt h1, .schritt h2 {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 700;
+  line-height: 1.1; letter-spacing: -0.01em; color: var(--blue);
+  text-wrap: balance;
+}
+.schritt h2 { font-size: clamp(28px, calc(var(--s) * 3.6), 64px); }
+.schritt em { font-style: italic; color: var(--accent-dk); }
+.schritt .schritt-marke, .schritt-marke {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 12px; font-weight: 600; line-height: 1.3;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-dk);
+}
+.lead {
+  margin: 0; max-width: 60ch;
+  font-size: clamp(17px, calc(var(--s) * 1.25), 22px); line-height: 1.55;
+  text-wrap: pretty;
+}
+.sprechtext { display: none; }
+
+/* ── Knöpfe ───────────────────────────────────────────────────────────── */
+/* Bewusst eigene Namen statt .section-label, .btn-primary und .btn-ghost der
+   Website (entschieden am 21.11.2026): Der Abspieler ist eine eigene
+   Oberfläche, seine Knöpfe ein Baukasten aus .knopf plus Variante (primaer,
+   geist, gross, klein) neben den runden Knöpfen der Leiste. Die Versalzeile
+   heißt hier .schritt-marke. Aussehen wie auf der Website, Farben aus deren :root. */
+.knopf {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 12px 26px;
+  border: 2px solid transparent; border-radius: 40px;
+  font-size: 16px; font-weight: 600; line-height: 1.2; text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.knopf .symbol { width: 20px; height: 20px; }
+.knopf-primaer { background: var(--accent-btn); color: var(--white); }
+.knopf-primaer:hover { background: var(--accent-dk); }
+.knopf-geist { background: var(--white); color: var(--blue); border-color: var(--blue-lt); }
+.knopf-geist:hover { border-color: var(--blue-mid); }
+.knopf-gross { min-height: 56px; padding: 14px 32px; font-size: 17px; }
+.knopf:disabled { opacity: 0.45; cursor: default; }
+
+/* ── Deckblatt ────────────────────────────────────────────────────────── */
+.titel {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(28px, 5vw, 96px); align-items: center;
+}
+.titel-text { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.titel-nummer {
+  margin: -6px 0 0; font-size: clamp(18px, calc(var(--s) * 1.6), 28px);
+  font-weight: 500; color: var(--earth-dk);
+}
+.titel h1 { font-size: clamp(38px, calc(var(--s) * 5.2), 96px); font-weight: 900; line-height: 1.04; }
+.titel-regel { width: 72px; height: 4px; border-radius: 2px; background: var(--accent); }
+.titel-fakten {
+  display: flex; flex-wrap: wrap; gap: 10px 22px;
+  margin: 0; padding: 0; list-style: none;
+  font-size: 15px; color: var(--text-lt);
+}
+.titel-fakten li { display: inline-flex; align-items: center; gap: 8px; }
+.titel-fakten .symbol { width: 18px; height: 18px; color: var(--accent-dk); }
+.titel-knoepfe { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 6px; }
+.titel-hinweis { margin: 0; max-width: 52ch; font-size: 14px; color: var(--text-lt); }
+.titel-foto {
+  width: 100%; aspect-ratio: 4 / 5; max-height: calc(100dvh - 220px);
+  margin: 0; justify-self: end; overflow: hidden;
+  border-radius: 22px; background: var(--blue-lt); box-shadow: var(--shadow);
+}
+.titel-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
+
+/* ── Aussage („Es knallt“) ────────────────────────────────────────────── */
+.aussage { align-items: flex-start; }
+/* Kreise mit Symbol: feste Seitenlänge statt aspect-ratio. Mit Prozenthöhe
+   am SVG zog das Symbol den Kreis sonst auf 150 px (Standardhöhe von SVG). */
+.aussage-symbol {
+  --d: clamp(64px, calc(var(--s) * 7), 120px);
+  display: grid; place-items: center; flex: none;
+  width: var(--d); height: var(--d);
+  border-radius: 50%; background: var(--blue); color: var(--accent-lt);
+}
+.aussage-symbol .symbol { width: calc(var(--d) / 2); height: calc(var(--d) / 2); }
+.aussage h2 { font-size: clamp(40px, calc(var(--s) * 7.2), 136px); font-weight: 900; line-height: 1.04; }
+.aussage h2 span { display: block; }
+.aussage h2 .frage { margin-top: 0.12em; font-style: italic; color: var(--accent-dk); }
+
+/* ── Entscheidungsbaum ────────────────────────────────────────────────── */
+.baum {
+  --gap: clamp(14px, 4vw, 72px);
+  --linie: 3px;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--gap);
+  width: 100%; max-width: 1180px; margin-inline: auto;
+}
+/* Aufbaustufen gelten für jede Vorlage mit data-stufe, nicht nur den Baum */
+[data-stufe].verborgen { visibility: hidden; }
+[data-stufe].neu { animation: aufbau 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.baum-start.neu, .baum-frage.neu, .baum-karte.neu, .raster-karte.neu, .ablauf-schritt.neu { box-shadow: 0 14px 40px oklch(0% 0 0 / 0.16); }
+/* Karten, Ablaufschritte und Baum stehen von Anfang an vollständig da: unter „Vier
+   Möglichkeiten“ sollen nicht erst drei stehen (Antwort vom 21.11.2026). Die gerade
+   besprochene ist hervorgehoben, die übrigen blass. Aufdeckungen wie Fazit, Urteil oder
+   der Stress-Tank bauen sich weiter Stück für Stück auf. */
+.schritt:has([data-stufe].neu) :is(.raster-karte, .ablauf-schritt, .baum-start, .baum-frage, .baum-karte, .baum-pfeil, .gabel-links, .gabel-rechts, .gabel-stamm)[data-stufe] {
+  visibility: visible; animation: none; transition: opacity 0.3s, border-color 0.3s;
+}
+.schritt:has([data-stufe].neu) :is(.raster-karte, .ablauf-schritt, .baum-start, .baum-frage, .baum-karte, .baum-pfeil, .gabel-links, .gabel-rechts, .gabel-stamm)[data-stufe]:not(.neu) { opacity: 0.5; }
+.raster-karte.neu:not([class*="ton-"]), .ablauf-schritt.neu { border-color: var(--accent); }
+@keyframes aufbau { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+
+.baum-start {
+  grid-column: 1 / -1; justify-self: center;
+  display: inline-flex; align-items: center; gap: 0.5em;
+  padding: calc(var(--s) * 1.1 + 6px) calc(var(--s) * 2.4 + 14px);
+  border-radius: 999px; background: var(--blue); color: var(--white);
+  font-size: clamp(17px, calc(var(--s) * 1.9), 34px); font-weight: 600; line-height: 1.2;
+}
+.baum-start .symbol { color: var(--accent-lt); width: 1.05em; height: 1.05em; }
+.baum-pfeil { grid-column: 1 / -1; justify-self: center; position: relative; width: 18px; height: clamp(28px, 4vh, 48px); }
+.baum-pfeil::before {
+  content: ''; position: absolute; left: 50%; top: 0; bottom: 13px;
+  width: var(--linie); transform: translateX(-50%); background: var(--accent);
+}
+.baum-pfeil::after, .gabel-links::after, .gabel-rechts::after {
+  content: ''; position: absolute; width: 0; height: 0;
+  border-left: 9px solid transparent; border-right: 9px solid transparent;
+  border-top: 12px solid var(--accent);
+}
+.baum-pfeil::after { left: 0; bottom: 1px; }
+.baum-frage {
+  grid-column: 1 / -1; justify-self: center; max-width: 32ch;
+  padding: calc(var(--s) * 1.4 + 8px) calc(var(--s) * 2.6 + 14px);
+  border: var(--linie) solid var(--accent); border-radius: 18px; background: var(--white);
+  text-align: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, calc(var(--s) * 2.6), 46px); font-weight: 700; line-height: 1.2;
+  color: var(--blue); text-wrap: balance;
+}
+.baum-gabel { grid-column: 1 / -1; position: relative; height: clamp(36px, 5vh, 60px); }
+.gabel-stamm {
+  position: absolute; left: 50%; top: 0; height: calc(50% + var(--linie));
+  width: var(--linie); transform: translateX(-50%); background: var(--accent);
+}
+.gabel-links, .gabel-rechts { position: absolute; top: 50%; bottom: 13px; border-top: var(--linie) solid var(--accent); }
+.gabel-links { left: calc((100% - var(--gap)) / 4 - var(--linie) / 2); right: 50%; border-left: var(--linie) solid var(--accent); }
+.gabel-rechts { right: calc((100% - var(--gap)) / 4 - var(--linie) / 2); left: 50%; border-right: var(--linie) solid var(--accent); }
+.gabel-links::after { left: calc(var(--linie) / -2 - 9px); top: 100%; }
+.gabel-rechts::after { right: calc(var(--linie) / -2 - 9px); top: 100%; }
+
+.baum-karte {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: calc(var(--s) * 0.5 + 4px);
+  padding: calc(var(--s) * 1.3 + 10px) calc(var(--s) * 1.7 + 12px);
+  border: var(--linie) solid; border-radius: 18px;
+  text-wrap: pretty; hyphens: auto; overflow-wrap: break-word;
+}
+.baum-ja { grid-column: 1; background: var(--ja-flaeche); border-color: var(--accent); }
+.baum-nein { grid-column: 2; background: var(--nein-flaeche); border-color: var(--earth); }
+.chip {
+  display: inline-block; padding: 0.2em 0.85em; border-radius: 999px;
+  font-size: clamp(12px, calc(var(--s) * 1.1), 20px); font-weight: 600; line-height: 1.3;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--white);
+}
+.chip-ja { background: var(--accent-btn); }
+.chip-nein { background: var(--earth); }
+.karte-titel {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(19px, calc(var(--s) * 2.3), 42px); font-weight: 700; line-height: 1.15;
+  color: var(--blue);
+}
+.karte-text { font-size: clamp(15px, calc(var(--s) * 1.55), 28px); line-height: 1.35; }
+.karte-warnung {
+  display: flex; align-items: flex-start; gap: 0.5em;
+  margin-top: 2px; padding-top: calc(var(--s) * 0.8 + 6px);
+  border-top: 1px solid color-mix(in oklch, var(--earth) 35%, transparent);
+  font-size: clamp(13px, calc(var(--s) * 1.2), 22px); font-weight: 600; line-height: 1.35;
+  color: var(--earth-dk);
+}
+.karte-warnung .symbol { width: 1.2em; height: 1.2em; margin-top: 0.05em; }
+
+/* ── Beispiel (Platzhalter) ───────────────────────────────────────────── */
+.beispiel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 72px); align-items: center; }
+.beispiel-text { display: flex; flex-direction: column; gap: 18px; }
+.platzhalter-foto {
+  display: grid; place-items: center; align-content: center; gap: 12px;
+  aspect-ratio: 4 / 3; padding: 24px;
+  border: 3px dashed var(--blue-mid); border-radius: 22px; background: var(--cream2);
+  text-align: center; font-weight: 600; color: var(--blue-mid);
+}
+.platzhalter-foto .symbol { width: 48px; height: 48px; }
+.platzhalter-liste { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.platzhalter-liste li {
+  padding: 14px 18px; border: 2px dashed var(--blue-lt); border-radius: var(--r-lg);
+  font-size: clamp(16px, calc(var(--s) * 1.4), 24px); color: var(--blue-mid);
+}
+
+/* ── Tafel (Navy-Aussage) ─────────────────────────────────────────────── */
+.tafel {
+  flex: 1 0 auto;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  gap: clamp(14px, 2.4vh, 32px);
+  padding: clamp(24px, min(6vw, 7vh), 96px);
+  border-radius: 24px; background: var(--blue); color: var(--white);
+}
+.tafel .schritt-marke { color: var(--accent-lt); }
+.tafel-symbol { width: clamp(48px, calc(var(--s) * 5), 88px); height: clamp(48px, calc(var(--s) * 5), 88px); color: var(--accent-lt); }
+.tafel h2 { font-size: clamp(40px, calc(var(--s) * 7), 132px); font-weight: 900; color: var(--white); }
+.tafel h2 em { color: var(--accent-lt); }
+.tafel .lead { color: oklch(100% 0 0 / 0.9); font-size: clamp(18px, calc(var(--s) * 1.8), 32px); font-weight: 300; }
+.tafel-zitat {
+  margin: 0; max-width: 32ch; padding-top: 18px; border-top: 2px solid var(--accent);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, calc(var(--s) * 2.2), 38px); font-weight: 600; line-height: 1.3;
+  color: var(--white); text-wrap: balance;
+}
+
+/* ── Übungen: gemeinsamer Kopf ────────────────────────────────────────── */
+.uebung-kopf { display: flex; flex-direction: column; gap: 10px; max-width: 72ch; }
+.uebung-kopf .schritt-marke { display: inline-flex; align-items: center; gap: 8px; }
+.uebung-kopf .schritt-marke .symbol { width: 18px; height: 18px; }
+.anleitung { margin: 0; max-width: 62ch; font-size: clamp(16px, calc(var(--s) * 1.3), 21px); text-wrap: pretty; }
+
+/* ── Übung: Was siehst du? ────────────────────────────────────────────── */
+.foto-aufgabe { display: grid; grid-template-columns: fit-content(62%) minmax(260px, 1fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
+/* Das Foto richtet sich nach der Fensterhöhe, damit es ganz über der Leiste
+   steht – sonst liegt die Rute auf dem Laptop hinter der Steuerleiste. Die
+   Figur schrumpft mit (fit-content), damit die Prozentlagen der Tippstellen
+   weiter zum Bild passen. */
+.foto {
+  position: relative; width: fit-content; max-width: 100%; margin: 0; overflow: hidden;
+  border-radius: 18px; background: var(--blue-lt); box-shadow: var(--shadow);
+  cursor: crosshair; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.foto img { width: auto; max-width: 100%; height: auto; max-height: max(240px, calc(100dvh - 470px)); }
+.foto-punkt {
+  position: absolute; aspect-ratio: 1; padding: 0;
+  transform: translate(-50%, -50%);
+  border: 0; border-radius: 50%; background: transparent;
+  cursor: crosshair; -webkit-tap-highlight-color: transparent;
+}
+.foto-punkt:focus-visible { outline: 3px dashed var(--white); outline-offset: -6px; }
+.foto-punkt.gefunden { cursor: default; }
+.foto-punkt.gefunden::before {
+  content: ''; position: absolute; inset: 14%;
+  border: 3px solid var(--white); border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--accent), 0 6px 20px oklch(0% 0 0 / 0.35);
+  animation: aufbau 0.4s ease both;
+}
+.foto-nummer {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: none; place-items: center; width: 34px; height: 34px;
+  border-radius: 50%; background: var(--accent-btn); color: var(--white);
+  font-size: 16px; font-weight: 600; box-shadow: 0 2px 10px oklch(0% 0 0 / 0.3);
+}
+.foto-punkt.gefunden .foto-nummer { display: grid; }
+.foto-fehl {
+  position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  border: 3px solid var(--white); border-radius: 50%; pointer-events: none;
+  animation: fehl 0.7s ease-out forwards;
+}
+@keyframes fehl { from { opacity: 0.95; transform: scale(0.4); } to { opacity: 0; transform: scale(1.3); } }
+@keyframes ausblenden { from { opacity: 0.95; } to { opacity: 0; } }
+
+.foto-seite { display: flex; flex-direction: column; gap: 14px; }
+.foto-stand { margin: 0; font-weight: 600; color: var(--blue); font-variant-numeric: tabular-nums; }
+.foto-befunde { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.foto-befund {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start;
+  padding: 12px 14px; border: 1px solid var(--blue-lt); border-radius: var(--r-lg); background: var(--white);
+}
+.foto-befund .nr {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--cream2); color: var(--text-lt); font-weight: 600;
+}
+.foto-befund .offen { align-self: center; color: var(--text-lt); }
+.foto-befund .inhalt { display: none; }
+.foto-befund.gefunden .nr { background: var(--accent-btn); color: var(--white); }
+.foto-befund.gefunden .offen { display: none; }
+.foto-befund.gefunden .inhalt { display: block; animation: einblenden 0.4s ease both; }
+.foto-befund strong { display: block; color: var(--blue); }
+.foto-hinweis { min-height: 1.55em; margin: 0; font-size: 15px; color: var(--text-lt); }
+.foto-aktionen { display: flex; flex-wrap: wrap; gap: 10px; }
+.fazit {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 18px; border-radius: var(--r-lg);
+  background: var(--blue); color: var(--white);
+}
+.fazit p { margin: 0; }
+.fazit strong { color: var(--accent-lt); }
+.fazit .symbol { width: 24px; height: 24px; margin-top: 1px; color: var(--accent-lt); }
+
+/* ── Übung: Was tust du? ──────────────────────────────────────────────── */
+.faelle { display: flex; flex-direction: column; gap: 18px; width: 100%; max-width: 980px; }
+.fall {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: clamp(20px, 3vw, 36px); border-radius: 20px;
+  background: var(--white); box-shadow: var(--shadow);
+  animation: einblenden 0.4s ease both;
+}
+.fall-nummer {
+  margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--earth-dk);
+}
+.fall-text { margin: 0; font-size: clamp(18px, calc(var(--s) * 1.7), 28px); line-height: 1.45; text-wrap: pretty; }
+.fall-frage { margin: 0; font-weight: 600; color: var(--blue); text-wrap: balance; }
+.fall-antworten { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+/* Genau drei Antworten stehen nebeneinander, vier als 2 × 2. :where() hält die
+   Spezifität bei der von .fall-antworten, damit Lektionen sie übersteuern können. */
+.fall-antworten:where(:has(> :nth-child(3):last-child)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Vorlagen mit mehreren Elementen (etwa Raster und Satz darunter) brauchen Abstand */
+[data-vorlage] { display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px); }
+.antwort {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 16px 18px; border: 2px solid var(--blue-lt); border-radius: var(--r-lg);
+  background: var(--white); color: var(--text);
+  text-align: left; line-height: 1.35;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s, border-color 0.2s;
+}
+/* Neutrale Antwort (Fälle mit mehr als zwei Antworten): ohne antwort-ja/-nein */
+.antwort:not(.antwort-ja):not(.antwort-nein):hover:not(:disabled) { border-color: var(--blue-mid); }
+.antwort-ja { border-color: var(--accent); background: var(--ja-flaeche); }
+.antwort-nein { border-color: var(--earth); background: var(--nein-flaeche); }
+.antwort strong { font-size: clamp(17px, calc(var(--s) * 1.4), 22px); color: var(--blue); }
+.antwort .klein { font-size: 15px; }
+.antwort .chip { font-size: 12px; }
+.antwort:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px oklch(0% 0 0 / 0.1); }
+.antwort:disabled { cursor: default; opacity: 0.5; }
+.antwort.gewaehlt { opacity: 1; box-shadow: 0 0 0 3px var(--blue); }
+.rueckmeldung {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 18px; border-radius: var(--r-lg); background: var(--cream2);
+  animation: einblenden 0.4s ease both;
+}
+.rueckmeldung p { margin: 0; }
+.urteil-symbol {
+  flex: none; display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 50%; color: var(--white);
+}
+.urteil-symbol .symbol { width: 20px; height: 20px; stroke-width: 2.5; }
+.rueckmeldung.richtig .urteil-symbol { background: var(--accent-btn); }
+.rueckmeldung.falsch .urteil-symbol { background: var(--earth); }
+.rueckmeldung .urteil { margin-bottom: 4px; font-weight: 600; color: var(--blue); }
+.faelle-fuss { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.ergebnis {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+  padding: clamp(22px, 3vw, 36px); border-radius: 20px; background: var(--blue); color: var(--white);
+  animation: einblenden 0.4s ease both;
+}
+.ergebnis p { margin: 0; }
+.ergebnis-zahl {
+  font-family: 'Playfair Display', Georgia, serif; font-variant-numeric: lining-nums;
+  font-size: clamp(30px, calc(var(--s) * 3.4), 56px); font-weight: 900; line-height: 1.1;
+}
+.ergebnis-zahl span { color: var(--accent-lt); }
+.auswertung { display: flex; flex-direction: column; gap: 10px; width: 100%; margin: 0; padding: 0; list-style: none; }
+.auswertung li { display: flex; flex-direction: column; gap: 2px; padding: 2px 0 2px 14px; border-left: 3px solid var(--accent-lt); }
+.auswertung li.falsch { border-left-color: var(--earth-hell); }
+.auswertung strong { color: var(--white); }
+.auswertung span { color: oklch(100% 0 0 / 0.85); }
+.ergebnis .knopf-geist { background: transparent; color: var(--white); border-color: oklch(100% 0 0 / 0.4); }
+.ergebnis .knopf-geist:hover { border-color: var(--white); }
+
+/* ── Formulare: Innehalten und Plan ───────────────────────────────────── */
+.formular { display: flex; flex-direction: column; gap: 18px; width: 100%; max-width: 860px; }
+.feld { display: flex; flex-direction: column; gap: 8px; }
+.feld-label { font-weight: 600; color: var(--blue); }
+.feld-label small { font-size: 14px; font-weight: 400; color: var(--text-lt); }
+/* Textfelder in .feld – Lektion, Code-Eingabe und Heft: Rahmen, Fläche, Fokus */
+.feld :is(textarea, input[type="text"]) {
+  width: 100%;
+  border: 1.5px solid var(--blue-lt); border-radius: var(--r-lg); background: var(--white);
+}
+.feld :is(textarea, input[type="text"]):focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
+}
+.feld textarea { min-height: 80px; padding: 12px 14px; line-height: 1.5; resize: vertical; field-sizing: content; }
+.wahl { margin: 0; padding: 0; border: 0; min-width: 0; }
+.wahl legend { margin-bottom: 8px; padding: 0; font-weight: 600; color: var(--blue); }
+.wahl-optionen { display: flex; flex-wrap: wrap; gap: 10px; }
+.wahl label { position: relative; display: inline-flex; }
+.wahl input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.wahl span {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px;
+  border: 1.5px solid var(--blue-lt); border-radius: 999px; background: var(--white);
+  font-weight: 500;
+}
+.wahl input:checked + span { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.wahl input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.lokal-hinweis { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; color: var(--text-lt); }
+.lokal-hinweis .symbol { width: 16px; height: 16px; color: var(--accent-dk); }
+
+.innehalten-symbol {
+  display: grid; place-items: center; width: 64px; height: 64px;
+  border-radius: 50%; background: var(--blue); color: var(--accent-lt);
+}
+.innehalten-symbol .symbol { width: 26px; height: 26px; }
+
+.plan { display: flex; flex-direction: column; gap: 22px; width: 100%; max-width: 920px; }
+.plan-abschnitt {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: clamp(18px, 2.5vw, 28px); border: 1px solid var(--blue-lt); border-radius: 18px;
+  background: var(--white);
+}
+.plan-abschnitt h3 {
+  display: flex; align-items: baseline; gap: 12px; margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(19px, calc(var(--s) * 1.6), 26px); font-weight: 700; line-height: 1.25;
+  color: var(--blue);
+}
+.plan-abschnitt h3 .nr { font-size: 1.35em; font-weight: 900; font-variant-numeric: lining-nums; color: var(--earth); }
+.plan-zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.merksatz-paar {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;
+  padding: 22px 26px; border-radius: 18px; background: var(--blue);
+}
+.merksatz-paar p {
+  margin: 0; padding-top: 10px; border-top: 2px solid var(--accent);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(18px, calc(var(--s) * 1.5), 24px); font-weight: 600; line-height: 1.3;
+  color: var(--white);
+}
+.plan-aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.gespeichert {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; color: var(--accent-dk);
+  opacity: 0; transition: opacity 0.3s;
+}
+.gespeichert.sichtbar { opacity: 1; }
+.gespeichert .symbol { width: 16px; height: 16px; }
+
+/* ── Merke ────────────────────────────────────────────────────────────── */
+.merke-liste { display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px); margin: 0; padding: 0; list-style: none; max-width: 1100px; }
+.merke-liste li {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center;
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(16px, 2.4vh, 28px) clamp(18px, 2.4vw, 36px);
+  border-radius: 18px; background: var(--white); box-shadow: 0 2px 24px oklch(0% 0 0 / 0.06);
+  animation: aufbau 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.merke-liste li:nth-child(2) { animation-delay: 0.15s; }
+.merke-liste li:nth-child(3) { animation-delay: 0.3s; }
+.merke-nr {
+  font-family: 'Playfair Display', Georgia, serif; font-variant-numeric: lining-nums;
+  font-size: clamp(36px, calc(var(--s) * 4.4), 80px); font-weight: 900; line-height: 1;
+  color: var(--accent);
+}
+.merke-text { font-size: clamp(18px, calc(var(--s) * 2), 36px); font-weight: 500; line-height: 1.3; text-wrap: balance; }
+
+/* ── Abschluss ────────────────────────────────────────────────────────── */
+.abschluss { align-items: center; text-align: center; }
+.abschluss .lead { margin-inline: auto; }
+.abschluss-symbol {
+  --d: clamp(72px, calc(var(--s) * 8), 120px);
+  display: grid; place-items: center; flex: none;
+  width: var(--d); height: var(--d);
+  border-radius: 50%; background: var(--accent-btn); color: var(--white);
+  animation: aufbau 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.abschluss-symbol .symbol { width: calc(var(--d) / 2); height: calc(var(--d) / 2); stroke-width: 2.5; }
+.naechste {
+  display: flex; align-items: center; gap: 16px; width: 100%; max-width: 560px;
+  padding: 18px 22px; border: 1px solid var(--blue-lt); border-radius: 18px; background: var(--white);
+  text-align: left;
+}
+.naechste p { margin: 0; }
+.naechste .klein { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-lt); }
+.naechste strong { display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 20px; color: var(--blue); }
+.naechste .bald {
+  margin-left: auto; flex: none; padding: 4px 12px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; color: var(--text-lt); background: var(--cream2);
+}
+.abschluss-knoepfe { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+/* ── Baustein: Kartenraster (2–4 Karten nebeneinander) ────────────────── */
+.raster {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: clamp(12px, 1.6vw, 24px); width: 100%;
+}
+/* Feste Spaltenzahl, wenn ein Band über die volle Breite (.raster-voll) dazukommt:
+   auto-fit ließe sonst neben drei Karten eine leere vierte Spalte stehen. */
+.raster.spalten-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.raster.spalten-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.raster.spalten-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.raster-voll { grid-column: 1 / -1; }
+.raster-karte {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  padding: clamp(16px, calc(var(--s) * 1.6 + 8px), 32px);
+  border: 2px solid var(--blue-lt); border-radius: 18px; background: var(--white);
+  text-wrap: pretty; hyphens: auto; overflow-wrap: break-word;
+}
+.raster-karte.ton-ja { border-color: var(--accent); background: var(--ja-flaeche); }
+.raster-karte.ton-nein { border-color: var(--earth); background: var(--nein-flaeche); }
+.raster-karte.ton-navy { border-color: var(--blue); background: var(--blue); color: var(--white); }
+.raster-symbol {
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px;
+  border-radius: 50%; background: var(--blue); color: var(--accent-lt);
+}
+.raster-symbol .symbol { width: 22px; height: 22px; }
+.ton-navy .raster-symbol { background: oklch(100% 0 0 / 0.12); }
+.raster-marke {
+  font-size: 12px; font-weight: 600; line-height: 1.3; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent-dk);
+}
+.ton-nein .raster-marke { color: var(--earth-dk); }
+.ton-navy .raster-marke { color: var(--accent-lt); }
+.raster-titel {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(19px, calc(var(--s) * 2), 34px); font-weight: 700; line-height: 1.15;
+  color: var(--blue);
+}
+.ton-navy .raster-titel { color: var(--white); }
+.raster-text { font-size: clamp(15px, calc(var(--s) * 1.35), 24px); line-height: 1.4; }
+.ton-navy .raster-text { color: oklch(100% 0 0 / 0.9); }
+
+/* ── Baustein: Ablauf (Schritte mit Pfeil dazwischen) ─────────────────── */
+.ablauf {
+  --abstand: clamp(28px, 3vw, 48px);
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  gap: var(--abstand); width: 100%; margin: 0; padding: 0; list-style: none;
+}
+.ablauf-schritt {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  padding: clamp(16px, calc(var(--s) * 1.5 + 8px), 30px);
+  border: 2px solid var(--blue-lt); border-radius: 18px; background: var(--white);
+  text-wrap: pretty; hyphens: auto; overflow-wrap: break-word;
+}
+/* Pfeil erst zeigen, wenn die nächste Karte schon aufgebaut ist */
+.ablauf-schritt:has(+ .verborgen)::after { visibility: hidden; }
+.ablauf-schritt:not(:last-child)::after {
+  content: ''; position: absolute; top: 50%; right: calc(var(--abstand) / -2 - 8px);
+  width: 13px; height: 13px; border-top: 3px solid var(--accent); border-right: 3px solid var(--accent);
+  transform: translate(-25%, -50%) rotate(45deg);
+}
+.ablauf-nr {
+  font-family: 'Playfair Display', Georgia, serif; font-variant-numeric: lining-nums;
+  font-size: clamp(28px, calc(var(--s) * 3), 52px); font-weight: 900; line-height: 1; color: var(--accent);
+}
+.ablauf-titel {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(18px, calc(var(--s) * 1.8), 30px); font-weight: 700; line-height: 1.2; color: var(--blue);
+}
+.ablauf-text { font-size: clamp(15px, calc(var(--s) * 1.3), 22px); line-height: 1.4; }
+
+/* ── Baustein: Mehrfachauswahl ────────────────────────────────────────── */
+.auswahl { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 1040px; }
+.auswahl-optionen { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 10px; }
+.option {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 14px 16px; border: 2px solid var(--blue-lt); border-radius: var(--r-lg);
+  background: var(--white); text-align: left;
+  font-size: clamp(16px, calc(var(--s) * 1.3), 20px); line-height: 1.4;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.option:hover:not(:disabled) { border-color: var(--blue-mid); }
+.option[aria-pressed="true"] { border-color: var(--blue); background: var(--blau-flaeche); }
+.option[aria-pressed="true"]:not(.aufgeloest)::after {
+  content: ''; position: absolute; top: 12px; right: 12px; width: 18px; height: 18px;
+  border-radius: 50%; background: var(--blue);
+  box-shadow: inset 0 0 0 4px var(--white);
+}
+.option:disabled { color: inherit; cursor: default; }
+.option-text { font-weight: 500; padding-right: 22px; }
+.option-erklaerung { display: none; font-size: 15px; color: var(--text-lt); }
+.option.aufgeloest .option-erklaerung { display: block; }
+.option.aufgeloest::before {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.option.treffer { border-color: var(--accent); background: var(--ja-flaeche); }
+.option.treffer::before { content: 'Richtig erkannt'; color: var(--accent-dk); }
+.option.verpasst { border-color: var(--accent); border-style: dashed; }
+.option.verpasst::before { content: 'Gehört auch dazu'; color: var(--accent-dk); }
+.option.daneben { border-color: var(--earth); background: var(--nein-flaeche); }
+.option.daneben::before { content: 'Passt hier nicht'; color: var(--earth-dk); }
+.option.aufgeloest:not(.treffer):not(.verpasst):not(.daneben) { opacity: 0.75; }
+.uebung-fuss { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.stand { font-weight: 600; color: var(--blue); font-variant-numeric: tabular-nums; }
+
+/* ── Baustein: Karten aufdecken ───────────────────────────────────────── */
+.aufdecken {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(12px, 1.6vw, 20px); width: 100%;
+}
+.aufdeck-karte {
+  position: relative; display: grid; min-height: clamp(150px, 22vh, 240px);
+  padding: 0; border: 0; border-radius: 18px; background: transparent;
+  text-align: left; perspective: 1200px;
+}
+.aufdeck-vorne, .aufdeck-hinten {
+  grid-area: 1 / 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  padding: clamp(16px, 2vw, 26px); border-radius: 18px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s;
+  text-wrap: pretty; hyphens: auto; overflow-wrap: break-word;
+}
+.aufdeck-vorne { border: 2px solid var(--blue-lt); background: var(--white); box-shadow: 0 2px 16px oklch(0% 0 0 / 0.05); }
+.aufdeck-hinten { background: var(--blue); color: var(--white); transform: rotateY(180deg); }
+.aufdeck-karte.umgedreht .aufdeck-vorne { transform: rotateY(-180deg); }
+.aufdeck-karte.umgedreht .aufdeck-hinten { transform: rotateY(0deg); }
+.aufdeck-marke { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--earth-dk); }
+.aufdeck-hinten .aufdeck-marke { color: var(--accent-lt); }
+.aufdeck-titel {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(18px, calc(var(--s) * 1.8), 28px); font-weight: 700; line-height: 1.2; color: var(--blue);
+}
+.aufdeck-hinten .aufdeck-titel { color: var(--white); }
+.aufdeck-text { font-size: clamp(15px, calc(var(--s) * 1.25), 19px); line-height: 1.45; }
+.aufdeck-hinten .aufdeck-text { color: oklch(100% 0 0 / 0.9); }
+.aufdeck-tipp { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--accent-dk); }
+
+/* ── Baustein: Reihenfolge antippen ───────────────────────────────────── */
+.reihenfolge { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 860px; }
+.reihenfolge-liste { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.glied {
+  display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; column-gap: 14px; row-gap: 0;
+  width: 100%; padding: 12px 16px; border: 2px solid var(--blue-lt); border-radius: var(--r-lg);
+  background: var(--white); text-align: left;
+  font-size: clamp(16px, calc(var(--s) * 1.3), 20px); line-height: 1.4;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.glied:hover:not(:disabled) { border-color: var(--blue-mid); }
+.glied:disabled { color: inherit; cursor: default; }
+.glied-nr {
+  grid-row: 1 / span 2; display: grid; place-items: center; width: 36px; height: 36px;
+  border: 2px dashed var(--blue-lt); border-radius: 50%; font-weight: 600; color: var(--blue);
+}
+.glied-hinweis { grid-column: 2; margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--earth-dk); }
+
+/* Was insBild() ansteuert, rollt mit Abstand zu Kopf und Steuerleiste ins
+   Bild – beide stehen fest. */
+.fazit, .ergebnis, .fall, .auswahl, .reihenfolge, [data-naechster] { scroll-margin-top: 110px; scroll-margin-bottom: 240px; }
+.glied-hinweis:empty { display: none; }
+.glied.gewaehlt { border-color: var(--blue); }
+.glied.gewaehlt .glied-nr { border: 0; background: var(--blue); color: var(--white); }
+.glied.richtig { border-color: var(--accent); background: var(--ja-flaeche); }
+.glied.richtig .glied-nr { border: 0; background: var(--accent-btn); color: var(--white); }
+.glied.falsch { border-color: var(--earth); background: var(--nein-flaeche); }
+.glied.falsch .glied-nr { border: 0; background: var(--earth); color: var(--white); }
+
+/* ── Laden und Fehler (Lektionsseite) ─────────────────────────────────── */
+body[data-art="laden"] .dock, body[data-art="fehler"] .dock { display: none; }
+.laden, .fehler {
+  margin: auto; display: flex; flex-direction: column; align-items: center; gap: 14px;
+  max-width: 52ch; text-align: center; color: var(--text-lt);
+}
+.laden progress { width: min(320px, 70vw); accent-color: var(--accent-btn); }
+.fehler h1 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 30px; color: var(--blue); }
+.fehler p { margin: 0; }
+
+/* ── Zugang und Kursübersicht (kurse/<kurs>/index.html) ───────────────── */
+.seite { justify-content: flex-start; }
+.knopf-klein { min-height: 40px; padding: 8px 18px; font-size: 14px; }
+.zugang {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 5vw, 96px); align-items: center; width: 100%; margin-block: auto;
+}
+.zugang-text { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 580px; }
+.zugang h1, .uebersicht h1 {
+  margin: 0; font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(36px, 4.4vw, 72px); font-weight: 900; line-height: 1.05; letter-spacing: -0.01em;
+  color: var(--blue); text-wrap: balance;
+}
+.zugang-form { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 460px; margin-top: 6px; }
+.zugang-form input[type="text"] {
+  min-height: 58px; padding: 12px 16px;
+  font-size: 22px; font-weight: 600; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: var(--blue);
+}
+.zugang-form input[type="text"]::placeholder { color: var(--blue-lt); }
+.zugang-form .knopf { align-self: flex-start; margin-top: 4px; }
+.feld-hinweis { margin: 0; font-size: 14px; color: var(--text-lt); }
+.merken { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer; }
+.merken input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent-btn); }
+.zugang-fehler {
+  margin: 0; padding: 10px 14px; border-radius: var(--r);
+  background: var(--nein-flaeche); color: var(--earth-dk); font-size: 15px; font-weight: 600;
+}
+.zugang-hilfe { margin: 0; font-size: 14px; color: var(--text-lt); }
+.zugang-hilfe a { color: var(--accent-dk); font-weight: 600; }
+.zugang-foto { max-height: calc(100dvh - 260px); }
+
+.uebersicht { display: flex; flex-direction: column; gap: clamp(26px, 4vh, 44px); width: 100%; }
+.uebersicht-kopf { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; max-width: 780px; }
+.uebersicht-stand { margin: 0; font-weight: 600; color: var(--accent-dk); }
+.module { display: flex; flex-direction: column; gap: clamp(26px, 4vh, 44px); }
+.modul { display: flex; flex-direction: column; gap: 14px; }
+.modul-kopf { display: flex; flex-direction: column; gap: 6px; }
+.modul-titel {
+  margin: 0; font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(22px, 2vw, 30px); font-weight: 700; line-height: 1.2; color: var(--blue);
+}
+.lektionen {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 12px; margin: 0; padding: 0; list-style: none;
+}
+.lektion-karte {
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 14px; row-gap: 4px; align-content: start;
+  padding: 16px 18px; border: 1px solid var(--blue-lt); border-radius: 16px; background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.lektion-karte:has(a.lektion-titel):hover { border-color: var(--blue-mid); box-shadow: 0 6px 22px oklch(0% 0 0 / 0.07); }
+.lektion-nr {
+  grid-row: 1 / span 4; display: grid; place-items: center; min-width: 52px; height: 52px; padding: 0 8px;
+  border-radius: 12px; background: var(--cream2);
+  font-family: 'Playfair Display', Georgia, serif; font-size: 18px; font-weight: 900;
+  font-variant-numeric: lining-nums; color: var(--blue);
+}
+.lektion-titel {
+  font-family: 'Playfair Display', Georgia, serif; font-size: 19px; font-weight: 700; line-height: 1.25;
+  color: var(--blue); text-decoration: none; text-wrap: balance;
+}
+a.lektion-titel::after { content: ''; position: absolute; inset: 0; border-radius: 16px; }
+a.lektion-titel:focus-visible { outline: none; }
+a.lektion-titel:focus-visible::after { outline: 3px solid var(--accent); outline-offset: 2px; }
+.lektion-meta { font-size: 14px; color: var(--text-lt); }
+.lektion-status {
+  justify-self: start; display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+  padding: 3px 11px; border-radius: 999px; background: var(--cream2);
+  font-size: 13px; font-weight: 600; color: var(--blue);
+}
+.lektion-status .symbol { width: 14px; height: 14px; stroke-width: 3; }
+.lektion-balken { grid-column: 2; height: 4px; margin-top: 8px; overflow: hidden; border-radius: 2px; background: var(--blue-lt); }
+.lektion-balken span { display: block; height: 100%; background: var(--accent); }
+.lektion-karte.fertig .lektion-nr { background: var(--accent-btn); color: var(--white); }
+.lektion-karte.fertig .lektion-status { background: var(--ja-flaeche); color: var(--accent-dk); }
+.lektion-karte.begonnen .lektion-status { background: var(--blau-flaeche); }
+.lektion-karte.geplant { border-style: dashed; background: transparent; }
+.lektion-karte.geplant .lektion-titel { color: var(--text-lt); }
+
+/* ── Kursliste (kurse/index.html): je Kurs eine Kachel ────────────────── */
+/* auto-fit statt auto-fill: Die Kacheln teilen sich die ganze Breite. Mit
+   auto-fill blieben bei 2560 px neben zwei Kacheln drei leere Spalten stehen. */
+.kurs-liste {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(16px, 2vw, 28px); margin: 0; padding: 0; list-style: none;
+}
+.kurs-kachel {
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--blue-lt); border-radius: 18px; background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.kurs-kachel:hover { border-color: var(--blue-mid); box-shadow: 0 6px 22px oklch(0% 0 0 / 0.07); }
+/* Das Foto füllt seinen Rahmen, ohne dessen Höhe mitzubestimmen (absolut) –
+   so kann der Rahmen quer neben dem Text genau dessen Höhe annehmen. */
+.kurs-bild { position: relative; flex: none; aspect-ratio: 16 / 9; background: var(--blue-lt); }
+.kurs-bild img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+/* Zwei Kacheln werden auf breiten Schirmen je über 800 px breit: dann Foto links,
+   Text rechts, sonst würde das 16:9-Foto die Kachel höher machen als den Schirm.
+   Ab drei Kacheln bleiben sie hochkant, quer wären sie bei 1600 px zu schmal. */
+@media (min-width: 1600px) {
+  .kurs-kachel:first-child:nth-last-child(2), .kurs-kachel:nth-child(2):last-child { flex-direction: row; }
+  .kurs-kachel:first-child:nth-last-child(2) .kurs-bild, .kurs-kachel:nth-child(2):last-child .kurs-bild { width: 46%; min-height: clamp(340px, 22vw, 560px); aspect-ratio: auto; }
+  .kurs-kachel:first-child:nth-last-child(2) .kurs-text, .kurs-kachel:nth-child(2):last-child .kurs-text { flex: 1 1 0; justify-content: center; padding: clamp(28px, 2.4vw, 48px); }
+}
+/* Solange es nur einen Kurs gibt, steht seine Kachel quer über die ganze
+   Breite: Foto links, Text rechts. Ab dem zweiten Kurs stehen Kacheln nebeneinander. */
+@media (min-width: 900px) {
+  .kurs-kachel:only-child { grid-column: 1 / -1; flex-direction: row; }
+  .kurs-kachel:only-child .kurs-bild { width: 46%; min-height: clamp(340px, 22vw, 560px); aspect-ratio: auto; }
+  .kurs-kachel:only-child .kurs-bild img { object-position: 50% 40%; }
+  .kurs-kachel:only-child .kurs-text { flex: 1 1 0; justify-content: center; padding: clamp(28px, 3.4vw, 56px); }
+  .kurs-kachel:only-child .kurs-text .knopf { margin-top: 6px; }
+}
+.kurs-text { flex: 1 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: clamp(20px, 2.4vw, 30px); }
+.kurs-text h2 {
+  margin: 0; font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 2.4vw, 36px); font-weight: 700; line-height: 1.12; color: var(--blue);
+  text-wrap: balance;
+}
+.kurs-text > p:not(.schritt-marke) { margin: 0; max-width: 60ch; text-wrap: pretty; }
+.kurs-text .knopf { margin-top: auto; }
+
+.fuss {
+  flex: 0 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px;
+  padding: 18px clamp(16px, 4vw, 48px) calc(18px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--blue-lt); font-size: 14px; color: var(--text-lt);
+}
+.fuss nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.fuss a { color: var(--blue-mid); text-decoration: none; }
+.fuss a:hover { text-decoration: underline; }
+.optionen .rechtliches { display: flex; gap: 16px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--blue-lt); font-size: 13px; }
+.optionen .rechtliches a { color: var(--blue-mid); font-weight: 500; }
+
+/* ── Steuerleiste ─────────────────────────────────────────────────────── */
+.dock {
+  position: sticky; bottom: 0; z-index: 30;
+  padding: 10px clamp(12px, 4vw, 48px) calc(12px + env(safe-area-inset-bottom));
+  background: var(--white); border-top: 1px solid var(--blue-lt);
+  box-shadow: 0 -10px 30px oklch(0% 0 0 / 0.06);
+}
+body[data-art="titel"] .dock { display: none; }
+.untertitel {
+  max-width: 76ch; margin: 0 auto 10px;
+  text-align: center; font-size: clamp(16px, 1.15vw, 20px); line-height: 1.45;
+  text-wrap: balance;
+}
+.untertitel:empty, body.ohne-text .untertitel { display: none; }
+/* Bei Übungen ist der Untertitel nach dem Ton nur noch im Weg – vor allem am
+   Handy, wo er sonst ein Viertel der Höhe belegt, während man tippt. */
+body[data-art="uebung"].ton-fertig .untertitel { display: none; }
+.steuerung {
+  display: grid; align-items: center; gap: 10px 14px;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
+  grid-template-areas: "zurueck spielen zeit text optionen weiter";
+  max-width: 1280px; margin: 0 auto;
+}
+.st-zurueck { grid-area: zurueck; }
+.st-spielen { grid-area: spielen; }
+.st-zeit { grid-area: zeit; }
+.st-text { grid-area: text; }
+.st-optionen { grid-area: optionen; }
+.st-weiter { grid-area: weiter; }
+.rund {
+  position: relative; display: grid; place-items: center;
+  width: 44px; height: 44px; padding: 0;
+  border: 1.5px solid var(--blue-lt); border-radius: 50%; background: var(--white); color: var(--blue);
+}
+.rund .symbol { width: 20px; height: 20px; }
+.rund:hover:not(:disabled) { border-color: var(--blue-mid); }
+.rund:disabled { opacity: 0.35; cursor: default; }
+.rund[aria-pressed="true"] { border-color: var(--blue); background: var(--blue); color: var(--white); }
+.st-optionen[data-tempo]:not([data-tempo=""])::after {
+  content: attr(data-tempo); position: absolute; top: -8px; right: -10px;
+  padding: 1px 6px; border-radius: 999px; background: var(--earth); color: var(--white);
+  font-size: 11px; font-weight: 600;
+}
+.st-spielen { width: 56px; height: 56px; border: 0; background: var(--accent-btn); color: var(--white); }
+.st-spielen:hover:not(:disabled) { background: var(--accent-dk); }
+.st-spielen .symbol { width: 24px; height: 24px; }
+.st-spielen .als-pause, .st-spielen.spielt .als-spielen { display: none; }
+.st-spielen.spielt .als-pause { display: block; }
+.st-zeit {
+  display: flex; align-items: center; gap: 10px; min-width: 0;
+  font-size: 13px; color: var(--text-lt); font-variant-numeric: tabular-nums;
+}
+.st-zeit input[type="range"] { flex: 1; min-width: 60px; margin: 0; accent-color: var(--accent-btn); cursor: pointer; }
+.ohne-ton .st-spielen, .ohne-ton .st-zeit { opacity: 0.35; pointer-events: none; }
+.st-weiter { padding: 10px 20px 10px 24px; }
+
+.optionen {
+  position: fixed; inset: auto; margin: 0;
+  width: min(300px, calc(100vw - 24px));
+  padding: 16px 18px;
+  border: 1px solid var(--blue-lt); border-radius: var(--r-lg);
+  background: var(--white); color: var(--text); box-shadow: var(--shadow);
+}
+@supports not selector(:popover-open) {
+  .optionen { display: none; }
+}
+.optionen-titel { margin: 0 0 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-lt); }
+.tempo-wahl { display: flex; gap: 6px; margin-bottom: 16px; }
+.tempo-wahl button {
+  flex: 1; min-height: 40px; padding: 0;
+  border: 1.5px solid var(--blue-lt); border-radius: 10px; background: var(--white);
+  font-weight: 600; color: var(--blue);
+}
+.tempo-wahl button[aria-pressed="true"] { border-color: var(--blue); background: var(--blue); color: var(--white); }
+.schalter { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; font-weight: 500; }
+.schalter input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent-btn); cursor: pointer; }
+
+/* ── Prüfansicht (?pruefen): zeigt, welche Texte neu oder Platzhalter sind ── */
+.pruefen [data-herkunft="neu"], .pruefen [data-herkunft="platzhalter"] { position: relative; outline-offset: 4px; }
+.pruefen [data-herkunft="neu"] { outline: 2px dashed var(--earth); }
+.pruefen [data-herkunft="platzhalter"] { outline: 2px dashed var(--blue-mid); }
+.pruefen [data-herkunft="neu"]::after, .pruefen [data-herkunft="platzhalter"]::after {
+  position: absolute; top: -12px; right: -8px; z-index: 5;
+  padding: 3px 7px; border-radius: 4px;
+  font: 600 10px/1.2 'DM Sans', system-ui, sans-serif; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--white); font-style: normal;
+}
+.pruefen [data-herkunft="neu"]::after { content: 'Neu'; background: var(--earth); }
+.pruefen [data-herkunft="platzhalter"]::after { content: 'Platzhalter'; background: var(--blue-mid); }
+.pruefen .untertitel[data-herkunft]::before {
+  content: attr(data-herkunft); display: inline-block; margin-right: 10px; padding: 2px 8px;
+  border-radius: 4px; vertical-align: 0.1em;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--white); background: var(--blue-mid);
+}
+.pruefen .untertitel[data-herkunft="skript"]::before { background: var(--accent-dk); }
+.pruefen .untertitel[data-herkunft="neu"]::before { background: var(--earth); }
+.pruefen .untertitel[data-herkunft] { outline: none; }
+.pruefen .untertitel[data-herkunft]::after { content: none; }
+
+/* ── Schmale Schirme ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .foto-aufgabe { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .ablauf { grid-auto-flow: row; }
+  .ablauf-schritt:not(:last-child)::after {
+    top: auto; right: 50%; bottom: calc(var(--abstand) / -2 - 8px);
+    transform: translate(50%, -25%) rotate(135deg);
+  }
+  .titel { grid-template-columns: 1fr; gap: 24px; }
+  .titel-foto { order: -1; aspect-ratio: 16 / 10; max-height: none; justify-self: stretch; }
+  .titel-foto img { object-position: 48% 36%; }
+  .beispiel { grid-template-columns: 1fr; }
+  .vorschau-marke { display: none; }
+  .zugang { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) {
+  .fall-antworten, .plan-zwei, .merksatz-paar { grid-template-columns: 1fr; }
+  .steuerung {
+    grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "zeit zeit zeit zeit zeit"
+      "zurueck text spielen optionen weiter";
+  }
+  .st-spielen { justify-self: center; }
+  .st-weiter { padding: 10px 16px 10px 20px; }
+  /* Höchstens vier Zeilen Untertitel am Handy, der Rest scrollt in der Leiste:
+     Lange Sprechtexte machten die Leiste sonst so hoch, dass Inhalt darunter lag. */
+  .untertitel {
+    max-height: calc(4 * 1.4em); margin-bottom: 8px; overflow-y: auto; overscroll-behavior: contain;
+    font-size: 15px; line-height: 1.4;
+  }
+  /* Kopf am Handy kompakt: Die Höhe gehört der Bühne */
+  .kopf { padding-top: 8px; padding-bottom: 10px; }
+  .kopf-logo { width: 34px; height: 34px; }
+  .kopf-kurs { display: none; }
+  .kopf-lektion { white-space: normal; font-size: 14px; }
+  .fortschritt { padding: 10px 0 0; }
+  .baum-pfeil { height: 28px; }
+  .baum-gabel { height: 38px; }
+  /* Raster und Ablauf am Handy als kompakte Zeilen, Symbol bzw. Nummer links:
+     Gestapelt mit dem Symbol oben rutschte ab drei Karten die neue unter die Leiste.
+     In 10 px Abstand passt kein Pfeil; die Nummern zeigen die Folge. */
+  .raster, .ablauf { gap: 10px; }
+  .ablauf-schritt:not(:last-child)::after { display: none; }
+  .raster-karte, .ablauf-schritt { padding: 12px 14px; gap: 4px; }
+  .raster-karte:has(> .raster-symbol), .ablauf-schritt:has(> .ablauf-nr) {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; row-gap: 2px; align-items: start;
+  }
+  .raster-karte:has(> .raster-symbol) > :not(.raster-symbol), .ablauf-schritt:has(> .ablauf-nr) > :not(.ablauf-nr) { grid-column: 2; }
+  .raster-symbol { grid-row: 1 / span 4; width: 36px; height: 36px; }
+  .raster-symbol .symbol { width: 18px; height: 18px; }
+  .ablauf-nr { grid-row: 1 / span 4; min-width: 28px; font-size: 30px; }
+  .raster-titel, .ablauf-titel { font-size: 18px; }
+  .raster-text, .ablauf-text { font-size: 15px; }
+  .raster.spalten-2, .raster.spalten-3, .raster.spalten-4 { grid-template-columns: 1fr; }
+  /* Beispiel-Platzhalter flacher, damit er über die Leiste passt */
+  .platzhalter-foto { aspect-ratio: 16 / 7; gap: 8px; padding: 14px; font-size: 15px; }
+  .platzhalter-foto .symbol { width: 30px; height: 30px; }
+  .platzhalter-liste { gap: 8px; }
+  .platzhalter-liste li { padding: 9px 14px; font-size: 15px; }
+  .beispiel { gap: 16px; }
+  /* Abschluss am Handy kompakt: Mit langem Titel der nächsten Lektion und
+     drei Knöpfen lief er sonst knapp unter die Leiste. */
+  .abschluss { gap: 12px; }
+  .abschluss-symbol { --d: 56px; }
+  .naechste { padding: 12px 14px; gap: 12px; }
+  .naechste strong { font-size: 17px; }
+  .abschluss-knoepfe { gap: 8px; }
+  .abschluss-knoepfe .knopf { min-height: 42px; padding: 8px 16px; font-size: 15px; }
+}
+
+/* Bewegung nur abschwächen, nicht abschalten: Bei reduzierter Bewegung
+   blenden die Elemente weiter ein, rutschen aber nicht. */
+@media (prefers-reduced-motion: reduce) {
+  .schritt.aktiv, [data-stufe].neu, .merke-liste li, .foto-punkt.gefunden::before, .abschluss-symbol { animation-name: einblenden; }
+  .aufdeck-vorne, .aufdeck-hinten { transform: none !important; }
+  .aufdeck-hinten { opacity: 0; }
+  .aufdeck-karte.umgedreht .aufdeck-vorne { opacity: 0; }
+  .aufdeck-karte.umgedreht .aufdeck-hinten { opacity: 1; }
+  .foto-fehl { animation-name: ausblenden; }
+  .antwort:hover:not(:disabled) { transform: none; }
+}
+
+/* ── Druckblatt ───────────────────────────────────────────────────────── */
+/* Im Abspieler nur beim Drucken sichtbar (@media print unten). Die
+   Gestaltung gilt trotzdem immer: Das Arbeitsheft zeigt dieselben Blätter
+   auf dem Schirm, und so sieht seine Vorschau aus wie das Papier. */
+.druckblatt {
+  display: none; flex-direction: column;
+  font-size: 14px; line-height: 1.45; color: var(--text);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.db-kopf { display: flex; flex-direction: column; gap: 8px; }
+.db-marke { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--earth); }
+.db-kopf h1 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 700; line-height: 1.12; color: var(--blue); }
+.db-regel { width: 56px; height: 3px; margin-top: 2px; border-radius: 2px; background: var(--accent); }
+.db-abschnitt { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; break-inside: avoid; }
+.db-abschnitt h2 {
+  display: flex; align-items: baseline; gap: 10px; margin: 0;
+  font-family: 'Playfair Display', Georgia, serif; font-size: 18px; font-weight: 700; color: var(--blue);
+}
+.db-abschnitt h2 span { font-size: 24px; font-weight: 900; font-variant-numeric: lining-nums; color: var(--earth); }
+.db-feld { break-inside: avoid; }
+.db-label { margin: 0; font-size: 14px; font-weight: 600; color: var(--blue); }
+.db-label small { font-weight: 400; color: var(--text-lt); }
+.db-wert {
+  min-height: 56px; white-space: pre-wrap; overflow-wrap: anywhere;
+  font-size: 14px; line-height: 28px; color: var(--blue);
+  background-image: linear-gradient(to bottom, transparent 27px, var(--blue-lt) 27px);
+  background-size: 100% 28px;
+}
+.db-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 22px; }
+.db-wahl { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.db-wahl span { display: inline-flex; align-items: center; gap: 7px; }
+.db-wahl span::before {
+  content: ''; width: 13px; height: 13px; border: 1.5px solid var(--blue); border-radius: 3px;
+}
+.db-wahl span.gewaehlt::before { background: var(--blue); box-shadow: inset 0 0 0 2px var(--white); }
+.db-zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.db-merksatz {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+  margin-top: 22px; padding: 18px 24px 20px; border-radius: 14px; background: var(--blue);
+  break-inside: avoid;
+}
+.db-merksatz p {
+  margin: 0; padding-top: 8px; border-top: 2px solid var(--accent);
+  font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 600; line-height: 1.3;
+  color: var(--white);
+}
+.db-fuss {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 22px; padding-top: 10px; border-top: 1px solid var(--blue-lt);
+  font-size: 11px; color: var(--text-lt);
+}
+.db-fuss img { width: 26px; height: 26px; }
+.db-fuss span:last-child { margin-left: auto; font-weight: 600; color: var(--blue-mid); }
+
+/* ── Druck ────────────────────────────────────────────────────────────── */
+/* Gedruckt wird nur, was als .druckblatt direkt unter body steht */
+@media print {
+  @page { size: A4; margin: 14mm 16mm; }
+  html, body { background: var(--white) !important; }
+  body { display: block; min-height: 0; }
+  body > :not(.druckblatt) { display: none !important; }
+  .druckblatt { display: flex !important; }
+}

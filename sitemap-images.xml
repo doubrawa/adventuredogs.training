@@ -266,6 +266,15 @@
     </image:image>
   </url>
   <url>
+    <loc>https://adventuredogs.training/kurse/</loc>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/hero-alltagstipps.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://adventuredogs.training/assets/julia-einstein-kuss.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://adventuredogs.training/kontakt/</loc>
     <image:image>
       <image:loc>https://adventuredogs.training/assets/anfahrt.gif</image:loc>

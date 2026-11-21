@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de" data-kurs="frustration" data-kursbasis="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Arbeitsheft – Onlinekurs Adventure Dogs</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../../../assets/favicon-64.png">
+<link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../../assets/fonts.css">
+<link rel="stylesheet" href="../../player/lernseite.css">
+<link rel="stylesheet" href="../../player/arbeitsheft.css">
+</head>
+<body class="arbeitsheft" data-art="laden">
+
+<svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-drucker" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></symbol>
+  <symbol id="i-rechts" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-haken" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</svg>
+
+<header class="kopf">
+  <div class="kopf-zeile">
+    <a href="../" data-zur-uebersicht aria-label="Zur Kursübersicht"><img class="kopf-logo" src="../../../assets/logo-144.webp" alt="" width="40" height="40"></a>
+    <div class="kopf-text">
+      <span class="kopf-kurs">Onlinekurs · Gelassen statt explosiv</span>
+      <span class="kopf-lektion">Mein Arbeitsheft</span>
+    </div>
+    <span class="vorschau-marke" id="klartext-marke" hidden title="Lokale Vorschau der unverschlüsselten Quellen">Klartext-Vorschau</span>
+  </div>
+</header>
+
+<main class="ah-seite">
+  <div class="laden" id="laden" role="status">
+    <p>Dein Arbeitsheft wird zusammengestellt …</p>
+    <progress id="laden-fortschritt" max="1"></progress>
+  </div>
+  <noscript><p class="fehler">Der Kurs braucht JavaScript. Bitte schalte es für diese Seite ein.</p></noscript>
+  <div class="fehler" id="fehler" hidden></div>
+
+  <div class="uebersicht" id="heft" hidden>
+    <div class="uebersicht-kopf">
+      <p class="schritt-marke">Zum Ausdrucken</p>
+      <h1>Mein Arbeitsheft</h1>
+      <div class="titel-regel"></div>
+      <p class="lead">Hier kommen die Arbeitsblätter aller Lektionen zusammen, mit allem, was du dort eingetragen hast. Deine Einträge bleiben auf diesem Gerät. Ändern kannst du sie jederzeit in der Lektion.</p>
+    </div>
+
+    <section class="ah-einstellungen" aria-label="Einstellungen für den Druck">
+      <label class="feld">
+        <span class="feld-label">Name deines Hundes <small>(für das Deckblatt)</small></span>
+        <input type="text" id="hund" maxlength="60" autocomplete="off" spellcheck="false">
+      </label>
+      <fieldset class="wahl">
+        <legend>Welche Blätter?</legend>
+        <div class="wahl-optionen">
+          <label><input type="radio" name="blaetter" value="alle" checked><span>Alle Blätter</span></label>
+          <label><input type="radio" name="blaetter" value="eintraege" id="nur-eintraege"><span>Nur Blätter mit Einträgen</span></label>
+        </div>
+      </fieldset>
+      <div class="ah-drucken">
+        <button type="button" class="knopf knopf-primaer knopf-gross" id="drucken"><svg class="symbol" aria-hidden="true"><use href="#i-drucker"/></svg>Arbeitsheft drucken</button>
+        <p>Im Druckfenster kannst du statt eines Druckers auch „Als PDF speichern“ wählen. So bleiben dir deine Einträge auch dann, wenn Safari sie nach sieben Tagen ohne Besuch löscht.</p>
+      </div>
+    </section>
+
+    <nav class="ah-abschnitt" aria-labelledby="verzeichnis-titel">
+      <div class="ah-abschnitt-kopf">
+        <div class="modul-kopf">
+          <p class="schritt-marke">Inhalt</p>
+          <h2 class="modul-titel" id="verzeichnis-titel">Deine Arbeitsblätter</h2>
+        </div>
+        <p class="ah-anzahl" id="anzahl" aria-live="polite"></p>
+      </div>
+      <p class="ah-hinweis" id="keine-blaetter" hidden>Noch gibt es keine Arbeitsblätter. Sie erscheinen hier, sobald die Lektionen dazu freigeschaltet sind.</p>
+      <p class="ah-hinweis" id="nichts-eingetragen" hidden>In keinem Blatt steht bisher etwas. Füll die Blätter in den Lektionen aus, oder wähl „Alle Blätter“, um die leeren Vorlagen zu drucken.</p>
+      <p class="ah-hinweis" id="nicht-geladen" hidden></p>
+      <ol class="lektionen" id="verzeichnis"></ol>
+    </nav>
+
+    <div class="ah-abschnitt-kopf">
+      <div class="modul-kopf">
+        <p class="schritt-marke">Vorschau</p>
+        <h2 class="modul-titel">So sieht dein Heft gedruckt aus</h2>
+        <p>Vorn das Deckblatt, danach jedes Arbeitsblatt auf einer eigenen Seite.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Papier: das Deckblatt, dahinter setzt arbeitsheft.js die Blätter der
+     Lektionen ein. Im Druck erscheint nur, was in .ah-blatt steckt. -->
+<article class="ah-blatt" id="deckblatt" hidden>
+  <section class="druckblatt ah-deckblatt" aria-label="Deckblatt">
+    <img class="ah-deck-logo" src="../../../assets/logo-144.webp" alt="Adventure Dogs Training" width="76" height="76">
+    <span class="ah-deck-luft" aria-hidden="true"></span>
+    <div class="ah-deck-titel">
+      <p class="db-marke">Onlinekurs</p>
+      <p class="ah-deck-name">Mein Arbeitsheft</p>
+      <div class="db-regel"></div>
+      <p class="ah-deck-kurs" id="deck-kurs">Gelassen statt explosiv</p>
+    </div>
+    <div class="ah-deck-hund">
+      <p class="db-label">Mein Hund</p>
+      <p class="ah-hund leer" id="deck-hund"></p>
+    </div>
+    <span class="ah-deck-luft ah-deck-luft-unten" aria-hidden="true"></span>
+    <footer class="db-fuss"><span>Adventure Dogs · Julia Doubrawa</span><span>adventuredogs.training</span></footer>
+  </section>
+</article>
+
+<footer class="fuss">
+  <span>Adventure Dogs · Julia Doubrawa</span>
+  <nav aria-label="Rechtliches">
+    <a href="../../../impressum/">Impressum</a>
+    <a href="../../../impressum/#datenschutz">Datenschutz</a>
+    <a href="../../../">adventuredogs.training</a>
+  </nav>
+</footer>
+
+<script src="../../player/kurs.js"></script>
+<script src="../../player/arbeitsheft.js"></script>
+</body>
+</html>
