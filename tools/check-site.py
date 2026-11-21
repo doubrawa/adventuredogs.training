@@ -15,21 +15,27 @@ Skript nimmt die Kontrollen, die vorher niemand machte:
   4. Sitemaps     - wohlgeformt, und decken sie sich mit pages.tsv?
   5. Bilder       - keine Ausreisser bei Maessen und Gewicht
   6. Seitengewicht- bleibt jede Seite unter dem Budget?
+  7. Kursdaten    - keine Testcodes in einer kurse/*/daten/zugang.json, die committet wird
 
 FEHLER blockieren (Exit 1), WARNUNG nicht. tools/hooks/pre-commit ruft das
 Skript auf, damit niemand mehr daran denken muss.
 """
+import glob
+import json
 import os
 import re
 import struct
+import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
 WURZEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGES = os.path.join(WURZEL, 'tools', 'pages.tsv')
 
-# Ordner, die nicht zur Website gehoeren.
-IGNORIERT = {'.git', 'tools', 'assets', 'willkommensmappe', 'available_images'}
+# Ordner, die nicht zur Website gehoeren. onlinekurs/ ist der lokale Klon des
+# privaten Kurs-Repos (Klartext-Quellen, per .gitignore ausgeschlossen); seine
+# Lektionen sind HTML-Ausschnitte ohne Kopf und keine Seiten.
+IGNORIERT = {'.git', 'tools', 'assets', 'willkommensmappe', 'available_images', 'onlinekurs'}
 
 # Seiten, die absichtlich in keiner Sitemap stehen, erkennt das Skript an
 # ihrem robots-Meta mit "noindex": die Fehlerseite, die Buchungsbestaetigung,
@@ -354,6 +360,42 @@ def bildverwendung():
     return gerendert, irgendwo
 
 
+def pruefe_kursdaten():
+    """Testcodes duerfen nicht online gehen. bauen.mjs --mit-testcodes markiert
+    zugang.json mit "test": true. Vorgemerkt (git add) ist das ein FEHLER,
+    nur in der Arbeitskopie eine WARNUNG - dort ist es der lokale Pruefstand.
+    Je Kurs eine Datei: kurse/<kurs>/daten/zugang.json."""
+    muster = 'kurse/*/daten/zugang.json'
+    try:
+        vorgemerkt = set(subprocess.run(['git', 'diff', '--cached', '--name-only', '--', muster],
+                                        cwd=WURZEL, capture_output=True, text=True).stdout.split())
+    except OSError:
+        vorgemerkt = set()
+    vorhanden = {os.path.relpath(p, WURZEL).replace(os.sep, '/')
+                 for p in glob.glob(os.path.join(WURZEL, *muster.split('/')))}
+    for rel in sorted(vorhanden | vorgemerkt):
+        if rel in vorgemerkt:
+            inhalt = subprocess.run(['git', 'show', ':' + rel], cwd=WURZEL, capture_output=True,
+                                    text=True, encoding='utf-8').stdout
+        else:
+            with open(os.path.join(WURZEL, *rel.split('/')), encoding='utf-8') as f:
+                inhalt = f.read()
+        if not inhalt.strip():
+            continue
+        try:
+            zugang = json.loads(inhalt)
+        except ValueError as e:
+            melde_fehler('Kursdaten', '%s ist kein gueltiges JSON: %s' % (rel, e))
+            continue
+        if not zugang.get('test'):
+            continue
+        text = '%s enthaelt Faecher fuer Testcodes - im Kurs-Repo ohne --mit-testcodes neu bauen' % rel
+        if rel in vorgemerkt:
+            melde_fehler('Kursdaten', text)
+        else:
+            melde_warnung('Kursdaten', text + ' (lokaler Pruefstand, nicht vorgemerkt)')
+
+
 def pruefe_bilder():
     ordner = os.path.join(WURZEL, 'assets')
     gerendert, irgendwo = bildverwendung()
@@ -419,6 +461,7 @@ def main():
     pruefe_seo(pages)
     verweise = pruefe_verweise()
     pruefe_sitemaps(pages)
+    pruefe_kursdaten()
     pruefe_bilder()
     gewichte = pruefe_gewicht(pages)
 

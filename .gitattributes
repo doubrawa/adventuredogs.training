@@ -6,3 +6,8 @@
 # am Inhalt etwas getan hat. Ausführlich in tools/hooks/pre-commit.
 sitemap.xml         text eol=lf
 sitemap-images.xml  text eol=lf
+
+# Onlinekurse: Die Kursdaten erzeugt werkzeuge/bauen.mjs im privaten Repo des
+# jeweiligen Kurses. zugang.json schreibt es mit LF; die Blöcke sind verschlüsselt.
+kurse/*/daten/zugang.json  text eol=lf
+kurse/*/daten/*.bin        binary

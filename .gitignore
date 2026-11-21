@@ -29,3 +29,8 @@ available_images/
 # Die Mappe ist auf feste A4-Blaetter gebaut, hat kein viewport-Meta und keine
 # Fusszeile mit Impressum/Datenschutz. Sie bleibt deshalb bewusst lokal.
 willkommensmappe/
+
+# Onlinekurs "Wenn Geraeusche Angst machen" - Werkstatt mit den Klartext-Quellen
+# (Lernseiten, Sprechtexte, Aufnahmen). Das ist Bezahlinhalt: Er darf nie
+# unverschluesselt auf main landen, sonst ist er wegen .nojekyll frei abrufbar.
+onlinekurs/
