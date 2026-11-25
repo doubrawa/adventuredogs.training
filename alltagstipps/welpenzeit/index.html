@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welpenzeit gestalten – Alltagstipps | Adventure Dogs</title>
-<link rel="preload" type="image/webp" as="image" href="../../assets/offer-welpenkurs.webp" fetchpriority="high">
+<link rel="preload" type="image/webp" as="image" href="../../assets/hero-welpenzeit.webp" fetchpriority="high">
 <meta name="description" content="Die ersten Wochen mit Welpe: Schlaf, Stubenreinheit, Bindung und Sozialisierung. Tipps von Hundetrainerin Julia Doubrawa aus Krumbach.">
 <script type="application/ld+json">
 {
@@ -12,7 +12,7 @@
   "@type": "Article",
   "headline": "Welpenzeit gestalten – Alltagstipps | Adventure Dogs",
   "description": "Die ersten Wochen mit Welpe: Schlaf, Stubenreinheit, Bindung und Sozialisierung. Tipps von Hundetrainerin Julia Doubrawa aus Krumbach.",
-  "image": "https://adventuredogs.training/assets/offer-welpenkurs.jpg",
+  "image": "https://adventuredogs.training/assets/hero-welpenzeit.jpg",
   "mainEntityOfPage": "https://adventuredogs.training/alltagstipps/welpenzeit/",
   "author": {
     "@type": "Person",
@@ -48,9 +48,9 @@
 <meta property="og:title" content="Welpenzeit gestalten – Alltagstipps | Adventure Dogs">
 <meta property="og:description" content="Die ersten Wochen mit Welpe: Schlaf, Stubenreinheit, Bindung und Sozialisierung. Tipps von Hundetrainerin Julia Doubrawa aus Krumbach.">
 <meta property="og:url" content="https://adventuredogs.training/alltagstipps/welpenzeit/">
-<meta property="og:image" content="https://adventuredogs.training/assets/offer-welpenkurs.jpg">
-<meta property="og:image:width" content="1080">
-<meta property="og:image:height" content="1080">
+<meta property="og:image" content="https://adventuredogs.training/assets/hero-welpenzeit.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="800">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon-64.png">
@@ -125,16 +125,43 @@
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: url('../../assets/offer-welpenkurs.webp') center 35% / cover no-repeat;
+    background: url('../../assets/hero-welpenzeit.webp') 63% 30% / cover no-repeat;
   }
+  /* Das Welpenfoto (Shooting 11/2026) ist heller als die anderen Heroes:
+     weisse Decke, cremefarbener Welpe. Mit dem Verlauf allein, wie ihn die
+     anderen Artikel haben, kam "gestalten." bei 1024 bis 1440 px nur auf 2 bis
+     2,6 : 1, am Handy die ganze Ueberschrift auf 1,8 bis 2,7 : 1. Deshalb ein
+     zweiter Verlauf von links, der nur die Textspalte abdunkelt - in Pixeln,
+     weil die hoechstens 980 px breit ist: ab 2560 px bleibt der Welpe davon
+     unberuehrt. Gemessen danach ueberall >= 4,7 : 1. */
   .hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom,
-      oklch(0% 0 0 / 0.25) 0%,
-      oklch(0% 0 0 / 0.10) 30%,
-      oklch(0% 0 0 / 0.55) 70%,
-      oklch(0% 0 0 / 0.82) 100%
-    );
+    background:
+      linear-gradient(to right,
+        oklch(0% 0 0 / 0.55) 0,
+        oklch(0% 0 0 / 0.4) 640px,
+        oklch(0% 0 0 / 0) 1040px
+      ),
+      linear-gradient(to bottom,
+        oklch(0% 0 0 / 0.25) 0%,
+        oklch(0% 0 0 / 0.10) 30%,
+        oklch(0% 0 0 / 0.55) 70%,
+        oklch(0% 0 0 / 0.82) 100%
+      );
+  }
+  /* Bis 860 px steht der Text ueber Hand und Decke, auf kleinen Handys auch
+     ueber dem Welpen. Der Verlauf misst dort vom unteren Rand aus: dunkel
+     hinter dem Textblock (70 px Rand plus rund 310 px Text), darueber bleibt
+     der Welpe hell. Gemessen: Ueberschrift >= 5,4 : 1, Einleitung >= 6,5 : 1. */
+  @media (max-width: 860px) {
+    .hero-overlay {
+      background: linear-gradient(to top,
+        oklch(0% 0 0 / 0.78) 0,
+        oklch(0% 0 0 / 0.6) 380px,
+        oklch(0% 0 0 / 0.2) 470px,
+        oklch(0% 0 0 / 0.35) 100%
+      );
+    }
   }
   .hero-content { position: relative; z-index: 2; padding: 0 7%; max-width: 980px; width: 100%; }
   .breadcrumb {

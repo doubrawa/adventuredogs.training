@@ -431,6 +431,11 @@
   .offer-card.highlight .offer-img img {
     width: 100%; height: 100%; object-fit: cover;
   }
+  /* Einzeltraining: Hund und Halter stehen rechts der Bildmitte. Zwischen 721
+     und 900 px wird die Bildspalte bis zu 0,41 : 1 schmal; mittig zugeschnitten
+     blieben dort nur die Trainerin von hinten und der Hund, der Halter fiele
+     heraus. Ab etwa 1 : 1 wirkt die Verschiebung nicht mehr. */
+  .offer-card.offer-einzel .offer-img img { object-position: 72% 50%; }
   .offer-card.highlight .offer-body h2 { font-size: 26px; }
   .offer-card.highlight .offer-body p { font-size: 15px; }
 
@@ -807,7 +812,7 @@
   <div class="offers-grid">
 
     <div class="offer-card" data-cat="erziehung">
-      <div class="offer-img"><img src="../assets/offer-welpenkurs.webp" width="1080" height="1080" alt="Welpe im Welpenkurs der Hundeschule Adventure Dogs Krumbach" loading="lazy">
+      <div class="offer-img"><img src="../assets/offer-welpenkurs.webp" width="1080" height="1080" alt="Welpe im Welpenkurs sitzt auf seiner Decke und bekommt ein Leckerli aus der Hand" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags">
           <span class="offer-tag">Welpenkurs</span>
@@ -971,8 +976,8 @@
       </div>
     </div>
 
-    <div class="offer-card highlight" data-cat="problem">
-      <div class="offer-img"><img src="../assets/service-einzeltraining.webp" width="1080" height="1080" alt="Einzeltraining mit Julia Doubrawa und Hund" loading="lazy">
+    <div class="offer-card highlight offer-einzel" data-cat="problem">
+      <div class="offer-img"><img src="../assets/service-einzeltraining.webp" width="1080" height="1080" alt="Einzeltraining: Hund sitzt an lockerer Leine neben seinem Halter und schaut zu ihm auf, im Vordergrund die Trainerin" loading="lazy">
         <div class="offer-img-overlay"></div>
         <div class="offer-tags"><span class="offer-tag">Einzeltraining</span></div>
       </div>
